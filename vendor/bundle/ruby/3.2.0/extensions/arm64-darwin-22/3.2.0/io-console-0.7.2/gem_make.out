@@ -1,0 +1,27 @@
+current directory: /Users/sarii/rails/lean_up/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+/Users/sarii/.anyenv/envs/rbenv/versions/3.2.4/bin/ruby extconf.rb
+checking for rb_io_path()... no
+checking for rb_io_descriptor()... yes
+checking for rb_io_get_write_io()... yes
+checking for rb_io_closed_p()... no
+checking for rb_io_open_descriptor()... no
+checking for termios.h... yes
+checking for cfmakeraw() in termios.h... yes
+checking for sys/ioctl.h... yes
+checking for HAVE_RUBY_FIBER_SCHEDULER_H... yes
+creating Makefile
+
+current directory: /Users/sarii/rails/lean_up/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20240908-10055-xiyrje sitelibdir\=./.gem.20240908-10055-xiyrje clean
+
+current directory: /Users/sarii/rails/lean_up/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20240908-10055-xiyrje sitelibdir\=./.gem.20240908-10055-xiyrje
+compiling console.c
+linking shared-object io/console.bundle
+
+current directory: /Users/sarii/rails/lean_up/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20240908-10055-xiyrje sitelibdir\=./.gem.20240908-10055-xiyrje install
+/usr/bin/install -c -m 0755 console.bundle ./.gem.20240908-10055-xiyrje/io
+
+current directory: /Users/sarii/rails/lean_up/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20240908-10055-xiyrje sitelibdir\=./.gem.20240908-10055-xiyrje clean
