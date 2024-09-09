@@ -6,6 +6,10 @@
 
 # Ignore bundler config.
 /.bundle
+/vendor/*
+
+# Ignore RubyMine files
+.idea
 
 # Ignore all environment files (except templates).
 /.env*
