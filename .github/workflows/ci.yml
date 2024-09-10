@@ -102,8 +102,6 @@ jobs:
         env:
           RAILS_ENV: test
           POSTGRES_HOST: localhost
-          RAILS_DATABASE_USER: postgres
-          RAILS_DATABASE_PASSWORD: password
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         run: |
