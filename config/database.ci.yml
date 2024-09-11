@@ -1,0 +1,8 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV["POSTGRES_HOST"] || "postgres" %>
+  port: 3306
+  username: <%= ENV["POSTGRES_USER"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  database: test
