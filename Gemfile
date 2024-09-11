@@ -41,6 +41,11 @@ gem 'semantic-ui-sass'
 
 gem 'sidekiq'
 
+gem 'ridgepole'
+gem 'seed-fu'
+
+gem 'annotate'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
@@ -59,6 +64,8 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+
+  gem 'faker'
 end
 
 group :development do
