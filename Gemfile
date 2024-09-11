@@ -42,6 +42,8 @@ gem 'semantic-ui-sass'
 gem 'sidekiq'
 
 gem 'ridgepole'
+gem 'seed-fu'
+
 gem 'annotate'
 
 group :development, :test do
