@@ -254,9 +254,10 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.3.7)
-    ridgepole (2.1.0)
+    ridgepole (2.1.1)
       activerecord (>= 6.1, < 8.0)
       diffy
+      logger
     rspec-core (3.13.1)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
