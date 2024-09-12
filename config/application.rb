@@ -37,5 +37,8 @@ module LeanUp
                        routing_specs: false,
                        request_specs: false
     end
+
+    # フォーム入力エラー時にfield_with_errorsタグを自動挿入されないようにする（スタイル崩れ防止）
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
   end
 end
