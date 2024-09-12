@@ -1,0 +1,9 @@
+<h1>users list</h1>
+<ul>
+<% @users.each do |user| %>
+  <li><%= user.username %></li>
+  <li><%= user.email %></li><br>
+<% end %>
+</ul>
+
+<%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete } %>

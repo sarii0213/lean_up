@@ -1,0 +1,42 @@
+<div class="ui middle aligned center aligned grid">
+  <div class="column" style="max-width: 450px;">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Sign up
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'ui large form' }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <div class="ui stacked segment field">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'email' %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <%= f.password_field :password, autocomplete: "new-password",
+                                 placeholder: "password #{@minimum_password_length ? t('devise.shared.minimum_password_length', count: @minimum_password_length) : '' }" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: 'password for confirmation' %>
+          </div>
+        </div>
+
+        <%= f.submit t('.sign_up'), class: 'actions ui fluid large teal submit button' %>
+      </div>
+
+      <% if alert %>
+        <div class="ui error message"><%= alert %></div>
+      <% end %>
+    <% end %>
+    <div class="ui message">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

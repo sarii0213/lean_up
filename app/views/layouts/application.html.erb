@@ -18,6 +18,24 @@
   </head>
 
   <body>
-    <%= yield %>
+   <div class="ui two column centered grid" style="margin-top: 10px;">
+     <div class="column" style="min-width:300px;">
+       <% if notice %>
+         <div class="ui positive message notice">
+           <i class="check icon"></i>
+           <span><%= notice %></span>
+         </div>
+       <% end %>
+       <% if alert %>
+         <div class="ui negative message alert">
+           <i class="exclamation triangle icon"></i>
+           <span><%= alert %></span>
+         </div>
+       <% end %>
+       <div style="margin-top: 30px;">
+        <%= yield %>
+       </div>
+     </div>
+   </div>
   </body>
 </html>
