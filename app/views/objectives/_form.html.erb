@@ -16,9 +16,21 @@
     <%= form.select :objective_type, [["画像", :image], ["言葉", :verbal]], include_blank: "選択して下さい" %>
   </div>
 
+  <%# todo: objective_typeによって、表示する入力欄を切り替える。未選択ではobjective_type以外の入力欄表示しない %>
+
   <div>
     <%= form.label :verbal, style: "display: block" %>
     <%= form.text_field :verbal %>
+  </div>
+
+  <div>
+    <%= form.label :images %>
+    <%= form.file_field :images, multiple: true %>
+    <% if objective.persisted? %>
+      <% objective.images.each do |image| %>
+        <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
+      <% end %>
+    <% end %>
   </div>
 
   <div>

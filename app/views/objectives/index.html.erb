@@ -7,6 +7,10 @@
 
 <h1>vision board</h1>
 
+<%= link_to "> create a new objective", new_objective_path %>
+<br>
+<br>
+
 <div id="objectives">
   <% @objectives.each do |objective| %>
     <%= render objective %>
@@ -16,5 +20,3 @@
   <% end %>
 </div>
 
-<br>
-<%= link_to "> create a new objective", new_objective_path %>

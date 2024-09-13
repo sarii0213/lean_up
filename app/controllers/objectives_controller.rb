@@ -46,6 +46,6 @@ class ObjectivesController < ApplicationController
   end
 
   def objective_params
-    params.require(:objective).permit(:objective_type, :verbal, :comment, :order).merge(user_id: current_user.id)
+    params.require(:objective).permit(:objective_type, :verbal, :comment, :order, images: []).merge(user_id: current_user.id)
   end
 end

@@ -25,4 +25,13 @@ class Objective < ApplicationRecord
   belongs_to :user
 
   enum objective_type: { image: 0, verbal: 1 }
+
+  has_many_attached :images do |attachable|
+    attachable.variant :thumb, resize_to_limit: [100, 100]
+    attachable.variant :large, resize_to_limit: [400, 400]
+  end
+
+  # todo: objective_typeによってpresence validationを追加
+  validates :images, presence: true, if: -> { objective_type == 'image' }
+  validates :verbal, presence: true, if: -> { objective_type == 'verbal' }
 end

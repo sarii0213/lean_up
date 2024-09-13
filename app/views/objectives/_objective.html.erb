@@ -1,3 +1,16 @@
-<p><%= objective.objective_type %></p>
-<p><%= objective.verbal %></p>
-<p><%= objective.comment %></p>
+<p>タイプ：<%= objective.verbal? ? '言葉' : '画像' %></p>
+<% if objective.verbal? %>
+  <p><%= objective.verbal %></p>
+<% end %>
+<% if objective.image? %>
+  <div>
+    <% if objective.images %>
+      <% objective.images.each do |image| %>
+        <%= image_tag image.variant(:large) %>
+      <% end %>
+    <% end %>
+  </div>
+  <% if objective.comment.present? %>
+    <p>メモ：<%= objective.comment %></p>
+  <% end %>
+<% end %>
