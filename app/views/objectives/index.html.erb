@@ -1,0 +1,20 @@
+<% if notice %>
+  <div class="ui positive message notice">
+    <i class="check icon"></i>
+    <span><%= notice %></span>
+  </div>
+<% end %>
+
+<h1>vision board</h1>
+
+<div id="objectives">
+  <% @objectives.each do |objective| %>
+    <%= render objective %>
+    <p>
+      <%= link_to "詳細", objective %>
+    </p>
+  <% end %>
+</div>
+
+<br>
+<%= link_to "> create a new objective", new_objective_path %>

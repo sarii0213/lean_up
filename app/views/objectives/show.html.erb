@@ -1,0 +1,16 @@
+<% if notice %>
+  <div class="ui positive message notice">
+    <i class="check icon"></i>
+    <span><%= notice %></span>
+  </div>
+<% end %>
+
+<%= render @objective %>
+
+<div>
+  <%= link_to "> edit this objective", edit_objective_path(@objective) %>
+  <br>
+  <%= link_to "> back to objective list", objectives_path %>
+  <br>
+  <%= link_to "> delete this objective", @objective, data: { turbo_method: :delete } %>
+</div>

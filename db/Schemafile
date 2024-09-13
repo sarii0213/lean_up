@@ -11,3 +11,16 @@ create_table "users", id: :bigint, force: :cascade do |t|
   add_index "users", ["email"], unique: true
   add_index "users", ["reset_password_token"], unique: true
 end
+
+create_table "objectives", id: :bigint, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "objective_type", null: false
+    t.string "verbal"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+
+    add_index "objectives", ["user_id"], name: "index_objectives_on_user_id"
+    add_foreign_key "objectives", "users"
+end

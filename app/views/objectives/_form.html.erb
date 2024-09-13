@@ -1,0 +1,32 @@
+<%= form_with(model: objective) do |form| %>
+  <% if objective.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(objective.errors.count, "error") %> prohibited this objective from being saved:</h2>
+
+      <ul>
+        <% objective.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :objective_type, style: "display: block" %>
+    <%= form.select :objective_type, [["画像", :image], ["言葉", :verbal]], include_blank: "選択して下さい" %>
+  </div>
+
+  <div>
+    <%= form.label :verbal, style: "display: block" %>
+    <%= form.text_field :verbal %>
+  </div>
+
+  <div>
+    <%= form.label :comment, style: "display: block" %>
+    <%= form.text_area :comment %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
