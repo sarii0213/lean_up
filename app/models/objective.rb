@@ -31,7 +31,6 @@ class Objective < ApplicationRecord
     attachable.variant :large, resize_to_limit: [400, 400]
   end
 
-  # todo: objective_typeによってpresence validationを追加
-  validates :images, presence: true, if: -> { objective_type == 'image' }
-  validates :verbal, presence: true, if: -> { objective_type == 'verbal' }
+  validates :images, presence: true, if: :image?
+  validates :verbal, presence: true, if: :verbal?
 end
