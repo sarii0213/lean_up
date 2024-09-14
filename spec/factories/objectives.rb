@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: objectives
@@ -21,6 +23,6 @@
 #
 FactoryBot.define do
   factory :objective do
-    # todo: create trait :image & trait :verbal
+    # TODO: create trait :image & trait :verbal
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: objectives
@@ -24,7 +26,7 @@ class Objective < ApplicationRecord
 
   belongs_to :user
 
-  enum objective_type: { image: 0, verbal: 1 }
+  enum :objective_type, { image: 0, verbal: 1 }
 
   has_many_attached :images do |attachable|
     attachable.variant :thumb, resize_to_limit: [100, 100]
