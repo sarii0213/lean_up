@@ -2,9 +2,16 @@
 
 <%= render "form", objective: @objective %>
 
-<br>
+<div class="ui hidden divider"></div>
 
-<div>
-  <%= link_to "detail for this objective", @objective %> |
-  <%= link_to "back to objective list", objectives_path %>
+<div class="ui horizontal segments">
+    <%= link_to @objective, class: 'ui segment' do %>
+      <i class="undo icon"></i>
+      編集をキャンセル
+    <% end %>
+    <%= link_to objectives_path, class: 'ui segment' do %>
+      <i class="list ui icon"></i>
+      一覧に戻る
+    <% end %>
 </div>
+

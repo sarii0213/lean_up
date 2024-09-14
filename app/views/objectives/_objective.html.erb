@@ -1,16 +1,25 @@
-<p>タイプ：<%= objective.verbal? ? '言葉' : '画像' %></p>
-<% if objective.verbal? %>
-  <p><%= objective.verbal %></p>
-<% end %>
-<% if objective.image? %>
+<div style="text-align: center;">
   <div>
-    <% if objective.images %>
-      <% objective.images.each do |image| %>
-        <%= image_tag image.variant(:large) %>
-      <% end %>
-    <% end %>
+    <p>タイプ：<%= objective.verbal? ? '言葉' : '画像' %></p>
   </div>
-  <% if objective.comment.present? %>
-    <p>メモ：<%= objective.comment %></p>
+  <div class="ui hidden divider"></div>
+  <% if objective.verbal? %>
+    <div style="min-height: 50px;">
+        <p><%= objective.verbal %></p>
+    </div>
   <% end %>
-<% end %>
+  <% if objective.image? %>
+    <div>
+      <% if objective.images %>
+        <% objective.images.each do |image| %>
+          <%= image_tag image.variant(:large) %>
+        <% end %>
+      <% end %>
+    </div>
+    <% if objective.comment.present? %>
+      <div>
+        <p>メモ：<%= objective.comment %></p>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -2,8 +2,13 @@
 
 <%= render "form", objective: @objective %>
 
-<br>
+<div class="ui hidden divider"></div>
 
-<div>
-  <%= link_to "back to objective list", objectives_path %>
+<div class="ui horizontal segments">
+  <div class="ui segment center aligned">
+    <%= link_to objectives_path do %>
+      <i class="list ui icon"></i>
+      一覧に戻る
+    <% end %>
+  </div>
 </div>

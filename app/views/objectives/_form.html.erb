@@ -1,4 +1,4 @@
-<%= form_with(model: objective) do |form| %>
+<%= form_with(model: objective, class: 'ui form') do |form| %>
   <% if objective.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(objective.errors.count, "error") %> prohibited this objective from being saved:</h2>
@@ -11,34 +11,46 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :objective_type, style: "display: block" %>
-    <%= form.select :objective_type, [["画像", :image], ["言葉", :verbal]], include_blank: "選択して下さい" %>
+  <div class="inline fields">
+    <label for="objective_objective_type">タイプ：</label>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <%= form.radio_button :objective_type, :image, { class: 'hidden' } %>
+        <%= form.label :objective_type_image, "画像" %>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <%= form.radio_button :objective_type, :verbal, { class: 'hidden' } %>
+        <%= form.label :objective_type_verbal, "言葉" %>
+      </div>
+    </div>
   </div>
 
   <%# todo: objective_typeによって、表示する入力欄を切り替える。未選択ではobjective_type以外の入力欄表示しない %>
 
-  <div>
-    <%= form.label :verbal, style: "display: block" %>
+  <div class="field">
+    <%= form.label :verbal, '言葉' %>
     <%= form.text_field :verbal %>
   </div>
 
-  <div>
-    <%= form.label :images %>
+  <div class="field">
+    <%= form.label :images, '画像' %>
     <%= form.file_field :images, multiple: true %>
     <% if objective.persisted? %>
       <% objective.images.each do |image| %>
+        <%= image_tag image.variant(:thumb) %>
         <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
       <% end %>
     <% end %>
   </div>
 
-  <div>
-    <%= form.label :comment, style: "display: block" %>
-    <%= form.text_area :comment %>
+  <div class="field">
+    <%= form.label :comment, 'メモ' %>
+    <%= form.text_area :comment, placeholder: '画像について補足メモ' %>
   </div>
 
-  <div>
+  <div class="ui teal submit button">
     <%= form.submit %>
   </div>
 <% end %>

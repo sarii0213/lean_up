@@ -5,12 +5,21 @@
   </div>
 <% end %>
 
-<%= render @objective %>
-
 <div>
-  <%= link_to "> edit this objective", edit_objective_path(@objective) %>
-  <br>
-  <%= link_to "> back to objective list", objectives_path %>
-  <br>
-  <%= link_to "> delete this objective", @objective, data: { turbo_method: :delete } %>
+  <%= render @objective %>
+
+  <div class="ui horizontal segments">
+    <%= link_to edit_objective_path(@objective), class: 'ui segment' do %>
+      <i class="edit icon"></i>
+      編集
+    <% end %>
+    <%= link_to objectives_path, class: 'ui segment' do %>
+      <i class="list ui icon"></i>
+      一覧に戻る
+    <% end %>
+    <%= link_to @objective, class: 'ui segment', data: { turbo_method: :delete, turbo_confirm: '削除しますか？' } do %>
+      <i class="trash alternate icon"></i>
+      削除する
+    <% end %>
+  </div>
 </div>
