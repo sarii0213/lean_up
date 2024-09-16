@@ -5,10 +5,12 @@
   </div>
 <% end %>
 
-<div class="ui middle aligned center aligned grid">
-  <h1>vision board detail</h1>
+<div class="ui center aligned grid one column">
+  <h1 class="column">vision board detail</h1>
 
-  <%= render @objective %>
+  <div class="column">
+    <%= render @objective %>
+  </div>
 
   <div class="ui horizontal segments">
     <%= link_to edit_objective_path(@objective), class: 'ui segment' do %>

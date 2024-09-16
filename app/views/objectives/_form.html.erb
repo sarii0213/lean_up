@@ -30,13 +30,13 @@
 
     <div class="field" data-form-target="verbal">
       <%= form.label :verbal, '言葉' %>
-      <%= form.text_field :verbal, placeholder: '理想の姿の自分は何を感じている？ 気分が上がる言葉は？' %>
+      <%= form.text_field :verbal, placeholder: '理想の姿の自分は何を感じている？ 気分が上がる言葉は？', data: { form_target: 'verbalInput' } %>
     </div>
 
     <div data-form-target="image">
       <div class="field">
         <%= form.label :images, '理想のイメージ' %>
-        <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;' %>
+        <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput' } %>
         <% if objective.persisted? %>
           <% objective.images.each do |image| %>
             <%= image_tag image.variant(:thumb) %>
@@ -47,7 +47,7 @@
 
       <div class="field">
         <%= form.label :comment, 'メモ' %>
-        <%= form.text_area :comment, placeholder: '理想のイメージについて補足メモ' %>
+        <%= form.text_area :comment, placeholder: '理想のイメージについて補足メモ', data: { form_target: 'imageInput' } %>
       </div>
     </div>
 

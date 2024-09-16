@@ -5,7 +5,7 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: %i[show edit update destroy]
 
   def index
-    @objectives = Objective.order(updated_at: :desc)
+    @objectives = current_user.objectives.order(updated_at: :desc)
   end
 
   def show; end
@@ -41,7 +41,7 @@ class ObjectivesController < ApplicationController
   private
 
   def set_objective
-    @objective = Objective.find(params[:id])
+    @objective = current_user.objectives.find(params[:id])
   end
 
   def objective_params
