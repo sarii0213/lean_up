@@ -16,7 +16,8 @@
       <label for="objective_objective_type">タイプ：</label>
       <div class="field">
         <div class="ui radio checkbox">
-          <%= form.radio_button :objective_type, :image, { checked: true, class: 'hidden', data: { form_target: 'select', action: 'form#toggleVisibility'} } %>
+          <%= form.radio_button :objective_type, :image, { checked: !objective.persisted? || objective.objective_type == 'image',
+                                                           class: 'hidden', data: { form_target: 'select' ,action: 'form#toggleVisibility'} } %>
           <%= form.label :objective_type_image, "画像" %>
         </div>
       </div>
