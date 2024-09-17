@@ -11,7 +11,7 @@ class ObjectivesController < ApplicationController
   def show; end
 
   def new
-    @objective = Objective.new
+    @objective = Objective.new(objective_type: :image)
   end
 
   def edit; end
