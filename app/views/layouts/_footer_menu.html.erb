@@ -1,0 +1,11 @@
+<div class="ui borderless bottom fixed labeled icon menu three item grey">
+  <%= link_to objectives_path, class: "item #{'active' if current_page?(objectives_path)}" do %>
+    <i class="compass icon"></i>vision board
+  <% end %>
+  <%= link_to root_path, class: "item #{'active' if current_page?(root_path)}" do %>
+    <i class="map icon"></i>weight
+  <% end %>
+  <%= link_to root_path, class: "item #{'active' if current_page?(root_path)}" do %>
+    <i class="cogs icon"></i>setting
+  <% end %>
+</div>

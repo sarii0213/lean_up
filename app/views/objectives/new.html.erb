@@ -1,0 +1,12 @@
+<h1>add to vision board</h1>
+
+<%= render "form", objective: @objective %>
+
+<div class="ui hidden divider"></div>
+
+<div class="ui horizontal segments">
+  <%= link_to objectives_path, class: 'ui segment center aligned' do %>
+    <i class="list ui icon"></i>
+    一覧に戻る
+  <% end %>
+</div>

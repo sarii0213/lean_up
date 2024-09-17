@@ -1,0 +1,16 @@
+<h1>edit vision board</h1>
+
+<%= render "form", objective: @objective %>
+
+<div class="ui hidden divider"></div>
+
+<div class="ui horizontal segments">
+    <%= link_to @objective, class: 'ui segment' do %>
+      <i class="undo icon"></i>
+      編集をキャンセル
+    <% end %>
+    <%= link_to objectives_path, class: 'ui segment' do %>
+      <i class="list ui icon"></i>
+      一覧に戻る
+    <% end %>
+</div>
