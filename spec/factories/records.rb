@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: records
@@ -20,6 +22,8 @@
 #
 FactoryBot.define do
   factory :record do
-    
+    user
+    recorded_on { Faker::Date.between(from: 1.year.ago, to: Date.today) }
+    weight { rand(50.0..70.0) }
   end
 end
