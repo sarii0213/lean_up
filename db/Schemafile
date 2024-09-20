@@ -1,6 +1,9 @@
 create_table "users", id: :bigint, force: :cascade do |t|
   t.string "username", limit: 191, default: "", null: false
   t.string "email", limit: 191, default: "", null: false
+  t.decimal "goal_weight"
+  t.decimal "height"
+  t.boolean "display_body_fat", default: true
   t.string "encrypted_password", default: "", null: false
   t.string "reset_password_token"
   t.datetime "reset_password_sent_at"
@@ -24,6 +27,19 @@ create_table "objectives", id: :bigint, force: :cascade do |t|
     add_index "objectives", ["user_id", "order"]
     add_foreign_key "objectives", "users"
 end
+
+create_table "records", id: :bigint, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "recorded_on", null: false
+    t.decimal "weight", null: false
+    t.decimal "body_fat"
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+
+    add_index "records", ["user_id", "recorded_on"], unique: true
+    add_foreign_key "records", "users"
+end
+
 
 create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
