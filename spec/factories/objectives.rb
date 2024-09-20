@@ -23,6 +23,23 @@
 #
 FactoryBot.define do
   factory :objective do
-    # TODO: create trait :image & trait :verbal
+    user
+
+    trait :image do
+      objective_type { :image }
+      comment { Faker::JapaneseMedia::StudioGhibli.quote }
+      after(:build) do |objective|
+        objective.images.attach(
+          io: File.open(Rails.root.join('spec', 'images', 'sample.jpg')),
+          filename: 'sample.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
+
+    trait :verbal do
+      objective_type { :verbal }
+      verbal { Faker::JapaneseMedia::OnePiece.quote }
+    end
   end
 end

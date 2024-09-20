@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RecordsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_frame_response, only: :new
@@ -7,7 +9,7 @@ class RecordsController < ApplicationController
   end
 
   def new
-    @record = Record.new(recorded_on: Date.today)
+    @record = Record.new(recorded_on: Time.zone.today)
   end
 
   def create
@@ -20,14 +22,6 @@ class RecordsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
-  def update
-  end
-
-  def destroy
-  end
 
   private
 
@@ -37,8 +31,7 @@ class RecordsController < ApplicationController
 
   def ensure_frame_response
     return unless Rails.env.development?
+
     redirect_to root_path unless turbo_frame_request?
   end
-
 end
-
