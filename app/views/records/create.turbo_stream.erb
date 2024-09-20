@@ -1,0 +1,6 @@
+<%= turbo_stream.replace 'chart' do %>
+  <%= render partial: 'chart', locals: { line_chart: @line_chart } %>
+<% end %>
+
+<%= turbo_stream.update 'modal' do %>
+<% end %>

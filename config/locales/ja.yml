@@ -1,6 +1,10 @@
 ---
 ja:
   activerecord:
+    attributes:
+      record:
+        weight: 体重
+        recorded_on: 記録日
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
