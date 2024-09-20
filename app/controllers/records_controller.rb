@@ -2,10 +2,9 @@
 
 class RecordsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_frame_response, only: :new
 
   def index
-    @line_chart = LineChart.new(current_user.records)
+    @line_chart = LineChart.new(current_user.records.order(:recorded_on))
   end
 
   def new
@@ -16,7 +15,7 @@ class RecordsController < ApplicationController
     @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
     @record.assign_attributes(record_params)
     if @record.save
-      @line_chart = LineChart.new(current_user.records)
+      @line_chart = LineChart.new(current_user.records.order(:recorded_on))
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,11 +25,5 @@ class RecordsController < ApplicationController
 
   def record_params
     params.require(:record).permit(:recorded_on, :weight, :body_fat)
-  end
-
-  def ensure_frame_response
-    return unless Rails.env.development?
-
-    redirect_to root_path unless turbo_frame_request?
   end
 end
