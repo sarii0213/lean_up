@@ -22,7 +22,6 @@ class RecordsController < ApplicationController
     end
   end
 
-
   private
 
   def record_params

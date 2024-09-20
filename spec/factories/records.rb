@@ -23,7 +23,7 @@
 FactoryBot.define do
   factory :record do
     user
-    recorded_on { Faker::Date.between(from: 1.year.ago, to: Date.today) }
+    recorded_on { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
     weight { rand(50.0..70.0) }
   end
 end

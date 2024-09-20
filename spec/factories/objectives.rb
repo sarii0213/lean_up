@@ -30,7 +30,7 @@ FactoryBot.define do
       comment { Faker::JapaneseMedia::StudioGhibli.quote }
       after(:build) do |objective|
         objective.images.attach(
-          io: File.open(Rails.root.join('spec', 'images', 'sample.jpg')),
+          io: Rails.root.join('spec/images/sample.jpg').open,
           filename: 'sample.jpg',
           content_type: 'image/jpeg'
         )
