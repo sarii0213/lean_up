@@ -4,18 +4,18 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @line_chart = LineChart.new(current_user.records.order(:recorded_on))
+    @records = current_user.records.order(:recorded_on)
   end
 
   def new
     @record = Record.new(recorded_on: Time.zone.today)
   end
 
-  def create
-    @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
-    @record.assign_attributes(record_params)
-    if @record.save
-      @line_chart = LineChart.new(current_user.records.order(:recorded_on))
+  def update
+    record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
+    record.assign_attributes(record_params)
+    if record.save
+      @records = current_user.records.order(:recorded_on)
     else
       render :new, status: :unprocessable_entity
     end

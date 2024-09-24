@@ -1,5 +1,5 @@
 <%= turbo_stream.replace 'chart' do %>
-  <%= render partial: 'chart', locals: { line_chart: @line_chart } %>
+  <%= render ChartComponent.new(records: @records) %>
 <% end %>
 
 <%= turbo_stream.update 'modal' do %>

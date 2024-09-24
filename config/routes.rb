@@ -25,5 +25,5 @@ Rails.application.routes.draw do
   root to: "objectives#index"
 
   resources :objectives
-  resources :records, only: %i[index new create]
+  resources :records, only: %i[index new update]
 end

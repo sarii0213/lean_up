@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
-class LineChart
-  attr_accessor :records_for_chart, :minimum_record
-
-  def initialize(records)
-    self.records_for_chart = records.each_with_object({}) do |record, hash|
+class ChartComponent < ViewComponent::Base
+  def initialize(records:)
+    @records_for_chart = records.each_with_object({}) do |record, hash|
       hash[record.recorded_on.to_s] = record.weight
     end
-    self.minimum_record = (records_for_chart.min_by { |a| a[1] }[1]).to_i
+    @minimum_record = (@records_for_chart.min_by { |a| a[1] }[1]).to_i
   end
 
   def average_records_for_chart
-    calculate_moving_average(records_for_chart)
+    calculate_moving_average(@records_for_chart)
   end
 
   private

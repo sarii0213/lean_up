@@ -1,4 +1,4 @@
-<div data-controller="chart">
+<div>
   <div class="ui two column centered grid">
     <div class="column ui center aligned">
       <h1>weight records</h1>
@@ -7,12 +7,7 @@
   </div>
   <div class="ui hidden divider"></div>
   <div id="chart">
-    <%= render partial: 'chart', locals: { line_chart: @line_chart } %>
-  </div>
-
-  <div class="ui toggle checkbox" style="margin:20px">
-    <input type="checkbox" checked data-action="chart#toggleChart">
-    <label>2週間平均表示（おすすめ）</label>
+    <%= render ChartComponent.new(records: @records) %>
   </div>
 
   <div class="ui right aligned grid">
