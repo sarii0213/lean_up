@@ -8,15 +8,17 @@ class RecordsController < ApplicationController
   end
 
   def new
+    @records = current_user.records.order(:recorded_on)
     @record = Record.new(recorded_on: Time.zone.today)
   end
 
   def update
-    record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
-    record.assign_attributes(record_params)
-    if record.save
-      @records = current_user.records.order(:recorded_on)
+    @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
+    @record.assign_attributes(record_params)
+    if @record.save
+      redirect_to records_path
     else
+      @records = current_user.records.order(:recorded_on)
       render :new, status: :unprocessable_entity
     end
   end

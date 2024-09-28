@@ -6,7 +6,8 @@
       <% end %>
       <div class="header" style="border-radius:0.28571429rem">record your weight</div>
       <div class="content">
-        <%= form_with model: record, method: :put, class: "ui form #{record.errors.any? ? 'error' : ''}", data: { modal_target: 'form' } do |f| %>
+        <%= form_with model: record, method: :put, class: "ui form #{record.errors.any? ? 'error' : ''}", data: { modal_target: 'form', turbo: false } do |f| %>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
           <div class="field">
             <%= f.label :recorded_on, '記録日' %>
             <%= f.date_field :recorded_on, data: { modal_target: 'date', action: 'change->modal#updateURL'} %>
