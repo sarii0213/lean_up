@@ -17,6 +17,9 @@ Rails.application.configure do
   # Enable server timing.
   config.server_timing = true
 
+  # Cannot render console from XX.XX.XX.XX! を表示させない
+  config.web_console.allowed_ips = '0.0.0.0/0'
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?
