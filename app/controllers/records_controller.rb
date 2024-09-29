@@ -18,7 +18,6 @@ class RecordsController < ApplicationController
     if @record.save
       redirect_to records_path
     else
-      @records = current_user.records.order(:recorded_on)
       render :new, status: :unprocessable_entity
     end
   end
