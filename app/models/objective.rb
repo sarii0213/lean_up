@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_objectives_on_user_id  (user_id)
+#  index_objectives_on_user_id_and_order  (user_id,order)
 #
 # Foreign Keys
 #

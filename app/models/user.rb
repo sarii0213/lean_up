@@ -5,8 +5,11 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  display_body_fat       :boolean          default(TRUE)
 #  email                  :string(191)      default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  goal_weight            :decimal(, )
+#  height                 :decimal(, )
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -29,4 +32,5 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   has_many :objectives, dependent: :destroy
+  has_many :records, dependent: :destroy
 end

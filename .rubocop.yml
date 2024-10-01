@@ -17,3 +17,7 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
+
+Lint/MissingSuper:
+  AllowedParentClasses:
+    - ViewComponent::Base
