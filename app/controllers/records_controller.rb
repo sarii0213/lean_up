@@ -8,7 +8,6 @@ class RecordsController < ApplicationController
   end
 
   def new
-    @records = current_user.records.order(:recorded_on)
     @record = Record.new(recorded_on: Time.zone.today)
   end
 
@@ -18,7 +17,6 @@ class RecordsController < ApplicationController
     if @record.save
       redirect_to records_path
     else
-      @records = current_user.records.order(:recorded_on)
       render :new, status: :unprocessable_entity
     end
   end

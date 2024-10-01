@@ -2,13 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="modal"
 export default class extends Controller {
-  static targets = ["backdrop", "form", "date", "button"]
+  static targets = ["form", "date"]
   connect() {
-    this.backdropTarget.addEventListener("click", (event) => {
-      if (event.target === this.backdropTarget) {
-        this.close()
-      }
-    })
+    $(this.element).modal('show')
     this.updateURL()
   }
 
@@ -21,8 +17,9 @@ export default class extends Controller {
     }
   }
 
-  close() {
-    this.element.parentElement.removeAttribute("src")
-    this.element.remove()
+  close(event) {
+    if (event.detail.success) {
+        $(this.element).modal('hide')
+    }
   }
 }
