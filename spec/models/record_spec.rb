@@ -23,5 +23,37 @@
 require 'rails_helper'
 
 RSpec.describe Record, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.moving_average_trend' do
+    subject { Record.moving_average_trend(recorded_on) }
+
+    let(:recorded_on) { Date.new(2024, 1, 20) }
+    let(:user) { create(:user) }
+
+    # 01/01: 60.0, 01/07: 61.0, 01/13: 62.0
+    before do
+      [1, 7, 13].each_with_index do |n, i|
+        create(:record, user:, recorded_on: Date.new(2024, 1, n), weight: 60.0+i)
+      end
+    end
+
+    context '記録日の平均値 >= 一つ前の記録日の平均値 の場合' do
+      before do
+        create(:record, user:, recorded_on:, weight: 63.0)
+      end
+
+      it ':plateau（=停滞中）を返す' do
+        expect(subject).to eq :plateau
+      end
+    end
+
+    context '記録日の平均値 < 一つ前の記録日の平均値 の場合' do
+      before do
+        create(:record, user:, recorded_on:, weight: 59.0)
+      end
+
+      it ':smooth（＝順調）を返す' do
+        expect(subject).to eq :smooth
+      end
+    end
+  end
 end
