@@ -27,19 +27,23 @@ class Record < ApplicationRecord
   validates :weight, presence: true
 
   def self.moving_average_trend(recorded_on)
-    last_records = where(recorded_on: recorded_on - 13.days..recorded_on).order(:recorded_on) # 記録日から2週間前からの記録を取得
+    # 記録日の2週間前からの記録を取得
+    last_records = where(recorded_on: recorded_on - 13.days..recorded_on).order(:recorded_on)
     return nil if last_records.size < 2
 
     second_to_last_record = last_records[-2] # 一つ前の記録日の記録を取得
-    second_to_last_records = where(recorded_on: second_to_last_record.recorded_on - 13.days..second_to_last_record.recorded_on).order(:recorded_on)  # 一つ前の記録日から2週間前の記録を取得
+    # 一つ前の記録日から2週間前の記録を取得
+    second_to_last_records =
+      where(recorded_on: second_to_last_record.recorded_on - 13.days..second_to_last_record.recorded_on)
+      .order(:recorded_on)
 
+    compare_averages(last_records, second_to_last_records)
+  end
+
+  def self.compare_averages(last_records, second_to_last_records)
     average = last_records.sum(&:weight) / last_records.size
     previous_average = second_to_last_records.sum(&:weight) / second_to_last_records.size
 
-    if average > previous_average
-      :plateau
-    else
-      :smooth
-    end
+    average > previous_average ? :plateau : :smooth
   end
 end

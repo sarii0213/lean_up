@@ -24,7 +24,7 @@ require 'rails_helper'
 
 RSpec.describe Record, type: :model do
   describe '.moving_average_trend' do
-    subject { Record.moving_average_trend(recorded_on) }
+    subject(:trend) { described_class.moving_average_trend(recorded_on) }
 
     let(:recorded_on) { Date.new(2024, 1, 20) }
     let(:user) { create(:user) }
@@ -32,7 +32,7 @@ RSpec.describe Record, type: :model do
     # 01/01: 60.0, 01/07: 61.0, 01/13: 62.0
     before do
       [1, 7, 13].each_with_index do |n, i|
-        create(:record, user:, recorded_on: Date.new(2024, 1, n), weight: 60.0+i)
+        create(:record, user:, recorded_on: Date.new(2024, 1, n), weight: 60.0 + i)
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Record, type: :model do
       end
 
       it ':plateau（=停滞中）を返す' do
-        expect(subject).to eq :plateau
+        expect(trend).to eq :plateau
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Record, type: :model do
       end
 
       it ':smooth（＝順調）を返す' do
-        expect(subject).to eq :smooth
+        expect(trend).to eq :smooth
       end
     end
   end

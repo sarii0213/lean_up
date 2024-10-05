@@ -15,28 +15,32 @@ class ChartComponent < ViewComponent::Base
   private
 
   # 2週間の移動平均を計算
-  def calculate_moving_average(records) # { '2021-01-01' => 60, '2021-01-02' => 61, ... }
+  # { '2021-01-01' => 60, '2021-01-02' => 61, ... }
+  def calculate_moving_average(records)
     sorted_records = records.sort_by { |date, _value| Date.parse(date) }
     moving_average = {}
 
     sorted_records.each_with_index do |record, index|
-      parsed_date = Date.parse(record[0])
-      weight_sum = 0
-      count = 0
-
-      # 14日間以内のデータを対象に移動平均を計算
-      sorted_records[0..index].reverse_each do |sorted_record|
-        past_date = Date.parse(sorted_record[0])
-        break if parsed_date - past_date >= 14
-
-        weight_sum += sorted_record[1]
-        count += 1
-      end
-
-      avg = weight_sum / count
-      moving_average[record[0]] = avg
+      moving_average[record[0]] = calculate_average_for_date(sorted_records, index)
     end
 
     moving_average
+  end
+
+  def calculate_average_for_date(records, index)
+    weight_sum = 0
+    count = 0
+    parsed_date = Date.parse(records[index][0])
+
+    # 14日間以内のデータを対象に移動平均を計算
+    records[0..index].reverse_each do |record|
+      past_date = Date.parse(record[0])
+      break if parsed_date - past_date >= 14
+
+      weight_sum += record[1]
+      count += 1
+    end
+
+    weight_sum / count
   end
 end
