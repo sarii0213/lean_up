@@ -39,6 +39,8 @@ class Record < ApplicationRecord
 
     compare_averages(last_records, second_to_last_records)
   end
+  
+  private
 
   def self.compare_averages(last_records, second_to_last_records)
     average = last_records.sum(&:weight) / last_records.size
