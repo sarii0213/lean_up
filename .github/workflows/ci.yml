@@ -108,7 +108,7 @@ jobs:
       - name: DB create and migrate
         env:
           RAILS_ENV: test
-          POSTGRES_HOST: postgres
+          POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         run: |
