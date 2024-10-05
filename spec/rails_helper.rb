@@ -70,6 +70,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     Rails.application.load_tasks
+    ENV['POSTGRES_USER'] ||= 'postgres'
+    ENV['POSTGRES_PASSWORD'] ||= 'password'
     Rake.application['ridgepole:apply'].invoke
   end
 end
