@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Record < ApplicationRecord
   class MessageGenerator
     def initialize(recorded_on)
@@ -18,7 +20,5 @@ class Record < ApplicationRecord
     def smooth_messages
       %w[減っている!!すごい!! いい調子で減量中!!]
     end
-
   end
 end
-

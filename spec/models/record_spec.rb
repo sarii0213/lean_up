@@ -37,24 +37,14 @@ RSpec.describe Record, type: :model do
         end
       end
 
-      context '記録日の平均値 >= 一つ前の記録日の平均値 の場合' do
-        before do
-          create(:record, user:, recorded_on:, weight: 63.0)
-        end
-
-        it ':plateau（=停滞中）を返す' do
-          expect(trend).to eq :plateau
-        end
+      it '記録日の平均値 >= 一つ前の記録日の平均値 の場合, :plateau（=停滞中）を返す' do
+        create(:record, user:, recorded_on:, weight: 62.0)
+        expect(trend).to eq :plateau
       end
 
-      context '記録日の平均値 < 一つ前の記録日の平均値 の場合' do
-        before do
-          create(:record, user:, recorded_on:, weight: 59.0)
-        end
-
-        it ':smooth（＝順調）を返す' do
-          expect(trend).to eq :smooth
-        end
+      it '記録日の平均値 < 一つ前の記録日の平均値 の場合, :smooth（＝順調）を返す' do
+        create(:record, user:, recorded_on:, weight: 59.0)
+        expect(trend).to eq :smooth
       end
     end
 
