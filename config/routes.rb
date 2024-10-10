@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
   }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -26,4 +26,5 @@ Rails.application.routes.draw do
 
   resources :objectives
   resources :records, only: %i[index new update]
+  resource :user_setting, only: %i[show edit update]
 end

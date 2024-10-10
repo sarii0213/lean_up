@@ -1,5 +1,7 @@
 ---
 ja:
+  user_setting:
+    updated: ユーザー設定を更新しました
   activerecord:
     attributes:
       record:

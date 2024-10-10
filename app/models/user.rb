@@ -7,6 +7,7 @@
 #  id                     :bigint           not null, primary key
 #  display_body_fat       :boolean          default(TRUE)
 #  email                  :string(191)      default(""), not null
+#  enable_periods_feature :boolean          default(TRUE)
 #  encrypted_password     :string           default(""), not null
 #  goal_weight            :decimal(, )
 #  height                 :decimal(, )
