@@ -15,7 +15,8 @@ class RecordsController < ApplicationController
     @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
     @record.assign_attributes(record_params)
     if @record.save
-      redirect_to records_path
+      message = Record::MessageGenerator.new(@record.recorded_on).generate
+      redirect_to records_path, notice: "記録完了! #{message}"
     else
       render :new, status: :unprocessable_entity
     end
