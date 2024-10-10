@@ -4,6 +4,7 @@ create_table "users", id: :bigint, force: :cascade do |t|
   t.decimal "goal_weight"
   t.decimal "height"
   t.boolean "display_body_fat", default: true
+  t.boolean "enable_periods_feature", default: true
   t.string "encrypted_password", default: "", null: false
   t.string "reset_password_token"
   t.datetime "reset_password_sent_at"
