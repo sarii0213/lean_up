@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 class UserSettingsController < ApplicationController
   before_action :set_user
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @user.update(user_params)
       respond_to do |format|
-        format.turbo_stream { flash.now[:notice] = 'ユーザー情報を更新しました' }
+        format.turbo_stream { flash.now[:notice] = t('user_setting.updated') }
       end
     else
       render :edit

@@ -29,7 +29,7 @@
       <div class="content">
         <div class="ui toggle checkbox" style="">
           <%= form_with model: @user, url: user_setting_path, data: { setting_target: 'bodyFatForm' } do |f| %>
-            <%= f.check_box :display_body_fat, checked: @user.display_body_fat, data: { action: 'setting#toggleBodyFat' }  %>
+            <%= f.check_box :display_body_fat, checked: @user.display_body_fat, data: { action: 'setting#toggleBodyFat' } %>
             <%# TODO: 体脂肪率を体重記録チャートに表示する機能を追加後、切り替え機能実装 %>
             <label>体脂肪率 表示</label>
           <% end %>
@@ -37,7 +37,7 @@
         <div class="ui divider"></div>
         <div class="ui toggle checkbox" style="">
           <%= form_with model: @user, url: user_setting_path, data: { setting_target: 'periodsForm' } do |f| %>
-            <%= f.check_box :enable_periods_feature, checked: @user.enable_periods_feature, data: { action: 'setting#togglePeriods', setting_target: 'periodsEnabled' }  %>
+            <%= f.check_box :enable_periods_feature, checked: @user.enable_periods_feature, data: { action: 'setting#togglePeriods', setting_target: 'periodsEnabled' } %>
             <label>生理期間 表示</label>
           <% end %>
         </div>
