@@ -1,0 +1,5 @@
+<%= turbo_stream.replace 'user_body_data' do %>
+  <%= render 'user_body_data', user: @user %>
+<% end %>
+
+<%= turbo_stream_flash %>
