@@ -1,5 +1,14 @@
 <%= turbo_frame_tag 'user_body_data' do %>
-  <%= form_with model: @user, url: user_setting_path, class: 'ui form' do |f| %>
+  <%= form_with model: @user, url: user_setting_path, class: "ui form #{@user.errors.any? ? 'error' : ''}" do |f| %>
+    <% if @user.errors.any? %>
+      <div class="ui error message">
+        <ul class="list">
+          <% @user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
     <div class="inline field">
       <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px; margin-bottom: 20px;">
         <div><%= f.label :goal_weight, '目標体重' %></div>

@@ -31,6 +31,8 @@ class User < ApplicationRecord
 
   validates :username, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :goal_weight, numericality: { greater_than: 0 }, allow_nil: true
+  validates :height, numericality: { greater_than: 0 }, allow_nil: true
 
   has_many :objectives, dependent: :destroy
   has_many :records, dependent: :destroy
