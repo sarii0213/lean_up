@@ -1,0 +1,16 @@
+<div data-controller="flashes">
+  <% if notice %>
+    <div class="ui positive message notice" data-flashes-target="flash" style="margin: 5px">
+      <i class="close icon" data-action="click->flashes#close"></i>
+      <i class="check icon"></i>
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="ui negative message alert" data-flashes-target="flash" style="margin: 5px">
+      <i class="close icon" data-action="click->flashes#close"></i>
+      <i class="exclamation triangle icon"></i>
+      <span><%= alert %></span>
+    </div>
+  <% end %>
+</div>
