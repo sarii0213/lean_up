@@ -1,4 +1,4 @@
-<%= turbo_stream.replace 'user_body_data' do %>
+<%= turbo_stream.update 'user_body_data' do %>
   <%= render 'user_body_data', user: @user %>
 <% end %>
 
