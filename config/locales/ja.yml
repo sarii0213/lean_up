@@ -10,6 +10,9 @@ ja:
       user:
         goal_weight: 目標体重
         height: 身長
+      objective:
+        images: 画像
+        verbal: 言葉
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

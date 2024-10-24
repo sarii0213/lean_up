@@ -1,17 +1,14 @@
 <div data-controller="form">
-  <%= form_with(model: objective, class: 'ui form') do |form| %>
+  <%= form_with(model: objective, class: "ui form #{objective.errors.any? ? 'error' : ''}") do |form| %>
     <% if objective.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(objective.errors.count, "error") %> prohibited this objective from being saved:</h2>
-
-        <ul>
+      <div class="ui error message">
+        <ul class="list">
           <% objective.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
-
     <div class="inline fields">
       <label for="objective_objective_type">タイプ：</label>
       <div class="field">

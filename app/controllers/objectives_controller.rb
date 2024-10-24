@@ -21,7 +21,7 @@ class ObjectivesController < ApplicationController
     if @objective.save
       redirect_to @objective
     else
-      render 'new'
+      render :new, status: :unprocessable_entity
     end
   end
 
