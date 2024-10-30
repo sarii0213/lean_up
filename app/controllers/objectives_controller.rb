@@ -5,7 +5,7 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: %i[show edit update destroy]
 
   def index
-    @objectives = current_user.objectives.order(updated_at: :desc)
+    @objectives = current_user.objectives.order(updated_at: :desc).page(params[:page]).per(5)
   end
 
   def show; end
@@ -19,7 +19,7 @@ class ObjectivesController < ApplicationController
   def create
     @objective = Objective.new(objective_params)
     if @objective.save
-      redirect_to @objective
+      redirect_to @objective, notice: 'vision boardに登録しました'
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class ObjectivesController < ApplicationController
 
   def update
     if @objective.update(objective_params)
-      redirect_to @objective
+      redirect_to @objective, notice: 'vision boardを更新しました'
     else
       render 'edit'
     end

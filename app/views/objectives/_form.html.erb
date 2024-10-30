@@ -1,5 +1,5 @@
 <div data-controller="form">
-  <%= form_with(model: objective, class: "ui form #{objective.errors.any? ? 'error' : ''}") do |form| %>
+  <%= form_with(model: objective, class: "ui form #{objective.errors.any? ? 'error' : ''}", data: { turbo: false }) do |form| %>
     <% if objective.errors.any? %>
       <div class="ui error message">
         <ul class="list">
