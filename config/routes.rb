@@ -27,4 +27,5 @@ Rails.application.routes.draw do
   resources :objectives
   resources :records, only: %i[index new update]
   resource :user_setting, only: %i[show edit update]
+  resources :periods
 end

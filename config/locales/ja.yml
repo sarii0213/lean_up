@@ -13,6 +13,9 @@ ja:
       objective:
         images: 画像
         verbal: 言葉
+      period:
+        started_on: 開始日
+        ended_on: 終了日
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

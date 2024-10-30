@@ -1,0 +1,33 @@
+<div class="ui one column centered grid">
+  <div class="column ui left aligned">
+    <div style="display:flex;">
+      <h2>periods history</h2>
+      <div style="text-align: right; padding-left: 20px">
+        <%= button_to new_period_path, method: :get, data: { turbo_frame: "modal" } do %>
+          <div class="ui vertical animated button teal" tabindex="0">
+            <div class="hidden content">追加</div>
+            <div class="visible content">
+              <i class="add icon"></i>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="ui card" style="width: 100%;">
+      <div class="content">
+        <% @periods.each do |period| %>
+          <%= turbo_frame_tag period do %>
+            <%= render period %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:40px; text-align:center">
+  <%= paginate @periods %>
+</div>
+
+<%= turbo_frame_tag 'modal' %>
+
