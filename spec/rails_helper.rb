@@ -30,7 +30,7 @@ require 'rspec/rails'
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
-  ActiveRecord::Migration.maintain_test_schema!
+  # ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
@@ -67,4 +67,11 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+    Rails.application.load_tasks
+    ENV['POSTGRES_USER'] ||= 'postgres'
+    ENV['POSTGRES_PASSWORD'] ||= 'password'
+    Rake.application['ridgepole:apply'].invoke
+  end
 end
