@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: periods
@@ -27,8 +29,8 @@ class Period < ApplicationRecord
   private
 
   def date_difference
-    if ended_on > started_on.advance(weeks: 2)
-      errors.add(:ended_on, 'は開始日から2週間以内に設定してください')
-    end
+    return unless ended_on > started_on.advance(weeks: 2)
+
+    errors.add(:ended_on, 'は開始日から2週間以内に設定してください')
   end
 end

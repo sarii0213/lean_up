@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PeriodsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_period, only: %i[edit update destroy]
@@ -10,20 +12,20 @@ class PeriodsController < ApplicationController
     @period = Period.new(started_on: Time.zone.today, ended_on: Time.zone.today.advance(weeks: 1))
   end
 
+  def edit; end
+
   def create
     @period = Period.new(period_params)
     if @period.save
-      redirect_to periods_path, notice: '生理周期を登録しました'
+      redirect_to periods_path, notice: t('period.created')
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit; end
-
   def update
     if @period.update(period_params)
-      redirect_to periods_path, notice: '生理周期を更新しました'
+      redirect_to periods_path, notice: t('period.updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -31,7 +33,7 @@ class PeriodsController < ApplicationController
 
   def destroy
     @period.destroy
-    flash.now[:notice] = '生理周期を削除しました'
+    flash.now[:notice] = t('period.destroyed')
   end
 
   private

@@ -19,7 +19,7 @@ class ObjectivesController < ApplicationController
   def create
     @objective = Objective.new(objective_params)
     if @objective.save
-      redirect_to @objective, notice: 'vision boardに登録しました'
+      redirect_to @objective, notice: t('objective.created')
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class ObjectivesController < ApplicationController
 
   def update
     if @objective.update(objective_params)
-      redirect_to @objective, notice: 'vision boardを更新しました'
+      redirect_to @objective, notice: t('objective.updated')
     else
       render 'edit'
     end
@@ -35,7 +35,7 @@ class ObjectivesController < ApplicationController
 
   def destroy
     @objective.destroy
-    redirect_to objectives_path
+    redirect_to objectives_path, notice: t('objective.destroyed')
   end
 
   private

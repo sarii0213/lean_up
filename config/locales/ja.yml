@@ -2,6 +2,14 @@
 ja:
   user_setting:
     updated: ユーザー設定を更新しました
+  objective:
+    created: ビジョンボードに登録しました
+    updated: ビジョンボードを更新しました
+    destroyed: ビジョンボードから削除しました
+  period:
+    created: 生理周期を登録しました
+    updated: 生理周期を更新しました
+    destroyed: 生理周期を削除しました
   activerecord:
     attributes:
       record:
