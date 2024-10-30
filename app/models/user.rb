@@ -7,6 +7,7 @@
 #  id                     :bigint           not null, primary key
 #  display_body_fat       :boolean          default(TRUE)
 #  email                  :string(191)      default(""), not null
+#  enable_periods_feature :boolean          default(TRUE)
 #  encrypted_password     :string           default(""), not null
 #  goal_weight            :decimal(, )
 #  height                 :decimal(, )
@@ -30,6 +31,8 @@ class User < ApplicationRecord
 
   validates :username, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :goal_weight, numericality: { greater_than: 0 }, allow_nil: true
+  validates :height, numericality: { greater_than: 0 }, allow_nil: true
 
   has_many :objectives, dependent: :destroy
   has_many :records, dependent: :destroy

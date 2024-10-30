@@ -1,10 +1,15 @@
 ---
 ja:
+  user_setting:
+    updated: ユーザー設定を更新しました
   activerecord:
     attributes:
       record:
         weight: 体重
         recorded_on: 記録日
+      user:
+        goal_weight: 目標体重
+        height: 身長
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

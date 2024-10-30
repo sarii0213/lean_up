@@ -1,0 +1,45 @@
+<div data-controller="setting" class="ui one column centered grid">
+  <div class="column ui left aligned">
+    <h2>user setting</h2>
+    <div class="ui card" style="width: 100%;">
+      <div class="content">
+        <%= link_to edit_user_registration_path, style: 'display: block' do %>
+          <div style="display: flex; justify-content: space-between; padding-right: 10px">
+            <span style="">ログイン情報</span>
+            <span>＞</span>
+          </div>
+        <% end %>
+        <div class="ui divider"></div>
+        <%= turbo_frame_tag 'user_body_data' do %>
+          <%= render 'user_body_data', user: @user %>
+        <% end %>
+        <div class="ui divider"></div>
+        <%# TODO: 生理期間登録機能実装後、生理期間の表示＆編集機能を追加 %>
+        <%= link_to '#', style: 'display: block', data: { setting_target: 'periodsArea' } do %>
+          <div style="display: flex; justify-content: space-between; padding-right: 10px">
+            <span style="">生理期間</span>
+            <span>＞</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 30px">display setting</h2>
+    <div class="ui card" style="width: 100%;">
+      <div class="content">
+        <%= form_with model: @user, url: user_setting_path, data: { setting_target: 'form'} do |f| %>
+          <div class="ui toggle checkbox" style="">
+            <%= f.check_box :display_body_fat, checked: @user.display_body_fat, data: { action: 'setting#toggleBodyFat' } %>
+            <%# TODO: 体脂肪率を体重記録チャートに表示する機能を追加後、切り替え機能実装 %>
+            <label>体脂肪率 表示</label>
+          </div>
+          <div class="ui divider"></div>
+          <div class="ui toggle checkbox" style="">
+            <%= f.check_box :enable_periods_feature, checked: @user.enable_periods_feature, data: { action: 'setting#togglePeriods', setting_target: 'periodsEnabled' } %>
+            <label>生理期間 表示</label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
