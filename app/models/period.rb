@@ -22,7 +22,7 @@
 class Period < ApplicationRecord
   belongs_to :user
 
-  validates :started_on, presence: true
+  validates :started_on, presence: true, uniqueness: { scope: :user_id }
   validates :ended_on, presence: true, comparison: { greater_than: :started_on }
   validate :date_difference
 
