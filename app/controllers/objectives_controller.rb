@@ -35,7 +35,7 @@ class ObjectivesController < ApplicationController
 
   def destroy
     @objective.destroy
-    redirect_to objectives_path, notice: t('objective.destroyed')
+    redirect_to objectives_path, notice: t('objective.destroyed'), status: :see_other
   end
 
   private

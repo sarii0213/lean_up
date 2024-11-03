@@ -25,7 +25,8 @@ class PeriodsController < ApplicationController
 
   def update
     if @period.update(period_params)
-      redirect_to periods_path, notice: t('period.updated')
+      flash[:notice] = t('period.updated')
+      render turbo_stream: turbo_stream.action(:redirect, periods_path)
     else
       render :edit, status: :unprocessable_entity
     end
