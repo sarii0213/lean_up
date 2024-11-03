@@ -12,7 +12,7 @@ export { application }
 document.addEventListener('turbo:before-fetch-response', (event) => {
     if (typeof(event.detail.fetchResponse) !== 'undefined') {
         const response = event.detail.fetchResponse.response
-        if (response.redirected) {
+        if (response.redirected && event.target.closest('turbo-frame')) {
             event.preventDefault()
             Turbo.visit(response.url, { action: 'replace' })
         }
