@@ -16,7 +16,8 @@ class RecordsController < ApplicationController
     @record.assign_attributes(record_params)
     if @record.save
       message = Record::MessageGenerator.new(@record.recorded_on).generate
-      redirect_to records_path, notice: "記録完了! #{message}"
+      flash[:notice] = "記録完了! #{message}"
+      render turbo_stream: turbo_stream.action(:redirect, records_path)
     else
       render :new, status: :unprocessable_entity
     end
