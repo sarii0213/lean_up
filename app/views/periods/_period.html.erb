@@ -1,0 +1,13 @@
+<div style="display: flex; justify-content: space-between; padding-right: 10px">
+  <span><%= period.started_on %>　-　<%= period.ended_on %></span>
+  <div>
+    <%# TODO: edit, deleteをiconに %>
+    <%= link_to edit_period_path(period), data: { turbo_frame: period } do %>
+      <i class="edit icon"></i>
+    <% end %>
+    <%= link_to period, data: { turbo_method: :delete, turbo_confirm: '削除しますか？' } do %>
+      <i class="trash icon"></i>
+    <% end %>
+  </div>
+</div>
+<div class="ui divider"></div>

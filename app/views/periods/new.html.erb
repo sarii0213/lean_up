@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="ui mini modal" data-controller="modal">
+    <div class="header">add new period history</div>
+    <div class="content">
+      <%= render partial: 'periods/form', locals: { period: @period } %>
+    </div>
+  </div>
+<% end %>

@@ -14,8 +14,7 @@
           <%= render 'user_body_data', user: @user %>
         <% end %>
         <div class="ui divider"></div>
-        <%# TODO: 生理期間登録機能実装後、生理期間の表示＆編集機能を追加 %>
-        <%= link_to '#', style: 'display: block', data: { setting_target: 'periodsArea' } do %>
+        <%= link_to periods_path, style: 'display: block', data: { setting_target: 'periodsArea' } do %>
           <div style="display: flex; justify-content: space-between; padding-right: 10px">
             <span style="">生理期間</span>
             <span>＞</span>

@@ -36,4 +36,5 @@ class User < ApplicationRecord
 
   has_many :objectives, dependent: :destroy
   has_many :records, dependent: :destroy
+  has_many :periods, dependent: :destroy
 end

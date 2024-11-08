@@ -15,8 +15,8 @@ class RecordsController < ApplicationController
     @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
     @record.assign_attributes(record_params)
     if @record.save
-      message = Record::MessageGenerator.new(@record.recorded_on).generate
-      redirect_to records_path, notice: "記録完了! #{message}"
+      flash[:notice] = success_message
+      render turbo_stream: turbo_stream.action(:redirect, records_path)
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,5 +26,10 @@ class RecordsController < ApplicationController
 
   def record_params
     params.require(:record).permit(:recorded_on, :weight, :body_fat)
+  end
+
+  def success_message
+    message = Record::MessageGenerator.new(@record.recorded_on).generate
+    "記録完了! #{message}"
   end
 end
