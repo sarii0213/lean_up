@@ -1,0 +1,57 @@
+<div data-controller="form">
+  <%= form_with(model: objective, class: "ui form #{objective.errors.any? ? 'error' : ''}", data: { turbo: false }) do |form| %>
+    <% if objective.errors.any? %>
+      <div class="ui error message">
+        <ul class="list">
+          <% objective.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="inline fields">
+      <label for="objective_objective_type">タイプ：</label>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <%= form.radio_button :objective_type, :image, { class: 'hidden', data: { form_target: 'select' ,action: 'form#toggleVisibility'} } %>
+          <%= form.label :objective_type_image, "画像" %>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <%= form.radio_button :objective_type, :verbal, { class: 'hidden', data: { form_target: 'select' ,action: 'form#toggleVisibility'} } %>
+          <%= form.label :objective_type_verbal, "言葉" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" data-form-target="verbal">
+      <%= form.label :verbal, '言葉' %>
+      <%= form.text_field :verbal, placeholder: '理想の姿の自分は何を感じている？ 気分が上がる言葉は？', data: { form_target: 'verbalInput' } %>
+    </div>
+
+    <div data-form-target="image">
+      <div class="field">
+        <%= form.label :images, '理想のイメージ' %>
+        <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput' } %>
+        <% if objective.persisted? %>
+          <% objective.images.each do |image| %>
+            <%= image_tag image.variant(:thumb) %>
+            <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= form.label :comment, 'メモ' %>
+        <%= form.text_area :comment, placeholder: '理想のイメージについて補足メモ', data: { form_target: 'imageInput' } %>
+      </div>
+    </div>
+
+    <div class="ui hidden divider"></div>
+
+    <div class="ui teal submit button">
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>

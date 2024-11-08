@@ -1,0 +1,27 @@
+<div>
+  <div class="ui two column centered grid">
+    <div class="column ui center aligned">
+      <h1>weight records</h1>
+      <%# TODO for future PR: 1ヶ月, 3ヶ月, 6ヶ月, 1年 の切り替えボタンを表示 -> turbo_streamでchart切り替え %>
+    </div>
+  </div>
+  <div class="ui hidden divider"></div>
+  <div id="chart">
+    <%= render ChartComponent.new(records: @records) %>
+  </div>
+
+  <div class="ui right aligned grid">
+    <div class="right floated column">
+      <%= button_to new_record_path, method: :get, data: { turbo_frame: "modal" } do %>
+        <div class="ui vertical animated button teal" tabindex="0">
+          <div class="hidden content">追加</div>
+          <div class="visible content">
+            <i class="add icon"></i>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= turbo_frame_tag 'modal' %>

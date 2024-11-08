@@ -5,8 +5,13 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  display_body_fat       :boolean          default(TRUE)
 #  email                  :string(191)      default(""), not null
+#  enable_periods_feature :boolean          default(TRUE)
 #  encrypted_password     :string           default(""), not null
+#  goal_weight            :decimal(, )
+#  height                 :decimal(, )
+#  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  username               :string(191)      default(""), not null
@@ -22,5 +27,6 @@ FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
     username { Faker::JapaneseMedia::StudioGhibli.character }
+    password { Faker::Internet.password(min_length: 8) }
   end
 end

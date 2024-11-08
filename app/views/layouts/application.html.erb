@@ -9,6 +9,8 @@
 
     <%= yield :head %>
 
+    <%= favicon_link_tag 'favicon.ico' %>
+
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -20,6 +22,7 @@
   <body>
    <div class="ui two column centered grid" style="margin-top: 10px;">
      <div class="column" style="min-width:300px;">
+       <div id='flashes'></div>
        <% if notice %>
          <div class="ui positive message notice">
            <i class="check icon"></i>
@@ -32,10 +35,11 @@
            <span><%= alert %></span>
          </div>
        <% end %>
-       <div style="margin-top: 30px;">
+       <div style="margin-top: 30px; margin-bottom: 100px;">
         <%= yield %>
        </div>
      </div>
    </div>
+   <%= render partial: 'layouts/footer_menu' %>
   </body>
 </html>

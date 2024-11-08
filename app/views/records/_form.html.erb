@@ -1,0 +1,26 @@
+<%= turbo_frame_tag 'form' do %>
+  <%= form_with model: record, method: :put, class: "ui form #{record.errors.any? ? 'error' : ''}", data: { modal_target: 'form', action: 'turbo:submit-end->modal#close' } do |f| %>
+    <div class="field">
+      <%= f.label :recorded_on, '記録日' %>
+      <%= f.date_field :recorded_on, data: { modal_target: 'date', action: 'change->modal#updateURL'} %>
+    </div>
+    <div class="field">
+      <%= f.label :weight, '体重 (kg)' %>
+      <%= f.text_field :weight, placeholder: 'XX.X' %>
+    </div>
+    <div class="field">
+      <%= f.label :body_fat, '体脂肪率 (%)' %>
+      <%= f.text_field :body_fat, placeholder: 'XX.X' %>
+    </div>
+    <% if record.errors.any? %>
+      <div class="ui error message">
+        <ul class="list">
+          <% record.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= f.submit '登録', class: 'actions ui fluid large teal submit button' %>
+  <% end %>
+<% end %>

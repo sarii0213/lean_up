@@ -1,0 +1,19 @@
+<div style="display: flex; justify-content: space-between; padding: 10px 10px 10px 0; margin-bottom: 20px;">
+  <div>目標体重</div>
+  <div>
+    <% if user.goal_weight.present? %>
+      <%= user.goal_weight %> kg
+    <% end %>
+  </div>
+</div>
+<div style="display: flex; justify-content: space-between; padding: 10px 10px 10px 0; margin-bottom: 20px;">
+  <div>身長</div>
+  <div>
+    <% if user.height.present? %>
+      <%= user.height %> cm
+    <% end %>
+  </div>
+</div>
+<div style="display: flex; justify-content: end">
+  <%= link_to '編集', edit_user_setting_path, class: 'ui button', style: 'text-align: end' %>
+</div>

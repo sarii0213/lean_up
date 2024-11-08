@@ -17,3 +17,10 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+Lint/MissingSuper:
+  AllowedParentClasses:
+    - ViewComponent::Base

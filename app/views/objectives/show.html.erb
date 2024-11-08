@@ -1,0 +1,22 @@
+<div class="ui center aligned grid one column">
+  <h1 class="column">vision board detail</h1>
+
+  <div class="column">
+    <%= render @objective %>
+  </div>
+
+  <div class="ui horizontal segments">
+    <%= link_to edit_objective_path(@objective), class: 'ui segment' do %>
+      <i class="edit icon"></i>
+      編集する
+    <% end %>
+    <%= link_to objectives_path, class: 'ui segment' do %>
+      <i class="list ui icon"></i>
+      一覧に戻る
+    <% end %>
+    <%= link_to @objective, class: 'ui segment', data: { turbo_method: :delete, turbo_confirm: '削除しますか？' } do %>
+      <i class="trash alternate icon"></i>
+      削除する
+    <% end %>
+  </div>
+</div>

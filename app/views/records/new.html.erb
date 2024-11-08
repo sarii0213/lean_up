@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'modal' do %>
+  <div class="ui mini modal" data-controller="modal">
+    <div class="header">record your weight</div>
+    <div class="content">
+      <%= render partial: 'records/form', locals: { record: @record } %>
+    </div>
+  </div>
+<% end %>

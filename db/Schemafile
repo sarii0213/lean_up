@@ -1,6 +1,10 @@
 create_table "users", id: :bigint, force: :cascade do |t|
   t.string "username", limit: 191, default: "", null: false
   t.string "email", limit: 191, default: "", null: false
+  t.decimal "goal_weight"
+  t.decimal "height"
+  t.boolean "display_body_fat", default: true
+  t.boolean "enable_periods_feature", default: true
   t.string "encrypted_password", default: "", null: false
   t.string "reset_password_token"
   t.datetime "reset_password_sent_at"
@@ -10,4 +14,72 @@ create_table "users", id: :bigint, force: :cascade do |t|
 
   add_index "users", ["email"], unique: true
   add_index "users", ["reset_password_token"], unique: true
+end
+
+create_table "objectives", id: :bigint, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "objective_type", null: false
+    t.string "verbal"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+
+    add_index "objectives", ["user_id", "order"]
+    add_foreign_key "objectives", "users"
+end
+
+create_table "records", id: :bigint, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "recorded_on", null: false
+    t.decimal "weight", null: false
+    t.decimal "body_fat"
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+
+    add_index "records", ["user_id", "recorded_on"], unique: true
+    add_foreign_key "records", "users"
+end
+
+create_table "periods", id: :bigint, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "started_on", null: false
+    t.date "ended_on", null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, null: false
+
+    add_index "periods", ["user_id", "started_on"], unique: true
+    add_foreign_key "periods", "users"
+end
+
+create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+
+    add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+end
+
+create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+end
+
+create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+
+    add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end
