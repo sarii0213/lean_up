@@ -80,7 +80,7 @@ GEM
     ast (2.4.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
-    benchmark (0.3.0)
+    benchmark (0.4.0)
     better_html (2.1.1)
       actionview (>= 6.0)
       activesupport (>= 6.0)
@@ -273,8 +273,8 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.3.9)
-    ridgepole (2.1.1)
-      activerecord (>= 6.1, < 8.0)
+    ridgepole (3.0.0)
+      activerecord (>= 6.1, < 8.1)
       diffy
       logger
     rspec-core (3.13.1)
