@@ -1,0 +1,31 @@
+ARG RUBY_VERSION=3.2.4
+FROM ruby:$RUBY_VERSION-slim
+ENV TZ=Asia/Tokyo
+
+WORKDIR /rails
+
+RUN apt-get update -qq && \
+    apt-get install -y \
+      build-essential \
+      libpq-dev \
+      nodejs \
+      vim \
+      postgresql-client \
+      libvips && \
+    rm -rf /var/lib/apt/lists/* # remove apt cache
+
+ENV BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_JOBS=4 \
+    BUNDLE_RETRY=3 \
+    BUNDLE_WITHOUT=""
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+COPY . .
+
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+EXPOSE 3000
+
+CMD ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]

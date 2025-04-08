@@ -1,0 +1,63 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create ECR Repository
+
+Parameters:
+  SystemName:
+    Description: System Name
+    Type: String
+    Default: leanup
+  Environment:
+    Description: Environment
+    Type: String
+    Default: prod
+    AllowedValues:
+      - prod
+      - stg
+      - dev
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Environment Configuration"
+        Parameters:
+          - SystemName
+          - Environment
+
+Resources:
+  ## ECR: Repository (rails app)
+  ECRRepositoryApp:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub ${SystemName}-${Environment}-web
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Expire images count more than 3",
+                "selection": {
+                  "tagStatus": "any",
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 3
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+          }
+
+Outputs:
+  ## ECR: Repository (rails app)
+  ECRRepositoryApp:
+    Value: !Ref ECRRepositoryApp
+    Export:
+      Name: !Sub ${AWS::StackName}-ECRRepositoryApp
+
+  ECRRepositoryAppArn:
+    Value: !GetAtt ECRRepositoryApp.Arn
+    Export:
+      Name: !Sub ${AWS::StackName}-ECRRepositoryAppArn
