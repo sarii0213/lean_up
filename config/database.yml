@@ -83,6 +83,4 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME", 'database') %>
-  username: <%= ENV.fetch("DB_USERNAME", 'username') %>
-  password: <%= ENV.fetch("DB_PASSWORD", 'password') %>
+  database: lean_up_production

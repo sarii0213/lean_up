@@ -1,15 +1,13 @@
+version: "3.9"
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      args:
-        RUBY_VERSION: 3.2.4
+    build: .
+    command: bash -c "rm -f /lean_up/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/rails:cached
+      - .:/lean_up:cached
       - bundle:/usr/local/bundle
     ports:
-      - '3000:3000'
+      - '3006:3000'
     depends_on:
       - db
       - chrome
@@ -19,7 +17,6 @@ services:
     tty: true
     restart: always
     environment:
-      RAILS_ENV: development
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
@@ -31,7 +28,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
-      - '3306:3306'
+      - '3307:3306'
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     restart: always

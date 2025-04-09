@@ -2,7 +2,6 @@ namespace :ridgepole do
   desc 'Apply database schema'
   task apply: :environment do
     run('--apply')
-    Rake::Task['annotate_models'].invoke if Rails.env.development?
   end
 
   desc 'Export database schema'

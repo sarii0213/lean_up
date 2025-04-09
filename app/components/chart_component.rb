@@ -5,7 +5,7 @@ class ChartComponent < ViewComponent::Base
     @records_for_chart = records.each_with_object({}) do |record, hash|
       hash[record.recorded_on.to_s] = record.weight
     end
-    @minimum_record = @records_for_chart.min_by { |a| a[1] }[1].to_i
+    @minimum_record = (@records_for_chart.min_by { |a| a[1] }[1]).to_i
   end
 
   def average_records_for_chart
