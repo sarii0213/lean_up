@@ -29,7 +29,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :username, presence: true
+  # validates :username, presence: true
   validates :email, presence: true, uniqueness: true
   validates :goal_weight, numericality: { greater_than: 0 }, allow_nil: true
   validates :height, numericality: { greater_than: 0 }, allow_nil: true
