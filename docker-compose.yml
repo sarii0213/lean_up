@@ -42,7 +42,9 @@ services:
       - '4448:4444'
 
   sidekiq:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     environment:
       REDIS_URL: redis://redis:6379
     volumes:
