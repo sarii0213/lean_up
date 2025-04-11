@@ -1,3 +1,5 @@
-if ENV['AWS_ACCESS_KEY_ID'].blank? && Rails.env.production?
+require 'aws-sdk'
+
+if Rails.env.production?
   Aws.config.update({ credentials: Aws::ECSCredentials.new })
 end
