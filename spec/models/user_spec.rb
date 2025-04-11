@@ -14,7 +14,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  username               :string(191)      default(""), not null
+#  username               :string(191)      default("")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
