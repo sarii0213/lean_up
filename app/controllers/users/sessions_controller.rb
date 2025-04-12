@@ -4,6 +4,16 @@ module Users
   class SessionsController < Devise::SessionsController
     # before_action :configure_sign_in_params, only: [:create]
 
+    def login_as
+      if params[:user_id].present?
+        user = User.find(params[:user_id])
+        sign_in user
+        redirect_to root_path, notice: "Logged in as user_id: #{user.id}"
+      else
+        redirect_to root_path, alert: "User ID is required"
+      end
+    end
+
     # GET /resource/sign_in
     # def new
     #   super
