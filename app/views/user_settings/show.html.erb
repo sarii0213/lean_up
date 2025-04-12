@@ -40,5 +40,9 @@
         <% end %>
       </div>
     </div>
+
+    <div style="display: flex; justify-content: center">
+      <%= link_to 'ログアウト', logout_path, data: { turbo_method: :delete }, class: 'ui button', style: 'text-align: center; margin-top: 30px' %>
+    </div>
   </div>
 </div>

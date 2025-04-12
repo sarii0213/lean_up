@@ -44,6 +44,7 @@ ja:
       timeout: セッションがタイムアウトしました。もう一度ログインしてください。
       unauthenticated: ログインもしくはアカウント登録してください。
       unconfirmed: メールアドレスの本人確認が必要です。
+      user_id_not_found: ユーザーIDが見つかりません。
     mailer:
       confirmation_instructions:
         action: メールアドレスの確認
