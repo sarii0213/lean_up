@@ -5,13 +5,11 @@ module Users
     # before_action :configure_sign_in_params, only: [:create]
 
     def login_as
-      if params[:user_id].present?
-        user = User.find(params[:user_id])
-        sign_in user
-        redirect_to root_path, notice: "Logged in as user_id: #{user.id}"
-      else
-        redirect_to root_path, alert: "User ID is required"
-      end
+      user = User.find(params[:user_id])
+      sign_in user
+      redirect_to root_path, notice: "Logged in as user_id: #{user.id}"
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: t('devise.failure.user_id_not_found')
     end
 
     # GET /resource/sign_in
