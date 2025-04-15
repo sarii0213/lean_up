@@ -81,6 +81,7 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'letter_opener_web'
   gem 'web-console'
 end
 
