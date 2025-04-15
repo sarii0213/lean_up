@@ -31,4 +31,8 @@ Rails.application.routes.draw do
   resources :records, only: %i[index new update]
   resource :user_setting, only: %i[show edit update]
   resources :periods
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end
