@@ -1,0 +1,11 @@
+@media screen and (max-width: 1080px) {
+
+  input[type=email], input[type=password], textarea, input[type=text] {
+    font-size: 16px !important;
+  }
+
+  .sp-column {
+    flex-direction: column !important;
+    justify-content: space-around !important;
+  }
+}

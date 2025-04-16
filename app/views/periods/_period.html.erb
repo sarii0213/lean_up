@@ -1,7 +1,6 @@
 <div style="display: flex; justify-content: space-between; padding-right: 10px">
   <span><%= period.started_on %>　-　<%= period.ended_on %></span>
   <div>
-    <%# TODO: edit, deleteをiconに %>
     <%= link_to edit_period_path(period), data: { turbo_frame: period } do %>
       <i class="edit icon"></i>
     <% end %>

@@ -8,15 +8,15 @@
   <div class="ui horizontal segments">
     <%= link_to edit_objective_path(@objective), class: 'ui segment' do %>
       <i class="edit icon"></i>
-      編集する
+      編集
     <% end %>
     <%= link_to objectives_path, class: 'ui segment' do %>
       <i class="list ui icon"></i>
-      一覧に戻る
+      一覧へ
     <% end %>
     <%= link_to @objective, class: 'ui segment', data: { turbo_method: :delete, turbo_confirm: '削除しますか？' } do %>
       <i class="trash alternate icon"></i>
-      削除する
+      削除
     <% end %>
   </div>
 </div>

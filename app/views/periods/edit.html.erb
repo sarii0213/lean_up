@@ -1,7 +1,7 @@
 <%= turbo_frame_tag @period do %>
   <%= form_with model: @period, method: :put, class: "ui form #{@period.errors.any? ? 'error' : ''}" do |f| %>
     <div style="display: flex;  justify-content: space-between">
-      <div style="display: flex; align-items: center;">
+      <div style="display: flex; align-items: center;" class="sp-column">
         <div class="inline field" style="margin:0">
           <%= f.date_field :started_on %>
         </div>
@@ -10,7 +10,7 @@
           <%= f.date_field :ended_on %>
         </div>
       </div>
-      <div style="display: flex; align-items: center">
+      <div style="display: flex; align-items: center" class="sp-column">
         <%= f.submit '更新', class: 'ui mini button' %>
         <%= link_to 'キャンセル', periods_path, class: 'ui mini button' %>
       </div>
