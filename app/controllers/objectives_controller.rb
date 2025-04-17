@@ -5,7 +5,7 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: %i[show edit update destroy]
 
   def index
-    @objectives = current_user.objectives.order(updated_at: :desc).page(params[:page]).per(5)
+    @objectives = current_user.objectives.order(order: :desc).page(params[:page]).per(5)
   end
 
   def show; end
