@@ -17,8 +17,8 @@
         <div class="content">
           <div class="meta"><%= objective.comment %></div>
           <div class="right aligned" style="margin-top:10px">
-            <i class="angle up icon"></i>
-            <i class="angle down icon"></i>
+            <i class="angle up icon <%= 'disabled' if objective.order == @objectives.maximum(:order) %>"></i>
+            <i class="angle down icon <%= 'disabled' if objective.order.zero? %>"></i>
             <i class="thumbs up outline icon"></i>
           </div>
         </div>
@@ -27,8 +27,8 @@
         <div class="content">
           <div class="description"><%= objective.verbal %></div>
           <div class="right aligned" style="margin-top:10px">
-            <i class="angle up icon"></i>
-            <i class="angle down icon"></i>
+            <i class="angle up icon <%= 'disabled' if objective.order == @objectives.maximum(:order) %>"></i>
+            <i class="angle down icon <%= 'disabled' if objective.order.zero? %>"></i>
             <i class="thumbs up outline icon"></i>
           </div>
         </div>
