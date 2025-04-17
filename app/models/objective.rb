@@ -23,6 +23,8 @@
 #
 class Objective < ApplicationRecord
   validates :objective_type, presence: true
+  validates :images, presence: true, if: :image?
+  validates :verbal, presence: true, if: :verbal?
 
   belongs_to :user
 
@@ -33,6 +35,11 @@ class Objective < ApplicationRecord
     attachable.variant :large, resize_to_limit: [400, 400]
   end
 
-  validates :images, presence: true, if: :image?
-  validates :verbal, presence: true, if: :verbal?
+  before_create :set_order
+
+  private
+
+  def set_order
+    self.order = user.objectives.count
+  end
 end

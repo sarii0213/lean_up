@@ -24,5 +24,24 @@
 require 'rails_helper'
 
 RSpec.describe Objective, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { create(:user) }
+
+  describe '#set_order' do
+    context '初めてビジョンボードに登録する場合' do
+      it '登録したobjectiveのorderが0になる' do
+        objective = build(:objective, user:)
+        objective.save
+        expect(objective.order).to eq(0)
+      end
+    end
+
+    context 'ビジョンボードに追加する場合' do
+      it 'orderがobjectivesの数になる' do
+        4.times { create(:objective, user:) }
+        fifth_objective = create(:objective, user:)
+
+        expect(fifth_objective.order).to eq(4)
+      end
+    end
+  end
 end
