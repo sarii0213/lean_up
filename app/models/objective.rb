@@ -37,6 +37,26 @@ class Objective < ApplicationRecord
 
   before_create :set_order
 
+  def move_up
+    return if order == user.objectives.maximum(:order)
+
+    Objective.transaction do
+      upper_objective = user.objectives.find_by(order: order + 1)
+      update(order: order + 1)
+      upper_objective&.update(order: order - 1)
+    end
+  end
+
+  def move_down
+    return if order.zero?
+
+    Objective.transaction do
+      lower_objective = user.objectives.find_by(order: order - 1)
+      update(order: order - 1)
+      lower_objective&.update(order: order + 1)
+    end
+  end
+
   private
 
   def set_order

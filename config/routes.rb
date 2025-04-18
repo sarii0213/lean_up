@@ -27,7 +27,13 @@ Rails.application.routes.draw do
 
   root to: "objectives#index"
 
-  resources :objectives
+  resources :objectives do
+    member do
+      patch :move_up
+      patch :move_down
+    end
+  end
+
   resources :records, only: %i[index new update]
   resource :user_setting, only: %i[show edit update]
   resources :periods
