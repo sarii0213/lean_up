@@ -1,0 +1,21 @@
+<div class="ui centered card" id="objective_<%= objective.id %>">
+  <% if objective.image? %>
+    <div class="image">
+      <%= image_tag objective.images.first.variant(:large) %>
+    </div>
+    <div class="content">
+      <div class="meta"><%= objective.comment %></div>
+      <%= render partial: 'order_icons', locals: { objective:, objectives: } %>
+    </div>
+  <% end %>
+  <% if objective.verbal? %>
+    <div class="content">
+      <div class="description"><%= objective.verbal %></div>
+      <%= render partial: 'order_icons', locals: { objective:, objectives: } %>
+    </div>
+  <% end %>
+  <%= link_to objective, class: 'ui bottom attached button', style: 'color: inherit;' do %>
+    <i class="edit icon"></i>
+    詳細
+  <% end %>
+</div>
