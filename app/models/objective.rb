@@ -42,8 +42,11 @@ class Objective < ApplicationRecord
 
     Objective.transaction do
       upper_objective = user.objectives.find_by(order: order + 1)
-      update(order: order + 1)
-      upper_objective&.update(order: order - 1)
+      return unless upper_objective
+
+      current_order = order.to_i # オブジェクトの参照から数値の参照に
+      update!(order: current_order + 1)
+      upper_objective.update!(order: current_order)
     end
   end
 
@@ -52,8 +55,11 @@ class Objective < ApplicationRecord
 
     Objective.transaction do
       lower_objective = user.objectives.find_by(order: order - 1)
-      update(order: order - 1)
-      lower_objective&.update(order: order + 1)
+      return unless lower_objective
+
+      current_order = order.to_i
+      update!(order: current_order - 1)
+      lower_objective.update!(order: current_order)
     end
   end
 
