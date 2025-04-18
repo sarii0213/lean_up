@@ -46,36 +46,50 @@ RSpec.describe Objective, type: :model do
   end
 
   describe '#move_up' do
-    it 'objectiveのorderがひとつ上のobjectiveのそれと入れ替わる' do
-      objective = create(:objective, user:)
-      upper_objective = create(:objective, user:)
-      objective.move_up
-      expect(objective.reload.order).to eq(1)
-      expect(upper_objective.reload.order).to eq(0)
+    context '下に位置するobjectiveを上に移動させる場合' do
+      it 'objectiveのorderが1になる' do
+        objective = create(:objective, user:)
+        create(:objective, user:)
+        objective.move_up
+        expect(objective.reload.order).to eq(1)
+      end
+
+      it '上のobjectiveのorderが0になる' do
+        objective = create(:objective, user:)
+        upper_objective = create(:objective, user:)
+        objective.move_up
+        expect(upper_objective.reload.order).to eq(0)
+      end
     end
 
-    it 'orderが最大のobjectiveの場合は入れ替わらない' do
-      4.times { create(:objective, user:) }
-      objective = create(:objective, user:)
-      objective.move_up
-      expect(objective.reload.order).to eq(4)
+    context '一番上に位置するobjectiveを上に移動させる場合' do
+      it 'orderが最大のobjectiveの場合は入れ替わらない' do
+        4.times { create(:objective, user:) }
+        objective = create(:objective, user:)
+        objective.move_up
+        expect(objective.reload.order).to eq(4)
+      end
     end
   end
 
   describe '#move_down' do
-    it 'objectiveのorderがひとつ下のobjectiveのそれと入れ替わる' do
-      objective = create(:objective, user:)
-      lower_objective = create(:objective, user:)
-      objective.move_down
-      expect(objective.reload.order).to eq(0)
-      expect(lower_objective.reload.order).to eq(1)
+    context '上に位置するobjectiveを下に移動させる場合' do
+      it 'objectiveのorderがひとつ下のobjectiveのそれと入れ替わる' do
+        objective = create(:objective, user:)
+        lower_objective = create(:objective, user:)
+        objective.move_down
+        expect(objective.reload.order).to eq(0)
+        expect(lower_objective.reload.order).to eq(1)
+      end
     end
 
-    it 'orderが最小のobjectiveの場合は入れ替わらない' do
-      objective = create(:objective, user:)
-      4.times { create(:objective, user:) }
-      objective.move_down
-      expect(objective.reload.order).to eq(0)
+    context '一番下に位置するobjectiveを下に移動させる場合' do
+      it 'orderが最小のobjectiveの場合は入れ替わらない' do
+        objective = create(:objective, user:)
+        4.times { create(:objective, user:) }
+        objective.move_down
+        expect(objective.reload.order).to eq(0)
+      end
     end
   end
 end
