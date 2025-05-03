@@ -63,6 +63,15 @@ class Objective < ApplicationRecord
     end
   end
 
+  # バッチ処理： 古い順にorder値を1~countまでセットする
+  def self.set_orders_for_existing_objectives
+    User.find_each do |user|
+      user.objectives.order(:updated_at).each.with_index do |objective, index|
+        objective.update!(order: index)
+      end
+    end
+  end
+
   private
 
   def set_order
