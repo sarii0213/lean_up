@@ -6,6 +6,7 @@ class ObjectivesController < ApplicationController
 
   def index
     @objectives = current_user.objectives.order(order: :desc)
+    @maximum = @objectives.maximum(:order)
   end
 
   def show; end

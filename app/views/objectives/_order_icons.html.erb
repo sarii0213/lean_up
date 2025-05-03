@@ -1,6 +1,6 @@
 <div class="right aligned" style="margin-top:10px" id="order_icons">
-  <%= button_to move_up_objective_path(objective), disabled: objective.order == objectives.maximum(:order), method: :patch do %>
-    <i class="angle up icon <%= 'disabled' if objective.order == objectives.maximum(:order) %>"></i>
+  <%= button_to move_up_objective_path(objective), disabled: objective.order == maximum, method: :patch do %>
+    <i class="angle up icon <%= 'disabled' if objective.order == maximum %>"></i>
   <% end %>
   <%= button_to move_down_objective_path(objective), disabled: objective.order.zero?, method: :patch do %>
     <i class="angle down icon <%= 'disabled' if objective.order.zero? %>"></i>

@@ -5,13 +5,13 @@
     </div>
     <div class="content">
       <div class="meta"><%= objective.comment %></div>
-      <%= render partial: 'order_icons', locals: { objective:, objectives: } %>
+      <%= render partial: 'order_icons', locals: { objective:, objectives:, maximum: } %>
     </div>
   <% end %>
   <% if objective.verbal? %>
     <div class="content">
       <div class="description"><%= objective.verbal %></div>
-      <%= render partial: 'order_icons', locals: { objective:, objectives: } %>
+      <%= render partial: 'order_icons', locals: { objective:, objectives:, maximum: } %>
     </div>
   <% end %>
   <%= link_to objective, class: 'ui bottom attached button', style: 'color: inherit;' do %>

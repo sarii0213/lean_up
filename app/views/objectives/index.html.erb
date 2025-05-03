@@ -9,6 +9,6 @@
 <div class="ui hidden divider"></div>
 <div id="objectives">
   <% @objectives.each do |objective| %>
-    <%= render partial: 'objective_item', locals: { objective:, objectives: @objectives } %>
+    <%= render partial: 'objective_item', locals: { objective:, objectives: @objectives, maximum: @maximum } %>
   <% end %>
 </div>
