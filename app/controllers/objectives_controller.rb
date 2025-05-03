@@ -41,15 +41,15 @@ class ObjectivesController < ApplicationController
 
   def move_up
     @objective = current_user.objectives.find(params[:id])
-    @objective.move_up
-    # TODO: turbo streamで２つのobjectiveを入れ替えられないか？
+    @objective.move_up!
+    # TODO: Rails 8にして、morphingでスクロール位置もキープさせたい
     redirect_to objectives_path, notice: t('objective.moved_up')
   end
 
   def move_down
     @objective = current_user.objectives.find(params[:id])
-    @objective.move_down
-    # TODO: turbo streamで２つのobjectiveを入れ替えられないか？
+    @objective.move_down!
+    # TODO: Rails 8にして、morphingでスクロール位置もキープさせたい
     redirect_to objectives_path, notice: t('objective.moved_down')
   end
 

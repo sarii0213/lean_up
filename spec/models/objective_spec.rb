@@ -45,7 +45,7 @@ RSpec.describe Objective, type: :model do
     end
   end
 
-  describe '#move_up' do
+  describe '#move_up!' do
     context '下に位置するobjectiveを上に移動させる場合' do
       it 'objectiveのorderが1になる' do
         objective = create(:objective, user:)
@@ -72,7 +72,7 @@ RSpec.describe Objective, type: :model do
     end
   end
 
-  describe '#move_down' do
+  describe '#move_down!' do
     context '上に位置するobjectiveを下に移動させる場合' do
       it 'objectiveのorderがひとつ下のobjectiveのそれと入れ替わる' do
         objective = create(:objective, user:)

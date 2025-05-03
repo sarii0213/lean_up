@@ -37,7 +37,7 @@ class Objective < ApplicationRecord
 
   before_create :set_order
 
-  def move_up
+  def move_up!
     return if order == user.objectives.maximum(:order)
 
     Objective.transaction do
@@ -50,7 +50,7 @@ class Objective < ApplicationRecord
     end
   end
 
-  def move_down
+  def move_down!
     return if order.zero?
 
     Objective.transaction do
