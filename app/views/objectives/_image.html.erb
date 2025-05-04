@@ -1,0 +1,26 @@
+<div data-controller="image">
+    <%= form.label :images, '理想のイメージ' %>
+    <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput', image_target: 'input', action: 'change->image#preview' } %>
+
+    <div data-image-target="previewArea" style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
+       <%= image_tag '', data: { image_target: 'preview' } %>
+    </div>
+
+    <p style="margin: 10px 0 5px;">↓ 保存済み画像 ↓</p>
+    <% if objective.images.attached? %>
+        <div style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
+        <% objective.images.each do |image| %>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 5px;" data-image-target="wrapper">
+                <%= image_tag image.variant(:thumb), data: { image_target: 'image' } %>
+                <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
+                <%= button_tag '削除', type: 'button', data: { image_target: 'detachButton', action: 'click->image#deleteImage' }, class: 'mini ui basic button' %>
+            </div>
+        <% end %>
+        </div>
+    <% end %>
+</div>
+
+
+
+
+<%# TODO: 削除ボタンの実装について。image_controller.jsにrenameして、 delete_preview, detach_image methodを追加したい %>
