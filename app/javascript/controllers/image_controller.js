@@ -6,7 +6,6 @@ export default class extends Controller {
 
     preview() {
         const input = this.inputTarget;
-        const images = this.previewTargets;
         const files = input.files;
 
         Array.from(files).forEach((file, _) => {

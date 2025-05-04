@@ -3,7 +3,7 @@
     <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput', image_target: 'input', action: 'change->image#preview' } %>
 
     <div data-image-target="previewArea" style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
-       <%= image_tag '', data: { image_target: 'preview' } %>
+        <%# area for preview images %>
     </div>
 
     <p style="margin: 10px 0 5px;">↓ 保存済み画像 ↓</p>
