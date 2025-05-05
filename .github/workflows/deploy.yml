@@ -23,8 +23,24 @@ jobs:
 
       - name: Start RDS DB Cluster
         run: |
-          aws rds start-db-cluster \
-            --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+          CLUSTER_STATUS=$(aws rds describe-db-clusters \
+            --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }} \
+            --query 'DBClusters[0].Status' \
+            --output text)
+          
+          if [ "$CLUSTER_STATUS" = "stopped" ]; then
+            aws rds start-db-cluster \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+          elif [ "$CLUSTER_STATUS" = "stopping" ]; then
+            echo "DB Cluster is stopping. Waiting for it to stop completely..."
+            aws rds wait db-cluster-stopped \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+            echo "DB Cluster has stopped. Starting it now..."
+            aws rds start-db-cluster \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+          else
+            echo "DB Cluster is already running (Status: $CLUSTER_STATUS)"
+          fi
 
       - name: Log in to ECR
         id: login-ecr
