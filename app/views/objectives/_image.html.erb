@@ -1,6 +1,6 @@
 <div data-controller="image">
     <%= form.label :images, '理想のイメージ' %>
-    <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput', image_target: 'input', action: 'change->image#preview' } %>
+    <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput', action: 'change->image#preview'} %>
 
     <div data-image-target="previewArea" style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
         <%# area for preview images %>

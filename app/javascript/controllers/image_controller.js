@@ -2,54 +2,96 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="image"
 export default class extends Controller {
-    static targets = ['input', 'preview', 'previewArea']
+    static targets = ['preview', 'previewArea']
 
-    preview() {
-        const input = this.inputTarget;
-        const files = input.files;
+    connect() {
+        this.storedFiles = new DataTransfer();
+    }
 
-        Array.from(files).forEach((file, _) => {
-            // img & buttonを包むdiv要素を作成
-            const newImageWrapper = document.createElement('div');
-            newImageWrapper.dataset.imageTarget = 'wrapper';
-            newImageWrapper.style.display = 'flex';
-            newImageWrapper.style.flexDirection = 'column';
-            newImageWrapper.style.alignItems = 'center';
-            newImageWrapper.style.justifyContent = 'space-between';
-            newImageWrapper.style.gap = '5px';
+    preview(e) {
+        const newFiles = e.currentTarget.files;
+        // DataTransfer: ファイルをデータとして保持するオブジェクト
+        const dataTransfer = this.addFilesToDataTransfer(newFiles);
+        this.updateFileInput(e.currentTarget, dataTransfer);
+        this.createPreviews(newFiles);
+    }
 
-            // img要素を作成
-            const newImage = document.createElement('img');
-            newImage.style.width = '100px';
-            newImage.dataset.imageTarget = 'preview';
+    deleteImage(e) {
+        const wrapper = e.currentTarget.closest('[data-image-target="wrapper"]');
+        wrapper ? wrapper.remove() : null;
+    }
 
-            // button要素を作成
-            const deleteButton = document.createElement('button');
-            deleteButton.type = 'button';
-            deleteButton.dataset.action = 'click->image#deleteImage';
-            deleteButton.textContent = '削除';
-            deleteButton.classList.add('mini', 'ui', 'basic', 'button');
+    // ------------------------------------------------------------
+    // private methods
+    // ------------------------------------------------------------
+    addFilesToDataTransfer(newFiles) {
+        const dataTransfer = new DataTransfer();
 
-            newImageWrapper.appendChild(newImage);
-            newImageWrapper.appendChild(deleteButton);
-            this.previewAreaTarget.appendChild(newImageWrapper);
+        // 既にアップロードされたファイルを保持
+        if (this.storedFiles.files.length > 0) {
+            Array.from(this.storedFiles.files).forEach(file => {
+                dataTransfer.items.add(file);
+            });
+        }
 
-            // 画像を読み込んで表示
-            const reader = new FileReader();
-            // set event handler which is called when file is loaded
-            reader.onloadend = () => {
-                newImage.src = reader.result;
-            };
-            // load file -> onloadend ↑ is triggered
-            reader.readAsDataURL(file);
+        // 新しいファイルを保持アイテムとして追加
+        Array.from(newFiles).forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        return dataTransfer;
+    }
+
+    updateFileInput(inputElement, dataTransfer) {
+        inputElement.files = dataTransfer.files;
+        this.storedFiles = dataTransfer;
+    }
+
+    createPreviews(files) {
+        Array.from(files).forEach(file => {
+            const wrapper = this.createImageWrapper();
+            const image = this.createImageElement();
+            const deleteButton = this.createDeleteButton();
+
+            wrapper.appendChild(image);
+            wrapper.appendChild(deleteButton);
+            this.previewAreaTarget.appendChild(wrapper);
+
+            this.loadImagePreview(file, image);
         });
     }
 
-    deleteImage(event) {
-        const button = event.currentTarget;
-        const wrapper = button.closest('[data-image-target="wrapper"]');
-        if (wrapper) {
-            wrapper.remove();
-        }
+    createImageWrapper() {
+        const wrapper = document.createElement('div');
+        wrapper.dataset.imageTarget = 'wrapper';
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.justifyContent = 'space-between';
+        wrapper.style.gap = '5px';
+        return wrapper;
+    }
+
+    createImageElement() {
+        const image = document.createElement('img');
+        image.style.width = '100px';
+        image.dataset.imageTarget = 'preview';
+        return image;
+    }
+
+    createDeleteButton() {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.action = 'click->image#deleteImage';
+        button.textContent = '削除';
+        button.classList.add('mini', 'ui', 'basic', 'button');
+        return button;
+    }
+
+    loadImagePreview(file, imageElement) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            imageElement.src = reader.result;
+        };
+        reader.readAsDataURL(file);
     }
 }
