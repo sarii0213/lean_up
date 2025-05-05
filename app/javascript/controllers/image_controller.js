@@ -11,9 +11,9 @@ export default class extends Controller {
     preview(e) {
         const newFiles = e.currentTarget.files;
         // DataTransfer: ファイルをデータとして保持するオブジェクト
-        const dataTransfer = this.addFilesToDataTransfer(newFiles);
-        this.updateFileInput(e.currentTarget, dataTransfer);
-        this.createPreviews(newFiles);
+        const dataTransfer = this.#addFilesToDataTransfer(newFiles);
+        this.#updateFileInput(e.currentTarget, dataTransfer);
+        this.#createPreviews(newFiles);
     }
 
     deleteImage(e) {
@@ -21,10 +21,7 @@ export default class extends Controller {
         wrapper ? wrapper.remove() : null;
     }
 
-    // ------------------------------------------------------------
-    // private methods
-    // ------------------------------------------------------------
-    addFilesToDataTransfer(newFiles) {
+    #addFilesToDataTransfer(newFiles) {
         const dataTransfer = new DataTransfer();
 
         // 既にアップロードされたファイルを保持
@@ -41,26 +38,26 @@ export default class extends Controller {
         return dataTransfer;
     }
 
-    updateFileInput(inputElement, dataTransfer) {
+    #updateFileInput(inputElement, dataTransfer) {
         inputElement.files = dataTransfer.files;
         this.storedFiles = dataTransfer;
     }
 
-    createPreviews(files) {
+    #createPreviews(files) {
         Array.from(files).forEach(file => {
-            const wrapper = this.createImageWrapper();
-            const image = this.createImageElement();
-            const deleteButton = this.createDeleteButton();
+            const wrapper = this.#createImageWrapper();
+            const image = this.#createImageElement();
+            const deleteButton = this.#createDeleteButton();
 
             wrapper.appendChild(image);
             wrapper.appendChild(deleteButton);
             this.previewAreaTarget.appendChild(wrapper);
 
-            this.loadImagePreview(file, image);
+            this.#loadImagePreview(file, image);
         });
     }
 
-    createImageWrapper() {
+    #createImageWrapper() {
         const wrapper = document.createElement('div');
         wrapper.dataset.imageTarget = 'wrapper';
         wrapper.style.display = 'flex';
@@ -71,14 +68,14 @@ export default class extends Controller {
         return wrapper;
     }
 
-    createImageElement() {
+    #createImageElement() {
         const image = document.createElement('img');
         image.style.width = '100px';
         image.dataset.imageTarget = 'preview';
         return image;
     }
 
-    createDeleteButton() {
+    #createDeleteButton() {
         const button = document.createElement('button');
         button.type = 'button';
         button.dataset.action = 'click->image#deleteImage';
@@ -87,7 +84,7 @@ export default class extends Controller {
         return button;
     }
 
-    loadImagePreview(file, imageElement) {
+    #loadImagePreview(file, imageElement) {
         const reader = new FileReader();
         reader.onloadend = () => {
             imageElement.src = reader.result;
