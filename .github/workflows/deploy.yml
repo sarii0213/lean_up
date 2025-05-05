@@ -21,6 +21,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
+      - name: Start RDS DB Cluster
+        run: |
+          aws rds start-db-cluster \
+            --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+
       - name: Log in to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -64,3 +69,12 @@ jobs:
                 "command": ["bundle", "exec", "rake", "ridgepole:apply"]
             }]
           }'
+
+      - name: Send Slack Message to notify deployment result
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: "#${{ secrets.SLACK_CHANNEL_ID }}",
+            text: ":seedling: ${{ github.ref_name }} : ${{ job.status }}" 
