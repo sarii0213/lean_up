@@ -5,7 +5,8 @@ class ObjectivesController < ApplicationController
   before_action :set_objective, only: %i[show edit update destroy]
 
   def index
-    @objectives = current_user.objectives.order(updated_at: :desc).page(params[:page]).per(5)
+    @objectives = current_user.objectives.order(order: :desc)
+    @maximum = @objectives.maximum(:order)
   end
 
   def show; end
@@ -36,6 +37,20 @@ class ObjectivesController < ApplicationController
   def destroy
     @objective.destroy
     redirect_to objectives_path, notice: t('objective.destroyed')
+  end
+
+  def move_up
+    @objective = current_user.objectives.find(params[:id])
+    @objective.move_up!
+    # TODO: Rails 8にして、morphingでスクロール位置もキープさせたい
+    redirect_to objectives_path, notice: t('objective.moved_up')
+  end
+
+  def move_down
+    @objective = current_user.objectives.find(params[:id])
+    @objective.move_down!
+    # TODO: Rails 8にして、morphingでスクロール位置もキープさせたい
+    redirect_to objectives_path, notice: t('objective.moved_down')
   end
 
   private

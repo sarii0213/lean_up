@@ -6,6 +6,8 @@ ja:
     created: ビジョンボードに登録しました
     updated: ビジョンボードを更新しました
     destroyed: ビジョンボードから削除しました
+    moved_up: 上に移動しました
+    moved_down: 下に移動しました
   period:
     created: 生理周期を登録しました
     updated: 生理周期を更新しました

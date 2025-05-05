@@ -24,6 +24,8 @@
 FactoryBot.define do
   factory :objective do
     user
+    objective_type { :verbal }
+    verbal { Faker::JapaneseMedia::OnePiece.quote }
 
     trait :image do
       objective_type { :image }
