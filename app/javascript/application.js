@@ -5,3 +5,6 @@ import "jquery"
 import "semantic-ui"
 import "chartkick"
 import "Chart.bundle"
+
+// Enable private class fields
+window.privateFields = true;

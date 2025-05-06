@@ -12,7 +12,7 @@
     <div>
       <% if objective.images %>
         <% objective.images.each do |image| %>
-          <%= image_tag image.variant(:large), style: 'width: 100%' %>
+          <%= image_tag image.variant(:large) %>
         <% end %>
       <% end %>
     </div>
