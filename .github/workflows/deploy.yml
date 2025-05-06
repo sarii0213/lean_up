@@ -85,12 +85,3 @@ jobs:
                 "command": ["bundle", "exec", "rake", "ridgepole:apply"]
             }]
           }'
-
-      - name: Send Slack Message to notify deployment result
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_BOT_TOKEN }}
-          payload: |
-            channel: ${{ secrets.SLACK_CHANNEL_ID }}
-            text: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} : ${{ job.status }}" 
