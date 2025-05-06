@@ -92,5 +92,5 @@ jobs:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
-            channel: "#${{ secrets.SLACK_CHANNEL_ID }}"
-            text: ":seedling: ${{ github.ref_name }} : ${{ job.status }}" 
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            text: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} : ${{ job.status }}" 
