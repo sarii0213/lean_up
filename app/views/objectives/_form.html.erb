@@ -32,14 +32,7 @@
 
     <div data-form-target="image">
       <div class="field">
-        <%= form.label :images, '理想のイメージ' %>
-        <%= form.file_field :images, multiple: true, style: 'margin-bottom: 10px;', data: { form_target: 'imageInput' } %>
-        <% if objective.persisted? %>
-          <% objective.images.each do |image| %>
-            <%= image_tag image.variant(:thumb) %>
-            <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
-          <% end %>
-        <% end %>
+        <%= render 'image', { form:, objective: } %>
       </div>
 
       <div class="field">

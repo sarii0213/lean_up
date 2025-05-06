@@ -7,7 +7,9 @@
   </div>
   <div class="ui hidden divider"></div>
   <div id="chart">
-    <%= render ChartComponent.new(records: @records) %>
+    <% if @records.present? %>
+      <%= render ChartComponent.new(records: @records) %>
+    <% end %>
   </div>
 
   <div class="ui right aligned grid">

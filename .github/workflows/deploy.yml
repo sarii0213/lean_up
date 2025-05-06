@@ -1,0 +1,87 @@
+name: Deploy to ECS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy to ECS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Start RDS DB Cluster
+        run: |
+          CLUSTER_STATUS=$(aws rds describe-db-clusters \
+            --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }} \
+            --query 'DBClusters[0].Status' \
+            --output text)
+          
+          if [ "$CLUSTER_STATUS" = "stopped" ]; then
+            aws rds start-db-cluster \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+          elif [ "$CLUSTER_STATUS" = "stopping" ]; then
+            echo "DB Cluster is stopping. Waiting for it to stop completely..."
+            aws rds wait db-cluster-stopped \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+            echo "DB Cluster has stopped. Starting it now..."
+            aws rds start-db-cluster \
+              --db-cluster-identifier ${{ secrets.RDS_CLUSTER_IDENTIFIER }}
+          else
+            echo "DB Cluster is already running (Status: $CLUSTER_STATUS)"
+          fi
+
+      - name: Log in to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+                       -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+                       --platform linux/x86_64 .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Update ECS service
+        env:
+          CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          SERVICE: ${{ secrets.ECS_SERVICE }}
+        run: |
+          aws ecs update-service \
+            --cluster $CLUSTER \
+            --service $SERVICE \
+            --force-new-deployment \
+  
+      - name: Run ridgepole task on ECS
+        env:
+          CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          TASK_DEF: ${{ secrets.ECS_TASK_DEFINITION }}
+          CONTAINER_NAME: web
+        run: |
+          aws ecs run-task \
+            --cluster $CLUSTER \
+            --task-definition $TASK_DEF \
+            --launch-type EC2 \
+            --count 1 \
+            --overrides '{
+              "containerOverrides":[{
+                "name": "'$CONTAINER_NAME'",
+                "command": ["bundle", "exec", "rake", "ridgepole:apply"]
+            }]
+          }'

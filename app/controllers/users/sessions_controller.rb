@@ -4,6 +4,14 @@ module Users
   class SessionsController < Devise::SessionsController
     # before_action :configure_sign_in_params, only: [:create]
 
+    def login_as
+      user = User.find(params[:user_id])
+      sign_in user
+      redirect_to root_path, notice: "Logged in as user_id: #{user.id}"
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: t('devise.failure.user_id_not_found')
+    end
+
     # GET /resource/sign_in
     # def new
     #   super

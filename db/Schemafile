@@ -1,5 +1,5 @@
-create_table "users", id: :bigint, force: :cascade do |t|
-  t.string "username", limit: 191, default: "", null: false
+create_table "users", force: :cascade do |t|
+  t.string "username", limit: 191, default: ""
   t.string "email", limit: 191, default: "", null: false
   t.decimal "goal_weight"
   t.decimal "height"
@@ -8,45 +8,45 @@ create_table "users", id: :bigint, force: :cascade do |t|
   t.string "encrypted_password", default: "", null: false
   t.string "reset_password_token"
   t.datetime "reset_password_sent_at"
-  t.datetime "updated_at", precision: 6, null: false
-  t.datetime "created_at", precision: 6, null: false
+  t.datetime "updated_at", null: false
+  t.datetime "created_at", null: false
   t.datetime "remember_created_at"
 
   add_index "users", ["email"], unique: true
   add_index "users", ["reset_password_token"], unique: true
 end
 
-create_table "objectives", id: :bigint, force: :cascade do |t|
+create_table "objectives", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "objective_type", null: false
     t.string "verbal"
     t.text "comment"
     t.integer "order"
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", null: false
+    t.datetime "created_at", null: false
 
     add_index "objectives", ["user_id", "order"]
     add_foreign_key "objectives", "users"
 end
 
-create_table "records", id: :bigint, force: :cascade do |t|
+create_table "records", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "recorded_on", null: false
     t.decimal "weight", null: false
     t.decimal "body_fat"
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", null: false
+    t.datetime "created_at", null: false
 
     add_index "records", ["user_id", "recorded_on"], unique: true
     add_foreign_key "records", "users"
 end
 
-create_table "periods", id: :bigint, force: :cascade do |t|
+create_table "periods", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "started_on", null: false
     t.date "ended_on", null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", null: false
+    t.datetime "created_at", null: false
 
     add_index "periods", ["user_id", "started_on"], unique: true
     add_foreign_key "periods", "users"

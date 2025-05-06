@@ -9,38 +9,6 @@
 <div class="ui hidden divider"></div>
 <div id="objectives">
   <% @objectives.each do |objective| %>
-    <div class="ui centered card">
-      <% if objective.image? %>
-        <div class="image">
-          <%= image_tag objective.images.first.variant(:large) %>
-        </div>
-        <div class="content">
-          <div class="meta"><%= objective.comment %></div>
-          <div class="right aligned" style="margin-top:10px">
-            <i class="angle up icon"></i>
-            <i class="angle down icon"></i>
-            <i class="thumbs up outline icon"></i>
-          </div>
-        </div>
-      <% end %>
-      <% if objective.verbal? %>
-        <div class="content">
-          <div class="description"><%= objective.verbal %></div>
-          <div class="right aligned" style="margin-top:10px">
-            <i class="angle up icon"></i>
-            <i class="angle down icon"></i>
-            <i class="thumbs up outline icon"></i>
-          </div>
-        </div>
-      <% end %>
-      <%= link_to objective, class: 'ui bottom attached button', style: 'color: inherit;' do %>
-        <i class="edit icon"></i>
-        詳細
-      <% end %>
-    </div>
+    <%= render partial: 'objective_item', locals: { objective:, objectives: @objectives, maximum: @maximum } %>
   <% end %>
-</div>
-
-<div style="margin-top:50px; text-align:center">
-  <%= paginate @objectives %>
 </div>

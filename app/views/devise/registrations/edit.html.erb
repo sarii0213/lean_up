@@ -9,6 +9,10 @@
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'ui large form' }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
+      <div style="font-size:0.8rem;color:#888;text-align:left;margin-bottom:10px;">
+        <p>メールアドレスのみを変更する場合：<br>新メールアドレス, 一番下に現在のパスワードを入力してください。</p>
+        <p>パスワードを変更する場合：<br>新パスワード（6文字以上）, 新パスワード（確認用）, 現在のパスワードを入力してください。</p>
+      </div>
       <div class="ui stacked segment field">
         <div class="field">
           <div class="ui left icon input">
@@ -25,21 +29,21 @@
           <div class="ui left icon input">
             <i class="lock icon"></i>
             <%= f.password_field :password, autocomplete: "new-password",
-                                 placeholder: "password #{@minimum_password_length ? t('devise.shared.minimum_password_length', count: @minimum_password_length) : '' }  (#{t('.leave_blank_if_you_don_t_want_to_change_it')})" %>
+                                 placeholder: "new password" %>
           </div>
         </div>
 
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: 'password for confirmation' %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: 'new password for confirmation' %>
           </div>
         </div>
 
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <%= f.password_field :password, autocomplete: "current-password", placeholder: "password (#{t('.we_need_your_current_password_to_confirm_your_changes')})" %>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: "current password" %>
           </div>
         </div>
 
