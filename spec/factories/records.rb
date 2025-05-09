@@ -1,25 +1,21 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: records
 #
-#  id          :bigint           not null, primary key
-#  body_fat    :decimal(, )
+#  id          :integer          not null, primary key
+#  user_id     :integer          not null
 #  recorded_on :date             not null
 #  weight      :decimal(, )      not null
-#  created_at  :datetime         not null
+#  body_fat    :decimal(, )
 #  updated_at  :datetime         not null
-#  user_id     :bigint           not null
+#  created_at  :datetime         not null
 #
 # Indexes
 #
 #  index_records_on_user_id_and_recorded_on  (user_id,recorded_on) UNIQUE
 #
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
+
 FactoryBot.define do
   factory :record do
     user

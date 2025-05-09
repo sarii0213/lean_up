@@ -1,26 +1,22 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: objectives
 #
-#  id             :bigint           not null, primary key
-#  comment        :text
+#  id             :integer          not null, primary key
+#  user_id        :integer          not null
 #  objective_type :integer          not null
-#  order          :integer
 #  verbal         :string
-#  created_at     :datetime         not null
+#  comment        :text
+#  order          :integer
 #  updated_at     :datetime         not null
-#  user_id        :bigint           not null
+#  created_at     :datetime         not null
 #
 # Indexes
 #
 #  index_objectives_on_user_id_and_order  (user_id,order)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
+
 FactoryBot.define do
   factory :objective do
     user
