@@ -41,7 +41,7 @@ class PeriodsController < ApplicationController
   private
 
   def period_params
-    params.require(:period).permit(:started_on, :ended_on).merge(user_id: current_user.id)
+    params.expect(period: %i[started_on ended_on]).merge(user_id: current_user.id)
   end
 
   def set_period
