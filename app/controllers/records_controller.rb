@@ -25,7 +25,7 @@ class RecordsController < ApplicationController
   private
 
   def record_params
-    params.require(:record).permit(:recorded_on, :weight, :body_fat)
+    params.expect(record: %i[recorded_on weight body_fat])
   end
 
   def success_message
