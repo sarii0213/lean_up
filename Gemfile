@@ -50,7 +50,7 @@ gem 'sidekiq'
 gem 'ridgepole'
 gem 'seed-fu'
 
-gem 'annotate'
+gem 'annotaterb'
 
 gem 'devise'
 gem 'devise-i18n'
