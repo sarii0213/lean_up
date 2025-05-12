@@ -21,6 +21,7 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
+
 class Objective < ApplicationRecord
   validates :objective_type, presence: true
   validates :images, presence: true, if: :image?

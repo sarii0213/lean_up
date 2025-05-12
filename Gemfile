@@ -3,8 +3,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.2.2'
+gem 'rails', '8.0.2'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+# gem 'propshaft' (Rails 8 default)
 gem 'sprockets-rails'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
@@ -30,6 +31,11 @@ gem 'redis', '>= 4.0.1'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable (Rails 8 default)
+gem 'solid_cable'
+gem 'solid_cache'
+gem 'solid_queue'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
@@ -44,7 +50,7 @@ gem 'sidekiq'
 gem 'ridgepole'
 gem 'seed-fu'
 
-gem 'annotate'
+gem 'annotaterb'
 
 gem 'devise'
 gem 'devise-i18n'
