@@ -9,7 +9,7 @@
     <p style="margin: 10px 0 5px;">↓ 保存済み画像 ↓</p>
     <% if objective.images.attached? %>
         <div style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
-        <% objective.images.each do |image| %>
+        <% objective.images.select(&:persisted?).each do |image| %>
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 5px;" data-image-target="wrapper">
                 <%= image_tag image.variant(:thumb), data: { image_target: 'image' } %>
                 <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
