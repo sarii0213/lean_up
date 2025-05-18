@@ -44,9 +44,7 @@ class Objective < ApplicationRecord
 
     acceptable_types = %w[image/jpeg image/png image/gif image/webp]
     images.each do |image|
-      unless image.content_type.in?(acceptable_types)
-        errors.add(:images, :invalid_type)
-      end
+      errors.add(:images, :invalid_type) unless image.content_type.in?(acceptable_types)
     end
   end
 
