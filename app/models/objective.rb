@@ -25,6 +25,7 @@
 class Objective < ApplicationRecord
   validates :objective_type, presence: true
   validates :images, presence: true, if: :image?
+  validate :acceptable_images, if: :image?
   validates :verbal, presence: true, if: :verbal?
 
   belongs_to :user
@@ -37,6 +38,17 @@ class Objective < ApplicationRecord
   end
 
   before_create :set_order
+
+  def acceptable_images
+    return unless images.attached?
+
+    acceptable_types = %w[image/jpeg image/png image/gif image/webp]
+    images.each do |image|
+      if !image.content_type.in?(acceptable_types)
+        errors.add(:images, :invalid_type)
+      end
+    end
+  end
 
   def move_up!
     return if order == user.objectives.maximum(:order)

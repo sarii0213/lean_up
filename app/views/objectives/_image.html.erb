@@ -10,6 +10,7 @@
     <% if objective.images.attached? %>
         <div style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px;">
         <% objective.images.each do |image| %>
+            <% next unless image.blob_id.present? %>
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 5px;" data-image-target="wrapper">
                 <%= image_tag image.variant(:thumb), data: { image_target: 'image' } %>
                 <%= form.hidden_field :images, multiple: true, value: image.signed_id %>

@@ -28,10 +28,11 @@ ja:
         ended_on: 終了日
     errors:
       messages:
-        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        record_invalid: "バリデーションに失敗しました: %{errors}"
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+        invalid_type: 形式が不正です
   date:
     abbr_day_names:
       - 日
