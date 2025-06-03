@@ -40,22 +40,21 @@ class User < ApplicationRecord
   has_many :records, dependent: :destroy
   has_many :periods, dependent: :destroy
 
+  # rubocop:disable Metrics/AbcSize
   def self.from_omniauth(auth, current_user = nil)
-    provider = auth.provider
-    uid = auth.uid
-
     if current_user && current_user.uid.blank?
-      current_user.update(provider:, uid:)
+      current_user.update(provider: auth.provider, uid: auth.uid)
       return current_user
     end
 
     # LINE連携済みのuserのusername, email, passwordは更新しない
-    find_or_create_by(provider:, uid:) do |user|
+    find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
       user.username = auth.info.name
-      user.email = fake_email(provider, uid)
+      user.email = fake_email(auth.provider, auth.uid)
       user.password = Devise.friendly_token[0, 20]
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def self.fake_email(provider, uid)
     "#{provider}_#{uid}@example.com"
