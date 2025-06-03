@@ -12,20 +12,18 @@ module Strategies
     option :client_options, {
       site: 'https://api.line.me',
       authorize_url: 'https://access.line.me/oauth2/v2.1/authorize',
-      token_url: '/oauth2/v2.1/token'
+      token_url: 'https://api.line.me/oauth2/v2.1/token'
     }
 
     # callback phase ---------------------------------------------------
 
-    # 取得したデータからuid(=unique to the provider)をセット
-    uid { raw_info['userId'] }
+    # 取得したデータ(LINEユーザーID)からuid(=unique to the provider)をセット
+    uid { raw_info['sub'] }
 
     # 取得したデータからinfo(= a hash of information about the user)をセット
     info do
       {
-        user_id: raw_info['sub'],
-        name: raw_info['name'],
-        image: raw_info['picture']
+        name: raw_info['name']
       }
     end
 
