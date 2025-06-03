@@ -29,26 +29,26 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:line]
-  
+
   # validates :username, presence: true
   validates :email, presence: true, uniqueness: true
   validates :goal_weight, numericality: { greater_than: 0 }, allow_nil: true
   validates :height, numericality: { greater_than: 0 }, allow_nil: true
-  validates :uid, uniqueness: { scope: :provider}, if: -> { provider.present? }
+  validates :uid, uniqueness: { scope: :provider }, if: -> { provider.present? }
 
   has_many :objectives, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :periods, dependent: :destroy
 
-  def self.from_omniauth(auth, existing_user = nil)
+  def self.from_omniauth(auth, current_user = nil)
     provider = auth.provider
     uid = auth.uid
 
-    if existing_user && existing_user.uid.blank?
-      existing_user.update(provider:, uid:)
-      return existing_user
+    if current_user && current_user.uid.blank?
+      current_user.update(provider:, uid:)
+      return current_user
     end
-  
+
     # LINE連携済みのuserのusername, email, passwordは更新しない
     find_or_create_by(provider:, uid:) do |user|
       user.username = auth.info.name
@@ -56,8 +56,6 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
     end
   end
-
-  private
 
   def self.fake_email(provider, uid)
     "#{provider}_#{uid}@example.com"
