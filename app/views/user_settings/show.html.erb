@@ -42,7 +42,7 @@
     </div>
 
     <% if @user.provider.blank? %>
-      <%= button_to 'LINEでログイン', user_line_omniauth_authorize_path, data: { turbo: false }, class: 'ui button', style: 'text-align: center; margin-top: 30px; background-color: #06C755; color: white' %>
+      <%= button_to 'LINEと連携する', user_line_omniauth_authorize_path, data: { turbo: false }, class: 'ui button', style: 'text-align: center; margin-top: 30px; background-color: #06C755; color: white' %>
     <% end %>
 
     <div style="display: flex; justify-content: center">
