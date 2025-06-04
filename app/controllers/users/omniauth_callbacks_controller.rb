@@ -12,16 +12,13 @@ module Users
 
       if @user.persisted?
         sign_in_and_redirect @user, event: :authentication
-        set_flash_message(:notice, :success, kind: 'LINE') if is_navigational_format?
+        set_flash_message(:notice, :success, kind: 'LINE')
       else
         session['devise.line_data'] = request.env['omniauth.auth'].except(:extra)
         redirect_to new_user_registration_url
+        set_flash_message(:alert, :failure, kind: 'LINE', reason: '他アカウントでLINE連携済み, 又はメールアドレスの取得に失敗')
       end
     end
     # rubocop:enable Metrics/AbcSize
-
-    def failure
-      redirect_to root_path
-    end
   end
 end

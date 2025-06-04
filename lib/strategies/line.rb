@@ -6,7 +6,7 @@ module Strategies
     # request phase -----------------------------------------------------
     
     # IDトークン, プロフィール情報, 表示名, プロフィール画像の取得権限を含める
-    option :scope, 'openid profile'
+    option :scope, 'openid profile email'
 
     # optionを渡す先
     option :client_options, {
@@ -23,7 +23,8 @@ module Strategies
     # 取得したデータからinfo(= a hash of information about the user)をセット
     info do
       {
-        name: raw_info['name']
+        name: raw_info['name'],
+        email: raw_info['email']
       }
     end
 
