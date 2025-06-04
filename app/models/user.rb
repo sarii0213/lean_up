@@ -27,14 +27,31 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:line]
 
   # validates :username, presence: true
   validates :email, presence: true, uniqueness: true
   validates :goal_weight, numericality: { greater_than: 0 }, allow_nil: true
   validates :height, numericality: { greater_than: 0 }, allow_nil: true
+  validates :uid, uniqueness: { scope: :provider }, if: -> { provider.present? }
 
   has_many :objectives, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :periods, dependent: :destroy
+
+  # rubocop:disable Metrics/AbcSize
+  def self.from_omniauth(auth, current_user = nil)
+    if current_user && current_user.uid.blank?
+      current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email)
+      return current_user
+    end
+
+    # LINE連携済みのuserのusername, passwordは更新しない
+    find_or_create_by(provider: auth.provider, uid: auth.uid, email: auth.info.email) do |user|
+      user.username = auth.info.name
+      user.password = Devise.friendly_token[0, 20]
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
 end
