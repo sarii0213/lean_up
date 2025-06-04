@@ -47,7 +47,7 @@ class User < ApplicationRecord
       return current_user
     end
 
-    # LINE連携済みのuserのusername, email, passwordは更新しない
+    # LINE連携済みのuserのusername, passwordは更新しない
     find_or_create_by(provider: auth.provider, uid: auth.uid, email: auth.info.email) do |user|
       user.username = auth.info.name
       user.password = Devise.friendly_token[0, 20]
