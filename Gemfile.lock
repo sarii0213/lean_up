@@ -2146,7 +2146,7 @@ DEPENDENCIES
   line-bot-api
   omniauth-oauth2
   omniauth-rails_csrf_protection
-  pg (~> 1.1)
+  pg
   puma (>= 5.0)
   rails (= 8.0.2)
   redis (>= 4.0.1)
