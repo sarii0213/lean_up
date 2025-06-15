@@ -187,6 +187,11 @@ Resources:
                 - ".${DomainName}"
                 - DomainName:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
+            - Name: LINE_BOT_HOST
+              Value: !Sub
+                - "https://cdn.${DomainName}"
+                - DomainName:
+                    Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
           LogConfiguration:
             LogDriver: awslogs
             Options:
