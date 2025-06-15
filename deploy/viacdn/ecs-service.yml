@@ -181,6 +181,11 @@ Resources:
                 - "${SecretForRDSLeanup}:password::"
                 - SecretForRDSLeanup:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-rds-SecretForRDSLeanup
+            - Name: LINE_BOT_ACCESS_TOKEN
+              ValueFrom: !Sub
+                - "${SecretForRails}:LINE_BOT_ACCESS_TOKEN::"
+                - SecretForLineBot:
+                    "arn:aws:secretsmanager:ap-northeast-1:627286173480:secret:leanup/rails/config/line_bot_channel_access_token-oXK5Cp"
           Environment:
             - Name: RAILS_CONFIG_HOSTS
               Value: !Sub
