@@ -1833,6 +1833,9 @@ GEM
       letter_opener (~> 1.9)
       railties (>= 6.1)
       rexml
+    line-bot-api (2.0.0)
+      base64 (~> 0.2)
+      multipart-post (~> 2.4)
     lint_roller (1.1.0)
     logger (1.7.0)
     loofah (2.24.0)
@@ -1855,6 +1858,7 @@ GEM
     msgpack (1.8.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
+    multipart-post (2.4.1)
     net-http (0.6.0)
       uri
     net-imap (0.5.8)
@@ -2145,6 +2149,7 @@ DEPENDENCIES
   jbuilder
   kaminari
   letter_opener_web
+  line-bot-api
   omniauth-oauth2
   omniauth-rails_csrf_protection
   pg (~> 1.1)
