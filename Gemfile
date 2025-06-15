@@ -45,8 +45,6 @@ gem 'image_processing', '~> 1.2'
 gem 'sass-rails'
 gem 'semantic-ui-sass'
 
-gem 'sidekiq'
-
 gem 'ridgepole'
 gem 'seed-fu'
 
