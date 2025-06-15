@@ -25,6 +25,6 @@ class UserSettingsController < ApplicationController
   end
 
   def user_params
-    params.expect(user: %i[goal_weight height display_body_fat enable_periods_feature])
+    params.expect(user: %i[goal_weight height display_body_fat enable_periods_feature line_notify])
   end
 end

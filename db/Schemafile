@@ -10,6 +10,7 @@ create_table "users", force: :cascade do |t|
   t.datetime "reset_password_sent_at"
   t.string "provider"
   t.string "uid"
+  t.boolean "line_notify", default: false
   t.datetime "updated_at", null: false
   t.datetime "created_at", null: false
   t.datetime "remember_created_at"
