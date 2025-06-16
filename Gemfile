@@ -8,7 +8,7 @@ gem 'rails', '8.0.2'
 # gem 'propshaft' (Rails 8 default)
 gem 'sprockets-rails'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
+gem 'pg'
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '>= 5.0'
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -45,8 +45,6 @@ gem 'image_processing', '~> 1.2'
 gem 'sass-rails'
 gem 'semantic-ui-sass'
 
-gem 'sidekiq'
-
 gem 'ridgepole'
 gem 'seed-fu'
 
@@ -66,6 +64,8 @@ gem 'aws-sdk', require: false
 gem 'dotenv-rails'
 gem 'omniauth-oauth2'
 gem 'omniauth-rails_csrf_protection'
+
+gem 'line-bot-api'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

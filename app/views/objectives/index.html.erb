@@ -8,6 +8,7 @@
   </div>
 </div>
 <div class="ui hidden divider"></div>
+<p style="text-align: center;color: #999">ビジョンボードをLINEで配信!!<br>（by 設定画面にてLINE連携 & 配信許可 & 配信アカウントを友達追加）</p>
 <div id="objectives">
   <% @objectives.each do |objective| %>
     <%= render partial: 'objective_item', locals: { objective:, objectives: @objectives, maximum: @maximum } %>

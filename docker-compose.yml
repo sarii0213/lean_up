@@ -11,8 +11,6 @@ services:
     depends_on:
       - db
       - chrome
-      - redis
-      - sidekiq
     stdin_open: true
     tty: true
     restart: always
@@ -21,7 +19,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
-      REDIS_URL: redis://redis:6379
 
   db:
     image: postgres
@@ -38,29 +35,7 @@ services:
     image: selenium/standalone-chrome-debug:latest
     ports:
       - '4448:4444'
-
-  sidekiq:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    environment:
-      REDIS_URL: redis://redis:6379
-    volumes:
-      - .:/lean_up:cached
-      - bundle:/usr/local/bundle
-    depends_on:
-      - db
-      - redis
-    command: bundle exec sidekiq
-
-  redis:
-    image: redis:latest
-    ports:
-      - 6379:6379
-    volumes:
-      - redis:/data
-
+  
 volumes:
   bundle:
   postgres_volume:
-  redis:

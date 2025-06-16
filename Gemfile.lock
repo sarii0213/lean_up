@@ -1833,6 +1833,9 @@ GEM
       letter_opener (~> 1.9)
       railties (>= 6.1)
       rexml
+    line-bot-api (2.0.0)
+      base64 (~> 0.2)
+      multipart-post (~> 2.4)
     lint_roller (1.1.0)
     logger (1.7.0)
     loofah (2.24.0)
@@ -1855,6 +1858,7 @@ GEM
     msgpack (1.8.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
+    multipart-post (2.4.1)
     net-http (0.6.0)
       uri
     net-imap (0.5.8)
@@ -2049,12 +2053,6 @@ GEM
       websocket (~> 1.0)
     semantic-ui-sass (2.4.4.0)
       sassc
-    sidekiq (8.0.3)
-      connection_pool (>= 2.5.0)
-      json (>= 2.9.0)
-      logger (>= 1.6.2)
-      rack (>= 3.1.0)
-      redis-client (>= 0.23.2)
     smart_properties (1.17.0)
     snaky_hash (2.0.1)
       hashie
@@ -2145,9 +2143,10 @@ DEPENDENCIES
   jbuilder
   kaminari
   letter_opener_web
+  line-bot-api
   omniauth-oauth2
   omniauth-rails_csrf_protection
-  pg (~> 1.1)
+  pg
   puma (>= 5.0)
   rails (= 8.0.2)
   redis (>= 4.0.1)
@@ -2162,7 +2161,6 @@ DEPENDENCIES
   seed-fu
   selenium-webdriver
   semantic-ui-sass
-  sidekiq
   solid_cable
   solid_cache
   solid_queue

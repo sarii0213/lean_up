@@ -37,11 +37,21 @@
             <%= f.check_box :enable_periods_feature, checked: @user.enable_periods_feature, data: { action: 'setting#togglePeriods', setting_target: 'periodsEnabled' } %>
             <label>生理期間 表示</label>
           </div>
+          <% if @user.line_connected? %>
+          <div class="ui divider"></div>
+          <div class="ui toggle checkbox" style="">
+            <%= f.check_box :line_notify, checked: @user.line_notify, data: { action: 'setting#toggleLineNotify' } %>
+            <label>
+              LINE配信 許可<br><span style="color: #999">※ 配信を受け取るには↓配信用アカウントを友達追加してください</span><br>
+              <a href="https://lin.ee/ODYILiF"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="40" border="0"></a>
+            </label>
+          </div>
+          <% end %>
         <% end %>
       </div>
     </div>
 
-    <% if @user.provider.blank? %>
+    <% unless @user.line_connected? %>
       <%= button_to 'LINEと連携する', user_line_omniauth_authorize_path, data: { turbo: false }, class: 'ui button', style: 'text-align: center; margin-top: 30px; background-color: #06C755; color: white' %>
     <% end %>
 

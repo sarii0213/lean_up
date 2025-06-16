@@ -11,12 +11,16 @@ ENV TZ=Asia/Tokyo \
 WORKDIR /rails
 
 RUN apt-get update -qq && \
+    apt-get install -y wget gnupg lsb-release && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    apt-get update -qq && \
     apt-get install -y \
       build-essential \
       libpq-dev \
       nodejs \
       vim \
-      postgresql-client \
+      postgresql-client-17 \
       libvips \
       libyaml-dev && \
     rm -rf /var/lib/apt/lists/* # remove apt cache

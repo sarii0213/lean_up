@@ -40,10 +40,18 @@ class User < ApplicationRecord
   has_many :records, dependent: :destroy
   has_many :periods, dependent: :destroy
 
+  def line_connected?
+    uid.present? && provider.present?
+  end
+
+  def line_notification_allowed?
+    uid.present? && line_notify
+  end
+
   # rubocop:disable Metrics/AbcSize
   def self.from_omniauth(auth, current_user = nil)
     if current_user && current_user.uid.blank?
-      current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email)
+      current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email, line_notify: true)
       return current_user
     end
 
@@ -51,6 +59,7 @@ class User < ApplicationRecord
     find_or_create_by(provider: auth.provider, uid: auth.uid, email: auth.info.email) do |user|
       user.username = auth.info.name
       user.password = Devise.friendly_token[0, 20]
+      user.line_notify = true
     end
   end
   # rubocop:enable Metrics/AbcSize
