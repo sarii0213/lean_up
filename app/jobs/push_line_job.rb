@@ -8,7 +8,7 @@ class PushLineJob < ApplicationJob
   def perform(*_args)
     set_default_url_options
 
-    users = User.where.not(uid: nil).where(line_notify: true)
+    users = User.where.not(uid: nil).where(line_notify: true).includes(:objectives)
     users.each do |user|
       objective = user.objectives.sample
       next if objective.blank?
