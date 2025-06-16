@@ -40,6 +40,10 @@ class User < ApplicationRecord
   has_many :records, dependent: :destroy
   has_many :periods, dependent: :destroy
 
+  def line_connected?
+    uid.present? && provider.present?
+  end
+
   def line_notification_allowed?
     uid.present? && line_notify
   end

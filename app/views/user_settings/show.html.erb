@@ -37,7 +37,7 @@
             <%= f.check_box :enable_periods_feature, checked: @user.enable_periods_feature, data: { action: 'setting#togglePeriods', setting_target: 'periodsEnabled' } %>
             <label>生理期間 表示</label>
           </div>
-          <% if @user.provider.present? %>
+          <% if @user.line_connected? %>
           <div class="ui divider"></div>
           <div class="ui toggle checkbox" style="">
             <%= f.check_box :line_notify, checked: @user.line_notify, data: { action: 'setting#toggleLineNotify' } %>
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <% if @user.provider.blank? %>
+    <% unless @user.line_connected? %>
       <%= button_to 'LINEと連携する', user_line_omniauth_authorize_path, data: { turbo: false }, class: 'ui button', style: 'text-align: center; margin-top: 30px; background-color: #06C755; color: white' %>
     <% end %>
 
