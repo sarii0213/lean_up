@@ -181,11 +181,22 @@ Resources:
                 - "${SecretForRDSLeanup}:password::"
                 - SecretForRDSLeanup:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-rds-SecretForRDSLeanup
-            - Name: LINE_BOT_CHANNEL_ACCESS_TOKEN
+            - Name: LINE_CHANNEL_ID
               ValueFrom: !Sub
-                - "${SecretForLineBot}:LINE_BOT_CHANNEL_ACCESS_TOKEN::"
-                - SecretForLineBot:
-                    "arn:aws:secretsmanager:ap-northeast-1:627286173480:secret:leanup/rails/config/line_bot_channel_access_token-oXK5Cp"
+                - "${SecretForLineLogin}: LINE_CHANNEL_ID::"
+                - SecretForLineLogin:
+                    "arn:aws:secretsmanager:ap-northeast-1:627286173480:secret:leanup/rails/config/line_login-FySttD"
+            - Name: LINE_CHANNEL_SECRET
+                ValueFrom: !Sub
+                  - "${SecretForLineLogin}:LINE_CHANNEL_SECRET::"
+                  - SecretForLineLogin:
+                      "arn:aws:secretsmanager:ap-northeast-1:627286173480:secret:leanup/rails/config/line_login-FySttD"
+            - Name: LINE_BOT_CHANNEL_ACCESS_TOKEN
+                ValueFrom: !Sub
+                  - "${SecretForLineBot}:LINE_BOT_CHANNEL_ACCESS_TOKEN::"
+                  - SecretForLineBot:
+                      "arn:aws:secretsmanager:ap-northeast-1:627286173480:secret:leanup/rails/config/line_bot_channel_access_token-oXK5Cp"
+                             
           Environment:
             - Name: RAILS_CONFIG_HOSTS
               Value: !Sub
