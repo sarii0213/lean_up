@@ -1,0 +1,36 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create IAM User etc.
+
+Resources:
+  ## IAM: Group
+  GroupAdministrators:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: Administrators
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  ## IAM: User
+  UserSarii:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: sarii
+      LoginProfile:
+        Password: 123456=NuFuA
+        PasswordResetRequired: true
+      Groups:
+        - !Ref GroupAdministrators
+
+Outputs:
+  ## IAM: Group
+  GroupAdministrators:
+    Value: !GetAtt GroupAdministrators.Arn
+    Export:
+      Name: !Sub ${AWS::StackName}-GroupAdministrators
+
+  ## IAM: User
+  UserSarii:
+    Value: !GetAtt UserSarii.Arn
+    Export:
+      Name: !Sub ${AWS::StackName}-UserSarii
