@@ -61,7 +61,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "cdn.lean-up.life" }
+  config.action_mailer.default_url_options = { host: ENV['APP_HOST'] }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -92,3 +92,8 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
+
+# OmniAuthのcallback phaseでのURL生成時に参照される
+# （prodではCloudFront+ALBの影響でホストヘッダが書き換わることがあるため）
+Rails.application.routes.default_url_options[:host] = ENV.fetch('APP_HOST', nil)
+Rails.application.routes.default_url_options[:protocol] = 'https'

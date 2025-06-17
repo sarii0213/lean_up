@@ -6,8 +6,6 @@ class PushLineJob < ApplicationJob
   queue_as :default
 
   def perform(*_args)
-    set_default_url_options
-
     users = User.where.not(uid: nil).where(line_notify: true).includes(:objectives)
     users.each do |user|
       objective = user.objectives.sample
@@ -20,13 +18,6 @@ class PushLineJob < ApplicationJob
   end
 
   private
-
-  def set_default_url_options
-    # dev環境でテスト時には、.envの値をngrokにて割り当てられたURLに都度変更する
-    host = ENV.fetch('LINE_BOT_HOST', nil)
-    Rails.application.routes.default_url_options[:host] = host
-    Rails.application.routes.default_url_options[:protocol] = 'https'
-  end
 
   def build_message(objective)
     case objective.objective_type
