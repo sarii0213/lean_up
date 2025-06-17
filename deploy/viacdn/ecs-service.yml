@@ -181,7 +181,7 @@ Resources:
                 - "${SecretForRDSLeanup}:password::"
                 - SecretForRDSLeanup:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-rds-SecretForRDSLeanup
-            - Name: LINE_BOT_ACCESS_TOKEN
+            - Name: LINE_BOT_CHANNEL_ACCESS_TOKEN
               ValueFrom: !Sub
                 - "${SecretForLineBot}:LINE_BOT_ACCESS_TOKEN::"
                 - SecretForLineBot:
