@@ -16,10 +16,6 @@ if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   if [ "$RAILS_ENV" == "development" ]; then
     bundle exec rake ridgepole:apply
   fi
-
-  if [ "$RAILS_ENV" == "production" ]; then
-    ./bin/rails solid_queue:start &
-  fi
 fi
 
 exec "${@}"
