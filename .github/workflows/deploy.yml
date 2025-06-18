@@ -82,6 +82,6 @@ jobs:
             --overrides '{
               "containerOverrides":[{
                 "name": "'$CONTAINER_NAME'",
-                "command": ["bundle", "exec", "rake", "ridgepole:apply"]
+                "command": ["bundle", "exec", "rake", "ridgepole:apply && ./bin/rails solid_queue:start"]
             }]
           }'
