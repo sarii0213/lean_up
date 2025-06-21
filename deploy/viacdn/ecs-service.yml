@@ -155,7 +155,7 @@ Resources:
               ContainerPort: 3000
               Protocol: tcp
           Cpu: 0
-          MemoryReservation: 80
+          MemoryReservation: 350
           Secrets:
             - Name: RAILS_MASTER_KEY
               ValueFrom: !Sub
