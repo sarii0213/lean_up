@@ -15,8 +15,19 @@ module Strategies
       token_url: 'https://api.line.me/oauth2/v2.1/token'
     }
 
-    # callback phase ---------------------------------------------------
+    # 認可コード取得のAPIリクエスト
+    def request_phase
+      super
+    rescue => e
+      Rails.error.report(e, handled: false, context: {
+        action: 'LINE auth code request',
+        authorize_url: client.options[:authorize_url],
+        client_id: options.client_id
+      })
+      raise e
+    end
 
+    # callback phase ---------------------------------------------------
     # 取得したデータ(LINEユーザーID)からuid(=unique to the provider)をセット
     uid { raw_info['sub'] }
 
@@ -30,6 +41,19 @@ module Strategies
 
     def raw_info
       @raw_info ||= verify_id_token
+    end
+
+    # access token 取得のAPIリクエスト
+    def build_access_token
+      super
+    rescue => e
+      Rails.error.report(e, context: {
+        action: 'LINE access token request',
+        token_url: client.options[:token_url],
+        client_id: options.client_id,
+        has_authorization_code: request.params['code'].present?
+      })
+      raise
     end
 
     private
@@ -49,17 +73,26 @@ module Strategies
       full_host + callback_path
     end
 
-    # access_tokenからIDトークンを取得して検証 -> ユーザ情報取得
+    # ID token 検証 & ユーザ情報取得のAPIリクエスト
     def verify_id_token
-      @id_token_payload ||= client.request(:post, 'https://api.line.me/oauth2/v2.1/verify', 
-        {
-          body: {
-            id_token: access_token['id_token'],
-            client_id: options.client_id,
-            nonce: session.delete('omniauth.nonce')
+      @id_token_payload ||= begin
+        client.request(:post, 'https://api.line.me/oauth2/v2.1/verify', 
+          {
+            body: {
+              id_token: access_token['id_token'],
+              client_id: options.client_id,
+              nonce: session.delete('omniauth.nonce')
+            }
           }
-        }
-      ).parsed
+        ).parsed
+      rescue => e
+        Rails.error.report(e, context: { 
+          action: 'LINE ID token verification & get user info',
+          client_id: options.client_id,
+          has_id_token: access_token['id_token'].present?
+        })
+        raise
+      end
     
       @id_token_payload
     end
