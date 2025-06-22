@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require Rails.root.join('app/subscribers/api_error_subscriber')
 
 RSpec.describe 'LINEログイン機能', type: :feature do
   let(:line_uid) { '1234567890' }
@@ -25,6 +26,10 @@ RSpec.describe 'LINEログイン機能', type: :feature do
 
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:line]
+  end
+
+  after do
+    OmniAuth.config.mock_auth[:line] = nil
   end
 
   context '既存ユーザーがLINE未連携でログイン中の場合' do
@@ -76,6 +81,49 @@ RSpec.describe 'LINEログイン機能', type: :feature do
       user.reload
       expect(user.username).to eq('test_user')
       expect(user.valid_password?('password')).to be(true)
+    end
+  end
+
+  context '認証・認可のAPIリクエストが失敗した場合' do
+    # strategies/line.rbの#request_phase, #build_access_token, #verify_id_tokenの例外処理をテスト
+    before do
+      # ApiErrorSubscriberのモックを作成
+      @subscriber = double('ApiErrorSubscriber')
+      allow(@subscriber).to receive(:report)
+      
+      # Rails.errorのsubscribersを一時的に置き換え
+      @original_subs = Rails.error.instance_variable_get(:@subscribers)
+      Rails.error.instance_variable_set(:@subscribers, [@subscriber])
+    end
+
+    after do
+      # 元のsubscribersを復元
+      Rails.error.instance_variable_set(:@subscribers, @original_subs)
+    end
+
+    context '認証コード取得のAPIリクエストが失敗した場合' do
+      before do
+        # line strategy mock (request_phaseで例外を発生させる)
+        allow_any_instance_of(Strategies::Line).to receive(:request_phase)
+          .and_raise(StandardError.new('Authorization request failed'))
+      end
+
+      xit '認可コード取得エラーがApiErrorSubscriberに報告される' do
+        visit user_line_omniauth_authorize_url
+
+        expect(@subscriber).to have_received(:report).with(
+          an_instance_of(StandardError),
+          hash_including(handled: false, context: hash_including(action: 'auth code request'))
+        )
+      end
+    end
+
+    context 'アクセストークン取得のAPIリクエストが失敗した場合' do
+      
+    end
+
+    context 'IDトークン検証のAPIリクエストが失敗した場合' do
+      
     end
   end
 end
