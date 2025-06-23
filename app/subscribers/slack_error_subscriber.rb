@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class ApiErrorSubscriber
+class SlackErrorSubscriber
   def report(_error, context:, **)
     client = Slack::Web::Client.new
     client.chat_postMessage(
       channel: '#general',
-      text: 'LINE API request error',
+      text: 'message from slack error subscriber',
       blocks: build_message(context)
     )
   end

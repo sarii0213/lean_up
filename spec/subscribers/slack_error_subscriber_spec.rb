@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require Rails.root.join('app/subscribers/api_error_subscriber')
+require Rails.root.join('app/subscribers/slack_error_subscriber')
 
-RSpec.describe ApiErrorSubscriber, type: :feature do
-  let(:error) { StandardError.new('API request failed') }
+RSpec.describe SlackErrorSubscriber, type: :feature do
+  let(:error) { StandardError.new('error message') }
   let(:slack_client) { instance_double(Slack::Web::Client) }
 
   before do
