@@ -62,7 +62,7 @@ module Strategies
         ).parsed
       rescue => e
         Rails.error.report(e, context: { 
-          action: 'LINE ID token verification & get user info',
+          action: '[LINE login] ID token verification & get user info',
           client_id: options.client_id,
           has_id_token: access_token['id_token'].present?
         })
