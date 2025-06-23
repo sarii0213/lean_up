@@ -1776,6 +1776,11 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
+    faraday-mashify (1.0.0)
+      faraday (~> 2.0)
+      hashie
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
     ffi (1.17.2)
@@ -1785,6 +1790,8 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
+    gli (2.22.2)
+      ostruct
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -1899,6 +1906,7 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     orm_adapter (0.5.0)
+    ostruct (0.6.2)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -2053,6 +2061,13 @@ GEM
       websocket (~> 1.0)
     semantic-ui-sass (2.4.4.0)
       sassc
+    slack-ruby-client (2.6.0)
+      faraday (>= 2.0)
+      faraday-mashify
+      faraday-multipart
+      gli
+      hashie
+      logger
     smart_properties (1.17.0)
     snaky_hash (2.0.1)
       hashie
@@ -2161,6 +2176,7 @@ DEPENDENCIES
   seed-fu
   selenium-webdriver
   semantic-ui-sass
+  slack-ruby-client
   solid_cable
   solid_cache
   solid_queue
