@@ -13,7 +13,6 @@ class PushLineJob < ApplicationJob
 
       message = build_message(objective)
       request = Line::Bot::V2::MessagingApi::PushMessageRequest.new(to: user.uid, messages: [message])
-      client.push_message(push_message_request: request)
     end
   end
 

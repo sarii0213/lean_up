@@ -15,18 +15,6 @@ module Strategies
       token_url: 'https://api.line.me/oauth2/v2.1/token'
     }
 
-    # 認可コード取得のAPIリクエスト
-    def request_phase
-      super
-    rescue => e
-      Rails.error.report(e, handled: false, context: {
-        action: 'LINE auth code request',
-        authorize_url: client.options[:authorize_url],
-        client_id: options.client_id
-      })
-      raise e
-    end
-
     # callback phase ---------------------------------------------------
     # 取得したデータ(LINEユーザーID)からuid(=unique to the provider)をセット
     uid { raw_info['sub'] }
@@ -41,19 +29,6 @@ module Strategies
 
     def raw_info
       @raw_info ||= verify_id_token
-    end
-
-    # access token 取得のAPIリクエスト
-    def build_access_token
-      super
-    rescue => e
-      Rails.error.report(e, context: {
-        action: 'LINE access token request',
-        token_url: client.options[:token_url],
-        client_id: options.client_id,
-        has_authorization_code: request.params['code'].present?
-      })
-      raise
     end
 
     private
