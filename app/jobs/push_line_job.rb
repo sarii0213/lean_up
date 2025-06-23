@@ -49,7 +49,7 @@ class PushLineJob < ApplicationJob
       {
         action: '[LINE delivery] push message',
         user_id: user.id,
-        objective_id:  objective.id
+        objective_id: objective.id
       })
   end
 end

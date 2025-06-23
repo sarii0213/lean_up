@@ -36,7 +36,7 @@ RSpec.describe ApiErrorSubscriber, type: :feature do
         {
           action: '[LINE delivery] push message',
           user_id: user.id,
-          objective_id:  objective.id
+          objective_id: objective.id
         }
       end
       let(:user) { create(:user, provider: 'line', uid: '1234567') }
