@@ -16,7 +16,6 @@ module Strategies
     }
 
     # callback phase ---------------------------------------------------
-
     # 取得したデータ(LINEユーザーID)からuid(=unique to the provider)をセット
     uid { raw_info['sub'] }
 
@@ -49,17 +48,26 @@ module Strategies
       full_host + callback_path
     end
 
-    # access_tokenからIDトークンを取得して検証 -> ユーザ情報取得
+    # ID token 検証 & ユーザ情報取得のAPIリクエスト
     def verify_id_token
-      @id_token_payload ||= client.request(:post, 'https://api.line.me/oauth2/v2.1/verify', 
-        {
-          body: {
-            id_token: access_token['id_token'],
-            client_id: options.client_id,
-            nonce: session.delete('omniauth.nonce')
+      @id_token_payload ||= begin
+        client.request(:post, 'https://api.line.me/oauth2/v2.1/verify', 
+          {
+            body: {
+              id_token: access_token['id_token'],
+              client_id: options.client_id,
+              nonce: session.delete('omniauth.nonce')
+            }
           }
-        }
-      ).parsed
+        ).parsed
+      rescue => e
+        Rails.error.report(e, context: { 
+          action: '[LINE login] ID token verification & get user info',
+          client_id: options.client_id,
+          has_id_token: access_token['id_token'].present?
+        })
+        raise
+      end
     
       @id_token_payload
     end

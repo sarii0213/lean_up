@@ -27,6 +27,10 @@ RSpec.describe 'LINEログイン機能', type: :feature do
     Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:line]
   end
 
+  after do
+    OmniAuth.config.mock_auth[:line] = nil
+  end
+
   context '既存ユーザーがLINE未連携でログイン中の場合' do
     let!(:user) { create(:user, provider: nil, uid: nil) }
 
