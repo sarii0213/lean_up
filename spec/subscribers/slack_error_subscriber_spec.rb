@@ -10,10 +10,11 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
   before do
     allow(Slack::Web::Client).to receive(:new).and_return(slack_client)
     allow(slack_client).to receive(:chat_postMessage)
+    allow(Rails.env).to receive(:production?).and_return(true)
   end
 
   describe '#report' do
-    context 'LINEログイン時のエラーを受け取った場合' do
+    context '本番環境でLINEログイン時のエラーを受け取った場合' do
       let(:context) do
         {
           action: '[LINE login] ID token verification & get user info',
@@ -25,13 +26,13 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
       it 'エラー内容をSlackに通知する' do
         Rails.error.report(error, context:)
 
-        expect(slack_client).to have_received(:chat_postMessage).with(
-          hash_including(blocks: include('[LINE login]'))
-        )
+        expect(slack_client).to have_received(:chat_postMessage) do |args|
+          expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE login') })
+        end
       end
     end
 
-    context 'LINE配信時のエラーを受け取った場合' do
+    context '本番環境でLINE配信時のエラーを受け取った場合' do
       let(:context) do
         {
           action: '[LINE delivery] push message',
@@ -45,9 +46,9 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
       it 'エラー内容をSlackに通知する' do
         Rails.error.report(error, context:)
 
-        expect(slack_client).to have_received(:chat_postMessage).with(
-          hash_including(blocks: include('[LINE delivery]'))
-        )
+        expect(slack_client).to have_received(:chat_postMessage) do |args|
+          expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE delivery') })
+        end
       end
     end
   end
