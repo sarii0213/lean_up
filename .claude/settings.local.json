@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(bin/rails console:*)",
+      "Bash(bundle exec rails:*)"
+    ],
+    "deny": []
+  }
+}
