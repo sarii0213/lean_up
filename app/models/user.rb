@@ -58,7 +58,7 @@ class User < ApplicationRecord
     current_user && current_user.uid.blank?
   end
 
-  def self.link_line_account(auth, current_user = nil)
+  def self.link_line_account(auth, current_user)
     success = current_user.update(
       provider: auth.provider,
       uid: auth.uid,
