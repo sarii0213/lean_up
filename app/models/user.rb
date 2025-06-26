@@ -51,7 +51,10 @@ class User < ApplicationRecord
   # rubocop:disable Metrics/AbcSize
   def self.from_omniauth(auth, current_user = nil)
     if current_user && current_user.uid.blank?
-      current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email, line_notify: true)
+      unless current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email, line_notify: true)
+        return nil
+      end
+
       return current_user
     end
 
