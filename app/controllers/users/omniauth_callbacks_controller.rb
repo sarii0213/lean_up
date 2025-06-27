@@ -6,19 +6,34 @@ module Users
     # https://github.com/omniauth/omniauth/wiki/FAQ#rails-session-is-clobbered-after-callback-on-openid-providers
     skip_before_action :verify_authenticity_token, only: :line
 
-    # rubocop:disable Metrics/AbcSize
     def line
       @user = User.from_omniauth(request.env['omniauth.auth'], current_user)
 
+      notify_line_already_linked and return if current_user && @user.nil?
+
       if @user.persisted?
-        sign_in_and_redirect @user, event: :authentication
-        set_flash_message(:notice, :success, kind: 'LINE')
+        complete_line_login
       else
-        session['devise.line_data'] = request.env['omniauth.auth'].except(:extra)
-        redirect_to new_user_registration_url
-        set_flash_message(:alert, :failure, kind: 'LINE', reason: '他アカウントでLINE連携済み, 又はメールアドレスの取得に失敗')
+        fail_line_login
       end
     end
-    # rubocop:enable Metrics/AbcSize
+
+    private
+
+    def notify_line_already_linked
+      redirect_to user_setting_path
+      set_flash_message(:alert, :failure, kind: 'LINE', reason: '他アカウントでLINE連携済みです')
+    end
+
+    def complete_line_login
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: 'LINE')
+    end
+
+    def fail_line_login
+      session['devise.line_data'] = request.env['omniauth.auth'].except(:extra)
+      redirect_to new_user_registration_url
+      set_flash_message(:alert, :failure, kind: 'LINE', reason: 'LINE連携に失敗しました')
+    end
   end
 end

@@ -45,22 +45,36 @@ class User < ApplicationRecord
   end
 
   def line_notification_allowed?
-    uid.present? && line_notify
+    line_connected? && line_notify
   end
 
-  # rubocop:disable Metrics/AbcSize
   def self.from_omniauth(auth, current_user = nil)
-    if current_user && current_user.uid.blank?
-      current_user.update(provider: auth.provider, uid: auth.uid, email: auth.info.email, line_notify: true)
-      return current_user
-    end
+    return link_line_account(auth, current_user) if current_user&.line_connected? == false
 
-    # LINE連携済みのuserのusername, passwordは更新しない
-    find_or_create_by(provider: auth.provider, uid: auth.uid, email: auth.info.email) do |user|
+    sign_in_or_create_user_from_line(auth)
+  end
+
+  def self.link_line_account(auth, current_user)
+    success = current_user.update(
+      provider: auth.provider,
+      uid: auth.uid,
+      email: auth.info.email,
+      line_notify: true
+    )
+
+    success ? current_user : nil
+  end
+
+  def self.sign_in_or_create_user_from_line(auth)
+    # LINE連携済みのuserのusername, passwordは更新されない
+    find_or_create_by(
+      provider: auth.provider,
+      uid: auth.uid,
+      email: auth.info.email
+    ) do |user|
       user.username = auth.info.name
       user.password = Devise.friendly_token[0, 20]
       user.line_notify = true
     end
   end
-  # rubocop:enable Metrics/AbcSize
 end

@@ -82,4 +82,21 @@ RSpec.describe 'LINEログイン機能', type: :feature do
       expect(user.valid_password?('password')).to be(true)
     end
   end
+
+  context 'すでに他ユーザーでLINE連携済みのLINEアカウントに対してLINE連携を試みた場合' do
+    let(:user) { create(:user, provider: nil, uid: nil) }
+
+    before do
+      create(:user, provider: 'line', uid: line_uid, email: line_email)
+
+      login_as user
+      visit user_setting_path
+      click_button 'LINEと連携する'
+    end
+
+    it 'LINE連携に失敗する' do
+      expect(current_path).to eq(user_setting_path)
+      expect(page).to have_content('他アカウントでLINE連携済みです')
+    end
+  end
 end
