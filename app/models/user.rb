@@ -45,17 +45,13 @@ class User < ApplicationRecord
   end
 
   def line_notification_allowed?
-    uid.present? && line_notify
+    line_connected? && line_notify
   end
 
   def self.from_omniauth(auth, current_user = nil)
-    return link_line_account(auth, current_user) if linking_line_account?(current_user)
+    return link_line_account(auth, current_user) if current_user&.line_connected? == false
 
     sign_in_or_create_user_from_line(auth)
-  end
-
-  def self.linking_line_account?(current_user)
-    current_user && current_user.uid.blank?
   end
 
   def self.link_line_account(auth, current_user)
