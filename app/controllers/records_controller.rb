@@ -15,8 +15,7 @@ class RecordsController < ApplicationController
     @record = current_user.records.find_or_initialize_by(recorded_on: record_params[:recorded_on])
     @record.assign_attributes(record_params)
     if @record.save
-      flash[:notice] = success_message
-      render turbo_stream: turbo_stream.action(:redirect, records_path)
+      render_success
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,6 +25,16 @@ class RecordsController < ApplicationController
 
   def record_params
     params.expect(record: %i[recorded_on weight body_fat])
+  end
+
+  def render_success
+    # rubocop:disable Rails/ActionControllerFlashBeforeRender
+    flash[:notice] = success_message
+    # rubocop:enable Rails/ActionControllerFlashBeforeRender
+    render turbo_stream: [
+      turbo_stream.remove('modal'),
+      turbo_stream.action(:redirect, records_path)
+    ]
   end
 
   def success_message
