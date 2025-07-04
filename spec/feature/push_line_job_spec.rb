@@ -72,7 +72,7 @@ RSpec.describe PushLineJob, type: :job do
 
     it 'テストメッセージが配信される' do
       test_message = Line::Bot::V2::MessagingApi::TextMessage.new(text: 'test message')
-      described_class.perform_now(:test, current_user: user)
+      described_class.perform_now(mode: :test, current_user: user)
       expect(mock_client).to have_received(:push_message).with(
         push_message_request: have_attributes(to: user.uid, messages: [test_message])
       )

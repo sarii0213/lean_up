@@ -50,7 +50,7 @@ class UserSettingsController < ApplicationController
   end
 
   def send_line_test_message
-    PushLineJob.perform_later(:test, current_user: current_user)
+    PushLineJob.perform_later(mode: :test, current_user: current_user)
     session[:last_line_test_sent_at] = Time.zone.now.to_i
     flash[:notice] = t('user_setting.line_test_sent')
     redirect_to user_setting_path

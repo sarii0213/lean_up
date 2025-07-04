@@ -1,12 +1,12 @@
 development:
   push_line_job:
     class: PushLineJob
-    args: [:daily]
+    args: []
     schedule: 45 19 * * * Asia/Tokyo
 
 production:
   push_line_job:
     class: PushLineJob
-    args: [:daily]
+    args: []
     schedule: 0 8 * * * Asia/Tokyo
 
