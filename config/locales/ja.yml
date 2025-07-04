@@ -2,6 +2,9 @@
 ja:
   user_setting:
     updated: ユーザー設定を更新しました
+    line_not_connected: LINEアカウントが連携されていません
+    line_test_sent: テストメッセージを送信しました
+    line_test_wait: 時間をおいて再度テスト配信を行なってください
   objective:
     created: ビジョンボードに登録しました
     updated: ビジョンボードを更新しました

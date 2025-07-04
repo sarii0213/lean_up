@@ -5,25 +5,42 @@ require 'line/bot'
 class PushLineJob < ApplicationJob
   queue_as :default
 
-  # rubocop:disable Metrics/MethodLength
-  def perform(*_args)
+  def perform(*args)
+    if args.first == :test
+      send_test_message(args.last[:current_user])
+    else
+      send_daily_objectives
+    end
+  end
+
+  private
+
+  def send_test_message(user)
+    message = Line::Bot::V2::MessagingApi::TextMessage.new(text: 'test message')
+    send_message_to_user(user, message, action: '[LINE delivery test] push message')
+  end
+
+  def send_daily_objectives
     users = User.where.not(uid: nil).where(line_notify: true).includes(:objectives)
     users.each do |user|
       objective = user.objectives.sample
       next if objective.blank?
 
       message = build_message(objective)
-      request = Line::Bot::V2::MessagingApi::PushMessageRequest.new(to: user.uid, messages: [message])
-      begin
-        client.push_message(push_message_request: request)
-      rescue StandardError => e
-        report_error(e, user, objective)
-      end
+      send_message_to_user(user, message, action: '[LINE delivery] push message', objective: objective)
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
-  private
+  def send_message_to_user(user, message, action:, objective: nil)
+    request = Line::Bot::V2::MessagingApi::PushMessageRequest.new(to: user.uid, messages: [message])
+    begin
+      client.push_message(push_message_request: request)
+    rescue StandardError => e
+      context = { action: action, user_id: user.id }
+      context[:objective_id] = objective.id if objective
+      Rails.error.report(e, context: context)
+    end
+  end
 
   def build_message(objective)
     case objective.objective_type
@@ -42,14 +59,5 @@ class PushLineJob < ApplicationJob
     Line::Bot::V2::MessagingApi::ApiClient.new(
       channel_access_token: ENV.fetch('LINE_BOT_CHANNEL_ACCESS_TOKEN', nil)
     )
-  end
-
-  def report_error(error, user, objective)
-    Rails.error.report(error, context:
-      {
-        action: '[LINE delivery] push message',
-        user_id: user.id,
-        objective_id: objective.id
-      })
   end
 end
