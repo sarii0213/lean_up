@@ -5,9 +5,9 @@ require 'line/bot'
 class PushLineJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    if args.first == :test
-      send_test_message(args.last[:current_user])
+  def perform(mode, current_user: nil)
+    if mode == :test
+      send_test_message(current_user)
     else
       send_daily_objectives
     end

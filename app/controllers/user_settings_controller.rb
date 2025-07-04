@@ -44,7 +44,7 @@ class UserSettingsController < ApplicationController
   end
 
   def line_test_cooldown_active?
-    return unless session[:last_line_test_sent_at]
+    return false unless session[:last_line_test_sent_at]
 
     Time.zone.at(session[:last_line_test_sent_at].to_i) > LINE_TEST_WAIT_MINUTES.minutes.ago
   end
