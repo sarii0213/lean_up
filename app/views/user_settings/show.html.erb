@@ -46,7 +46,7 @@
               <span style="display:inline-block;width:100%;text-align:center;">
                 <span style="display:inline-flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
                   <a href="https://lin.ee/ODYILiF"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="40" border="0"></a>
-                  <%= link_to "LINE配信テスト", line_test_user_setting_path, class: 'ui positive basic button', style: 'height:40px;' %>
+                  <%= link_to "LINE配信テスト", line_test_user_setting_path, class: 'ui positive basic button', style: 'height:40px;', data: { turbo_method: :post } %>
                 </span>
               </span>
             </label>

@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   resources :records, only: %i[index new update]
   resource :user_setting, only: %i[show edit update] do
-    get :line_test, on:  :collection
+    post :line_test, on:  :collection
   end
   resources :periods
 
