@@ -51,5 +51,23 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
         end
       end
     end
+
+    context '本番環境でLINEテスト配信時のエラーを受け取った場合' do
+      let(:context) do
+        {
+          action: '[LINE delivery test] push message',
+          user_id: user.id
+        }
+      end
+      let(:user) { create(:user, provider: 'line', uid: '1234567') }
+
+      it 'エラー内容をSlackに通知する' do
+        Rails.error.report(error, context:)
+
+        expect(slack_client).to have_received(:chat_postMessage) do |args|
+          expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE delivery test') })
+        end
+      end
+    end
   end
 end
