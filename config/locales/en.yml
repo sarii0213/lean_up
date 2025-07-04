@@ -31,3 +31,6 @@ en:
   hello: "Hello world"
   user_setting:
     updated: "User setting was updated"
+    line_not_connected: LINE account is not connected
+    line_test_wait: Please wait a while before sending another test message
+    line_test_sent: LINE test message has been sent successfully
