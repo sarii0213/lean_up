@@ -169,8 +169,8 @@ Resources:
             Version: !GetAtt EC2LaunchTemplate.LatestVersionNumber
           Overrides:
             ## Since the Memory is the same below, WeightedCapacity is not specified.
-            - InstanceType: t2.micro
-            - InstanceType: t3a.micro
+            - InstanceType: t3a.medium
+            - InstanceType: t3.medium
         InstancesDistribution:
           OnDemandBaseCapacity: 0
           OnDemandPercentageAboveBaseCapacity: 0
