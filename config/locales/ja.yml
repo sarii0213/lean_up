@@ -11,6 +11,11 @@ ja:
     destroyed: ビジョンボードから削除しました
     moved_up: 上に移動しました
     moved_down: 下に移動しました
+  records:
+    one_month: 1ヶ月
+    three_months: 3ヶ月
+    six_months: 6ヶ月
+    one_year: 1年
   period:
     created: 生理周期を登録しました
     updated: 生理周期を更新しました

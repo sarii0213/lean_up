@@ -8,7 +8,7 @@ export default class extends Controller {
     this.avgChartTarget.style.display = "block"
   }
 
-  toggleChart() {
+  toggleAvg() {
     this.normalChartTarget.style.display = this.normalChartTarget.style.display === "block" ? "none" : "block"
     this.avgChartTarget.style.display = this.avgChartTarget.style.display === "block" ? "none" : "block"
   }

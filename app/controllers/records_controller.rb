@@ -4,7 +4,14 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @records = current_user.records.order(:recorded_on)
+    since_when = case params[:timeframe]
+                 when 'one_month' then 1.month.ago
+                 when 'three_months' then 3.months.ago
+                 when 'six_months' then 6.months.ago
+                 when 'one_year' then 1.year.ago
+                 else 3.months.ago
+                 end
+    @records = current_user.records.where(recorded_on: since_when..Time.zone.now).order(:recorded_on)
   end
 
   def new
