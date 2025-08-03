@@ -4,13 +4,6 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    since_when = case params[:timeframe]
-                 when 'one_month' then 1.month.ago
-                 when 'three_months' then 3.months.ago
-                 when 'six_months' then 6.months.ago
-                 when 'one_year' then 1.year.ago
-                 else 3.months.ago
-                 end
     @records = current_user.records.where(recorded_on: since_when..Time.zone.now).order(:recorded_on)
   end
 
@@ -32,6 +25,15 @@ class RecordsController < ApplicationController
 
   def record_params
     params.expect(record: %i[recorded_on weight body_fat])
+  end
+
+  def since_when
+    {
+      'one_month' => 1.month.ago,
+      'three_months' => 3.months.ago,
+      'six_months' => 6.months.ago,
+      'one_year' => 1.year.ago
+    }.fetch(params[:timeframe], 3.months.ago)
   end
 
   def render_success
