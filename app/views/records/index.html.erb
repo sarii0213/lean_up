@@ -5,7 +5,9 @@
     </div>
   </div>
   <div class="ui hidden divider"></div>
-  <%= render partial: 'records', locals: { records: @records } %>
+  <%= turbo_frame_tag "chart" do %>
+    <%= render partial: 'records', locals: { records: @records } %>
+  <% end %>
   <div class="ui right aligned grid">
     <div class="right floated column">
       <%= button_to new_record_path, method: :get, data: { turbo_frame: "modal" } do %>

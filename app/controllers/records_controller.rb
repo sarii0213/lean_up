@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class RecordsController < ApplicationController
+  TIMEFRAME_OPTIONS = {
+    'one_month' => -> { 1.month.ago },
+    'three_months' => -> { 3.months.ago },
+    'six_months' => -> { 6.months.ago },
+    'one_year' => -> { 1.year.ago }
+  }.freeze
+  DEFAULT_TIMEFRAME = 'three_months'
+
   before_action :authenticate_user!
 
   def index
@@ -28,12 +36,8 @@ class RecordsController < ApplicationController
   end
 
   def since_when
-    {
-      'one_month' => 1.month.ago,
-      'three_months' => 3.months.ago,
-      'six_months' => 6.months.ago,
-      'one_year' => 1.year.ago
-    }.fetch(params[:timeframe], 3.months.ago)
+    timeframe_lambda = TIMEFRAME_OPTIONS[params[:timeframe] || DEFAULT_TIMEFRAME]
+    timeframe_lambda.call
   end
 
   def render_success
