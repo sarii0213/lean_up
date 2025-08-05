@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
 class RecordsController < ApplicationController
+  TIMEFRAME_OPTIONS = {
+    'one_month' => -> { 1.month.ago },
+    'three_months' => -> { 3.months.ago },
+    'six_months' => -> { 6.months.ago },
+    'one_year' => -> { 1.year.ago }
+  }.freeze
+  DEFAULT_TIMEFRAME = 'three_months'
+
   before_action :authenticate_user!
 
   def index
-    @records = current_user.records.order(:recorded_on)
+    @records = current_user.records.where(recorded_on: since_when..Time.zone.now).order(:recorded_on)
   end
 
   def new
@@ -25,6 +33,11 @@ class RecordsController < ApplicationController
 
   def record_params
     params.expect(record: %i[recorded_on weight body_fat])
+  end
+
+  def since_when
+    timeframe_lambda = TIMEFRAME_OPTIONS[params[:timeframe] || DEFAULT_TIMEFRAME]
+    timeframe_lambda.call
   end
 
   def render_success

@@ -1,0 +1,12 @@
+<div class="ui celled horizontal list" style="display: flex; justify-content: center; margin-bottom: 15px;">
+  <% %w[one_month three_months six_months one_year].each do |timeframe| %>
+    <% selected = params[:timeframe] || 'three_months' %>
+    <%= link_to t("records.#{timeframe}"), records_path(timeframe:), class: 'item', style: "padding: 5px 10px; #{'font-weight: bold' if timeframe == selected}" %>
+  <% end %>
+</div>
+
+<% if records.present? %>
+  <%= render ChartComponent.new(records: records) %>
+<% else %>
+  <span style="display: table; margin: 30px auto">表示できる記録がありません</span>
+<% end %>

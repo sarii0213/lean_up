@@ -2,16 +2,12 @@
   <div class="ui two column centered grid">
     <div class="column ui center aligned">
       <h1>weight records</h1>
-      <%# TODO for future PR: 1ヶ月, 3ヶ月, 6ヶ月, 1年 の切り替えボタンを表示 -> turbo_streamでchart切り替え %>
     </div>
   </div>
   <div class="ui hidden divider"></div>
-  <div id="chart">
-    <% if @records.present? %>
-      <%= render ChartComponent.new(records: @records) %>
-    <% end %>
-  </div>
-
+  <%= turbo_frame_tag "chart" do %>
+    <%= render partial: 'records', locals: { records: @records } %>
+  <% end %>
   <div class="ui right aligned grid">
     <div class="right floated column">
       <%= button_to new_record_path, method: :get, data: { turbo_frame: "modal" } do %>
