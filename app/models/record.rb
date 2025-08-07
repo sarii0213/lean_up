@@ -49,15 +49,27 @@ class Record < ApplicationRecord
   end
 
   class MessageGenerator
-    def initialize(recorded_on)
+    def initialize(recorded_on, user = nil)
       @recorded_on = recorded_on
+      @user = user
     end
 
     def generate
-      # TODO: 生理周期登録機能実装後、メッセージ生成時に生理周期も参考にするように改善
       trend = Record.moving_average_trend(@recorded_on)
+      return period_message if plateau_during_period?(trend)
+
+      message_for_trend(trend)
+    end
+
+    private
+
+    def plateau_during_period?(trend)
+      trend == :plateau && @user.on_period?(@recorded_on)
+    end
+
+    def message_for_trend(trend)
       messages = { plateau: plateau_messages, smooth: smooth_messages }
-      trend ? messages[trend].sample : 'データが入るとメッセージが表示されます'
+      messages[trend]&.sample
     end
 
     def plateau_messages
@@ -66,6 +78,14 @@ class Record < ApplicationRecord
 
     def smooth_messages
       %w[減っている!!すごい!! いい調子で減量中!!]
+    end
+
+    def period_message
+      period_messages.sample
+    end
+
+    def period_messages
+      %w[プロゲステロンの影響で一時的に水分溜め込んでるだけ この時期に体重が増えるのは自然なこと ゆっくり休んで、ホルモンの乱れをやり過ごそう]
     end
   end
 end
