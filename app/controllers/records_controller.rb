@@ -51,7 +51,7 @@ class RecordsController < ApplicationController
   end
 
   def success_message
-    message = Record::MessageGenerator.new(@record.recorded_on, current_user).generate
+    message = Record::MessageGenerator.new(@record.recorded_on).generate
     "記録完了! #{message}"
   end
 end
