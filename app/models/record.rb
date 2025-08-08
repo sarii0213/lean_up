@@ -49,7 +49,7 @@ class Record < ApplicationRecord
   end
 
   class MessageGenerator
-    def initialize(recorded_on, user = nil)
+    def initialize(recorded_on, user)
       @recorded_on = recorded_on
       @user = user
     end
