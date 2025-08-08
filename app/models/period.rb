@@ -24,17 +24,12 @@ class Period < ApplicationRecord
   belongs_to :user
 
   validates :started_on, presence: true, uniqueness: { scope: :user_id }
-  validates :ended_on, comparison: { greater_than: :started_on }, if: -> { started_on.present? && ended_on.present? }
+  validates :ended_on, presence: true, comparison: { greater_than: :started_on }
   validate :date_difference
-
-  before_validation do
-    self.ended_on = started_on.advance(weeks: 1) if ended_on.blank?
-  end
 
   private
 
   def date_difference
-    return unless started_on.present? && ended_on.present?
     return unless ended_on > started_on.advance(weeks: 2)
 
     errors.add(:ended_on, 'は開始日から2週間以内に設定してください')

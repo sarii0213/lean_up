@@ -48,10 +48,6 @@ class User < ApplicationRecord
     line_connected? && line_notify
   end
 
-  def on_period?(date)
-    periods.exists?(['started_on <= ? AND ended_on >= ?', date, date])
-  end
-
   def self.from_omniauth(auth, current_user = nil)
     return link_line_account(auth, current_user) if current_user&.line_connected? == false
 
