@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def on_period?(date)
-    periods.where('started_on <= ? AND ended_on >= ?', date, date).exists?
+    periods.exists?(['started_on <= ? AND ended_on >= ?', date, date])
   end
 
   def self.from_omniauth(auth, current_user = nil)
