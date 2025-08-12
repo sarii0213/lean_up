@@ -56,18 +56,14 @@ class Record < ApplicationRecord
 
     def generate
       trend = Record.moving_average_trend(@recorded_on)
-      return period_message if plateau_during_period?(trend)
-
       message_for_trend(trend)
     end
 
     private
 
-    def plateau_during_period?(trend)
-      trend == :plateau && @user.on_period?(@recorded_on)
-    end
-
     def message_for_trend(trend)
+      return period_message if trend == :plateau && @user.on_period?(@recorded_on)
+
       messages = { plateau: plateau_messages, smooth: smooth_messages }
       messages[trend]&.sample
     end
