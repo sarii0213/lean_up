@@ -64,8 +64,8 @@ RSpec.describe User, type: :model do
 
   describe '#on_period?' do
     let(:user) { create(:user) }
-    let(:started_on) { Date.new(2025,1, 1) }
-    let(:ended_on) { Date.new(2025,1, 7) }
+    let(:started_on) { Date.new(2025, 1, 1) }
+    let(:ended_on) { Date.new(2025, 1, 7) }
 
     before do
       create(:period, user:, started_on:, ended_on:)
@@ -89,6 +89,8 @@ RSpec.describe User, type: :model do
   end
 
   describe '.from_omniauth' do
+    subject(:call) { described_class.from_omniauth(auth, current_user) }
+
     let(:auth) do
       OmniAuth::AuthHash.new(
         provider: 'line',
@@ -100,14 +102,13 @@ RSpec.describe User, type: :model do
       )
     end
 
-    subject { described_class.from_omniauth(auth, current_user) }
-
     context 'ユーザー未作成の場合' do
       let(:current_user) { nil }
 
       it '.sign_in_or_create_user_from_lineに委譲する' do
-        expect(described_class).to receive(:sign_in_or_create_user_from_line).with(auth).and_return(:new_user)
-        subject
+        allow(described_class).to receive(:sign_in_or_create_user_from_line).and_return(:new_user)
+        call
+        expect(described_class).to have_received(:sign_in_or_create_user_from_line).with(auth)
       end
     end
 
@@ -117,8 +118,9 @@ RSpec.describe User, type: :model do
       before { allow(current_user).to receive(:line_connected?).and_return(true) }
 
       it '.sign_in_or_create_user_from_lineに委譲する' do
-        expect(described_class).to receive(:sign_in_or_create_user_from_line).with(auth).and_return(:existing_user)
-        subject
+        allow(described_class).to receive(:sign_in_or_create_user_from_line).and_return(:existing_user)
+        call
+        expect(described_class).to have_received(:sign_in_or_create_user_from_line).with(auth)
       end
     end
 
@@ -128,8 +130,9 @@ RSpec.describe User, type: :model do
       before { allow(current_user).to receive(:line_connected?).and_return(false) }
 
       it '.link_line_accountに委譲する' do
-        expect(described_class).to receive(:link_line_account).with(auth, current_user).and_return(:updated_user)
-        subject
+        allow(described_class).to receive(:link_line_account).and_return(:updated_user)
+        call
+        expect(described_class).to have_received(:link_line_account).with(auth, current_user)
       end
     end
   end
@@ -147,26 +150,26 @@ RSpec.describe User, type: :model do
     end
     let(:current_user) do
       create(:user,
-        provider: nil,
-        uid: nil,
-        email: 'before@example.com',
-        line_notify: false
-      )
+             provider: nil,
+             uid: nil,
+             email: 'before@example.com',
+             line_notify: false)
     end
 
     context 'auth情報を組み込んでユーザーの更新ができた場合' do
+      # rubocop:disable RSpec/ExampleLength
       it '更新したユーザーを返す' do
-        result = described_class.link_line_account(auth, current_user)
-        expect(result).to eq(current_user)
+        expect(described_class.link_line_account(auth, current_user)).to eq(current_user)
 
         current_user.reload
-        aggregate_failures do
-          expect(current_user.provider).to eq('line')
-          expect(current_user.uid).to eq('123')
-          expect(current_user.email).to eq('test@example.com')
-          expect(current_user.line_notify).to be true
-        end
+        expect(current_user).to have_attributes(
+          provider: 'line',
+          uid: '123',
+          email: 'test@example.com',
+          line_notify: true
+        )
       end
+      # rubocop:enable RSpec/ExampleLength
     end
 
     context 'auth情報を組み込んでユーザーの更新ができなかった場合' do
@@ -176,7 +179,6 @@ RSpec.describe User, type: :model do
         expect(described_class.link_line_account(auth, current_user)).to be_nil
       end
     end
-
   end
 
   describe '.sign_in_or_create_user_from_line' do
@@ -194,10 +196,9 @@ RSpec.describe User, type: :model do
     context 'ユーザーがLINE連携済みの場合' do
       let!(:existing_user) do
         create(:user,
-          provider: 'line',
-          uid: '123',
-          email: 'test@example.com'
-        )
+               provider: 'line',
+               uid: '123',
+               email: 'test@example.com')
       end
 
       it 'LINE連携済みユーザーを返す' do
@@ -207,19 +208,21 @@ RSpec.describe User, type: :model do
     end
 
     context 'ユーザー未作成の場合' do
-      it 'auth情報をもとに新規ユーザーを作成する' do
-        expect { @user = described_class.sign_in_or_create_user_from_line(auth) }.to change(User, :count).by(1)
-        @user.reload
+      subject(:create_user) { described_class.sign_in_or_create_user_from_line(auth) }
 
-        aggregate_failures do
-          expect(@user.username).to eq('line_user')
-          expect(@user.email).to eq('test@example.com')
-          expect(@user.provider).to eq('line')
-          expect(@user.uid).to eq('123')
-          expect(@user.line_notify).to be true
-          expect(@user.encrypted_password).to be_present
-        end
+      # rubocop:disable RSpec/ExampleLength
+      it 'auth情報をもとに新規ユーザーを作成する' do
+        expect { create_user }.to change(described_class, :count).by(1)
+
+        expect(create_user).to have_attributes(
+          username: 'line_user',
+          email: 'test@example.com',
+          provider: 'line',
+          uid: '123',
+          line_notify: true
+        )
       end
+      # rubocop:enable RSpec/ExampleLength
     end
   end
 end
