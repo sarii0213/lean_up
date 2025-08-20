@@ -27,38 +27,34 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe '#line_connected?' do
+    subject { user.line_connected? }
+
     context 'ユーザーがLINE連携済みの場合' do
       let(:user) { create(:user, provider: 'line', uid: '123') }
 
-      it 'trueを返す' do
-        expect(user.line_connected?).to be true
-      end
+      it { is_expected.to be true }
     end
 
     context 'ユーザーがLINE未連携の場合' do
       let(:user) { create(:user, provider: nil, uid: nil) }
 
-      it 'falseを返す' do
-        expect(user.line_connected?).to be false
-      end
+      it { is_expected.to be false }
     end
   end
 
   describe '#line_notification_allowed?' do
+    subject { user.line_notification_allowed? }
+
     context 'ユーザーがLINE連携済み＆通知ONの場合' do
       let(:user) { create(:user, provider: 'line', uid: '123', line_notify: true) }
 
-      it 'trueを返す' do
-        expect(user.line_notification_allowed?).to be true
-      end
+      it { is_expected.to be true }
     end
 
     context 'ユーザーがLINE通知OFFの場合' do
       let(:user) { create(:user, provider: 'line', uid: '123', line_notify: false) }
 
-      it 'falseを返す' do
-        expect(user.line_notification_allowed?).to be false
-      end
+      it { is_expected.to be false }
     end
   end
 
