@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChartComponent < ViewComponent::Base
+  include Chartkick::Helper
+
   def initialize(records:)
     @records_for_chart = records.each_with_object({}) do |record, hash|
       hash[record.recorded_on.to_s] = record.weight
