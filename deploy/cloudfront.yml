@@ -24,11 +24,6 @@ Parameters:
       - prod
       - stg
       - dev
-  SubDomain:
-    Description: Sub Domain
-    Type: String
-    Default: cdn
-    AllowedPattern: ^[^.]*$
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -268,7 +263,7 @@ Resources:
       HostedZoneId:
         Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
       Name: !Sub
-        - "${SubDomain}.${DomainName}."
+        - "${DomainName}."
         - DomainName:
             Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
       Type: A
@@ -284,7 +279,7 @@ Resources:
       HostedZoneId:
         Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
       Name: !Sub
-        - "${SubDomain}.${DomainName}."
+        - "${DomainName}."
         - DomainName:
             Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
       Type: AAAA

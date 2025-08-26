@@ -196,21 +196,6 @@ Resources:
               </body>
               </html>
 
-  ## Route 53: Record Set (IPv4)
-  Route53RecordSetIPv4:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId:
-        Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
-      Name: !Sub
-        - "${SubDomain}.${DomainName}."
-        - DomainName:
-            Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
-      Type: A
-      AliasTarget:
-        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
-        DNSName: !Sub dualstack.${LoadBalancer.DNSName}
-
 Outputs:
   ## S3: Bucket (Access Logs)
   S3BucketAccessLogs:
