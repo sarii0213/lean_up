@@ -24,11 +24,6 @@ Parameters:
       - prod
       - stg
       - dev
-  SubDomain:
-    Description: Sub Domain
-    Type: String
-    Default: cdn
-    AllowedPattern: ^[^.]*$
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -38,7 +33,6 @@ Metadata:
         Parameters:
           - SystemName
           - Environment
-          - SubDomain
 
 Resources:
   ## Secrets Manager: Secret (x-via-cloudfront)
@@ -109,10 +103,8 @@ Resources:
         PriceClass: PriceClass_200
         # WebACLId: !FindInMap [ EnvironmentMap, !Ref Environment, WebACLArn ]
         Aliases:
-          - !Sub
-            - "${SubDomain}.${DomainName}"
-            - DomainName:
-                Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
+          - !ImportValue
+            Fn::Sub: "${SystemName}-${Environment}-route53-HostedZoneDomainName"
         ViewerCertificate:
           AcmCertificateArn: !FindInMap [ EnvironmentMap, !Ref Environment, AcmCertificateArn ]
           SslSupportMethod: sni-only
@@ -268,7 +260,7 @@ Resources:
       HostedZoneId:
         Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
       Name: !Sub
-        - "${SubDomain}.${DomainName}."
+        - "${DomainName}."
         - DomainName:
             Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
       Type: A
@@ -284,7 +276,7 @@ Resources:
       HostedZoneId:
         Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
       Name: !Sub
-        - "${SubDomain}.${DomainName}."
+        - "${DomainName}."
         - DomainName:
             Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
       Type: AAAA

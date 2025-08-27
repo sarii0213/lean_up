@@ -15,11 +15,6 @@ Parameters:
       - prod
       - stg
       - dev
-  SubDomain:
-    Description: Sub Domain
-    Type: String
-    Default: elb
-    AllowedPattern: ^[^.]*$
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -29,7 +24,6 @@ Metadata:
         Parameters:
           - SystemName
           - Environment
-          - SubDomain
 
 Resources:
   ## S3: Bucket (Access Logs)
@@ -169,47 +163,6 @@ Resources:
               </html>
 
 
-  ## ELB: Listener Rule (404 Not Found)
-  ListenerRuleNotFound:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      ListenerArn: !Ref ListenerHttps
-      Priority: 100
-      Conditions:
-        - Field: host-header
-          HostHeaderConfig:
-            Values:
-              - !Sub
-                - "${SubDomain}.${DomainName}"
-                - DomainName:
-                    Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
-      Actions:
-        - Type: fixed-response
-          FixedResponseConfig:
-            StatusCode: "404"
-            ContentType: text/html
-            MessageBody: |
-              <html>
-              <head><title>404 Not Found</title></head>
-              <body>
-              <center><h1>404 Not Found</h1></center>
-              </body>
-              </html>
-
-  ## Route 53: Record Set (IPv4)
-  Route53RecordSetIPv4:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId:
-        Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZone
-      Name: !Sub
-        - "${SubDomain}.${DomainName}."
-        - DomainName:
-            Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
-      Type: A
-      AliasTarget:
-        HostedZoneId: !GetAtt LoadBalancer.CanonicalHostedZoneID
-        DNSName: !Sub dualstack.${LoadBalancer.DNSName}
 
 Outputs:
   ## S3: Bucket (Access Logs)
@@ -291,15 +244,3 @@ Outputs:
     Value: !Ref ListenerHttps
     Export:
       Name: !Sub ${AWS::StackName}-ListenerHttps
-
-  ## ELB: Listener Rule (404 Not Found)
-  ListenerRuleNotFound:
-    Value: !Ref ListenerRuleNotFound
-    Export:
-      Name: !Sub ${AWS::StackName}-ListenerRuleNotFound
-
-  ## Route 53: Record Set (IPv4)
-  Route53RecordSetIPv4:
-    Value: !Ref Route53RecordSetIPv4
-    Export:
-      Name: !Sub ${AWS::StackName}-Route53RecordSetIPv4
