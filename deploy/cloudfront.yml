@@ -104,7 +104,7 @@ Resources:
         # WebACLId: !FindInMap [ EnvironmentMap, !Ref Environment, WebACLArn ]
         Aliases:
           - !ImportValue
-            !Sub "${SystemName}-${Environment}-route53-HostedZoneDomainName"
+            Fn::Sub: "${SystemName}-${Environment}-route53-HostedZoneDomainName"
         ViewerCertificate:
           AcmCertificateArn: !FindInMap [ EnvironmentMap, !Ref Environment, AcmCertificateArn ]
           SslSupportMethod: sni-only
