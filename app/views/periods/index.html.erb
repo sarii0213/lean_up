@@ -15,12 +15,16 @@
     </div>
     <div class="ui card" style="width: 100%;">
       <div class="content">
-        <% @periods.each do |period| %>
-          <%= turbo_frame_tag period do %>
-            <%= render period %>
+        <% if @periods.present? %>
+          <% @periods.each do |period| %>
+            <%= turbo_frame_tag period do %>
+              <%= render period %>
+            <% end %>
           <% end %>
+        <% else %>
+          <p>no data</p>
         <% end %>
-      </div>
+        </div>
     </div>
   </div>
 </div>
