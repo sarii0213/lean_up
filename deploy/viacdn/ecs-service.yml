@@ -209,7 +209,7 @@ Resources:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
             - Name: APP_HOST
               Value: !Sub
-                - "https://cdn.${DomainName}"
+                - "https://${DomainName}"
                 - DomainName:
                     Fn::ImportValue: !Sub ${SystemName}-${Environment}-route53-HostedZoneDomainName
           LogConfiguration:
