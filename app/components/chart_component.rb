@@ -36,7 +36,7 @@ class ChartComponent < ViewComponent::Base
 
   def minimum_record
     # 体脂肪 非表示時の出力データ： {'YY-MM-DD': '60', ..}
-    @records_for_chart.values.compact.min.to_i unless @display_body_fat
+    return @records_for_chart.values.compact.min.to_i unless @display_body_fat
 
     # 体脂肪 表示時の出力データ： [{name:'weight', data: {'YY-MM-DD': '60', ..}},{name:'body fat', data: {...}}]
     [weight_min, body_fat_min].compact.min.to_i
@@ -55,7 +55,7 @@ class ChartComponent < ViewComponent::Base
   end
 
   def maximum_record
-    @records_for_chart.values.compact.max.to_i unless @display_body_fat
+    return @records_for_chart.values.compact.max.to_i unless @display_body_fat
 
     @records_for_chart.dig(0, :data).values.compact.max.to_i
   end
