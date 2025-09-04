@@ -6,7 +6,7 @@
   </div>
   <div class="ui hidden divider"></div>
   <%= turbo_frame_tag "chart" do %>
-    <%= render partial: 'records', locals: { records: @records } %>
+    <%= render partial: 'records', locals: { records: @records, display_body_fat: @display_body_fat } %>
   <% end %>
   <div class="ui right aligned grid">
     <div class="right floated column">
