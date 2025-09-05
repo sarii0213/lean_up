@@ -1,9 +1,9 @@
 <div data-controller="chart">
   <div data-chart-target="avgChart" style="display:block">
-    <%= line_chart average_records_for_chart, min: @minimum_record - 5, max: @maximum_record + 5 %>
+    <%= line_chart average_records_for_chart, min: minimum_record - 5, max: maximum_record + 5 %>
   </div>
   <div data-chart-target="normalChart" style="display:none">
-    <%= line_chart @records_for_chart, min: @minimum_record - 5, max: @maximum_record + 5 %>
+    <%= line_chart records_for_chart, min: minimum_record - 5, max: maximum_record + 5 %>
   </div>
 
   <div class="ui toggle checkbox" style="margin:20px">
