@@ -5,8 +5,6 @@ class ChartComponent < ViewComponent::Base
 
   MOVING_AVERAGE_DAYS = 14
 
-  # 体脂肪 表示時の出力データ： [{name:'weight', data: {'YY-MM-DD': '60', ..}},{name:'body fat', data: {...}}]
-  # 体脂肪 非表示時の出力データ： {'YY-MM-DD': '60', ..}
   def initialize(records:, display_body_fat:)
     @display_body_fat = display_body_fat
     @raw_records = records
@@ -30,6 +28,8 @@ class ChartComponent < ViewComponent::Base
 
   private
 
+  # 体脂肪 表示時の出力データ： [{name:'weight', data: {'YY-MM-DD': '60', ..}},{name:'body fat', data: {...}}]
+  # 体脂肪 非表示時の出力データ： {'YY-MM-DD': '60', ..}
   def build_records_for_chart(records)
     if @display_body_fat
       weight_list = { name: 'weight (kg)', data: value_hash(records, &:weight) }
@@ -41,9 +41,10 @@ class ChartComponent < ViewComponent::Base
   end
 
   def value_hash(records, reject_blank: false)
-    pairs = records.map { |r| [r.recorded_on.to_s, yield(r)] }
-    pairs.reject! { |_, v| v.blank? } if reject_blank
-    pairs.to_h
+    records.each_with_object({}) do |record, hash|
+      value = yield(record)
+      hash[record.recorded_on.to_s] = value unless reject_blank && value.blank?
+    end
   end
 
   def calculate_extremum(operation)
