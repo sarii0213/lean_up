@@ -3,22 +3,84 @@
 class ChartComponent < ViewComponent::Base
   include Chartkick::Helper
 
-  def initialize(records:)
-    @records_for_chart = records.each_with_object({}) do |record, hash|
-      hash[record.recorded_on.to_s] = record.weight
-    end
-    @minimum_record = @records_for_chart.min_by { |a| a[1] }[1].to_i
+  MOVING_AVERAGE_DAYS = 14
+
+  def initialize(records:, display_body_fat:)
+    @display_body_fat = display_body_fat
+    @raw_records = records
+  end
+
+  def records_for_chart
+    @records_for_chart ||= build_records_for_chart(@raw_records)
   end
 
   def average_records_for_chart
-    calculate_moving_average(@records_for_chart)
+    @average_records_for_chart ||= calculate_moving_average(records_for_chart)
+  end
+
+  def minimum_record
+    @minimum_record ||= calculate_extremum(:min)
+  end
+
+  def maximum_record
+    @maximum_record ||= calculate_extremum(:max)
   end
 
   private
 
+  # 体脂肪 表示時の出力データ： [{name:'weight', data: {'YY-MM-DD': '60', ..}},{name:'body fat', data: {...}}]
+  # 体脂肪 非表示時の出力データ： {'YY-MM-DD': '60', ..}
+  def build_records_for_chart(records)
+    if @display_body_fat
+      weight_list = { name: 'weight (kg)', data: value_hash(records, &:weight) }
+      body_fat_list = { name: 'body fat (%)', data: value_hash(records, reject_blank: true, &:body_fat) }
+      [weight_list, body_fat_list]
+    else
+      value_hash(records, &:weight)
+    end
+  end
+
+  def value_hash(records, reject_blank: false)
+    records.each_with_object({}) do |record, hash|
+      value = yield(record)
+      hash[record.recorded_on.to_s] = value unless reject_blank && value.blank?
+    end
+  end
+
+  def calculate_extremum(operation)
+    if @display_body_fat
+      calculate_multi_series_extremum(operation)
+    else
+      calculate_single_series_extremum(operation)
+    end
+  end
+
+  def calculate_multi_series_extremum(operation)
+    weight_extremum = records_for_chart.dig(0, :data).values.compact.public_send(operation)
+    body_fat_extremum = records_for_chart.dig(1, :data).values.compact.public_send(operation)
+    [weight_extremum, body_fat_extremum].compact.public_send(operation).to_i
+  end
+
+  def calculate_single_series_extremum(operation)
+    records_for_chart.values.compact.public_send(operation).to_i
+  end
+
   # 2週間の移動平均を計算
-  # { '2021-01-01' => 60, '2021-01-02' => 61, ... }
   def calculate_moving_average(records)
+    if @display_body_fat
+      weight_records = records[0][:data]
+      weight_average_list = { name: 'weight (kg)', data: average_hash(weight_records) }
+
+      body_fat_records = records[1][:data]
+      body_fat_average_list = { name: 'body fat (%)', data: average_hash(body_fat_records) }
+
+      [weight_average_list, body_fat_average_list]
+    else
+      average_hash(records)
+    end
+  end
+
+  def average_hash(records)
     sorted_records = records.sort_by { |date, _value| Date.parse(date) }
     moving_average = {}
 
@@ -30,19 +92,19 @@ class ChartComponent < ViewComponent::Base
   end
 
   def calculate_average_for_date(records, index)
-    weight_sum = 0
+    sum = 0
     count = 0
     parsed_date = Date.parse(records[index][0])
 
     # 14日間以内のデータを対象に移動平均を計算
     records[0..index].reverse_each do |record|
       past_date = Date.parse(record[0])
-      break if parsed_date - past_date >= 14
+      break if parsed_date - past_date >= MOVING_AVERAGE_DAYS
 
-      weight_sum += record[1]
+      sum += record[1]
       count += 1
     end
 
-    weight_sum / count
+    sum / count
   end
 end
