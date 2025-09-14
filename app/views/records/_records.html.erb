@@ -6,7 +6,7 @@
 </div>
 
 <% if records.present? %>
-  <%= render ChartComponent.new(records: records, display_body_fat: display_body_fat) %>
+  <%= render ChartComponent.new(records:, display_body_fat:, since_when:, user_id:) %>
 <% else %>
   <span style="display: table; margin: 30px auto">表示できる記録がありません</span>
 <% end %>

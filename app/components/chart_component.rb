@@ -5,17 +5,19 @@ class ChartComponent < ViewComponent::Base
 
   MOVING_AVERAGE_DAYS = 14
 
-  def initialize(records:, display_body_fat:)
+  def initialize(records:, display_body_fat:, since_when:, user_id:)
     @display_body_fat = display_body_fat
     @raw_records = records
+    @since_when = since_when
+    @user_id = user_id
   end
 
   def records_for_chart
-    @records_for_chart ||= build_records_for_chart(@raw_records)
+    @records_for_chart ||= build_records_for_chart
   end
 
   def average_records_for_chart
-    @average_records_for_chart ||= calculate_moving_average(records_for_chart)
+    @average_records_for_chart ||= calculate_moving_average
   end
 
   def minimum_record
@@ -30,20 +32,61 @@ class ChartComponent < ViewComponent::Base
 
   # 体脂肪 表示時の出力データ： [{name:'weight', data: {'YY-MM-DD': '60', ..}},{name:'body fat', data: {...}}]
   # 体脂肪 非表示時の出力データ： {'YY-MM-DD': '60', ..}
-  def build_records_for_chart(records)
+  def build_records_for_chart
+    build_chart_from(@raw_records, weight_accessor: :weight, body_fat_accessor: :body_fat)
+  end
+
+  def calculate_moving_average
+    average_records = Record.find_by_sql(moving_average_sql(user_id: @user_id))
+    build_chart_from(average_records, weight_accessor: :average_weight, body_fat_accessor: :average_body_fat)
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def moving_average_sql(user_id:)
+    # 体重記録は連続した日付にならないこと多々あり
+    # → 連続した日付の仮想テーブルcalenderを基準に移動平均値を計算
+    <<~SQL.squish
+      SELECT
+        calender.recorded_on,
+        AVG(r.weight) OVER (
+          ORDER BY calender.recorded_on
+          ROWS BETWEEN #{MOVING_AVERAGE_DAYS - 1} PRECEDING AND CURRENT ROW
+        ) AS average_weight,
+        AVG(r.body_fat) OVER (
+          ORDER BY calender.recorded_on
+          ROWS BETWEEN #{MOVING_AVERAGE_DAYS - 1} PRECEDING AND CURRENT ROW
+        ) AS average_body_fat
+      FROM
+        generate_series(
+          (SELECT MIN(recorded_on) FROM records WHERE user_id = #{user_id}),
+          CURRENT_DATE,
+          '1 day'
+        ) AS calender(recorded_on)
+      LEFT JOIN
+        records r ON r.recorded_on = calender.recorded_on AND r.user_id = #{user_id}
+      WHERE
+        calender.recorded_on >= '#{@since_when.to_date}'
+    SQL
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def build_chart_from(records, weight_accessor:, body_fat_accessor:)
     if @display_body_fat
-      weight_list = { name: 'weight (kg)', data: value_hash(records, &:weight) }
-      body_fat_list = { name: 'body fat (%)', data: value_hash(records, reject_blank: true, &:body_fat) }
+      weight_list = { name: 'weight (kg)', data: value_hash(records) { |r| r.public_send(weight_accessor) } }
+      body_fat_list = { name: 'body fat (%)', data: value_hash(records) { |r| r.public_send(body_fat_accessor) } }
       [weight_list, body_fat_list]
     else
-      value_hash(records, &:weight)
+      value_hash(records) { |r| r.public_send(weight_accessor) }
     end
   end
 
-  def value_hash(records, reject_blank: false)
+  def value_hash(records)
     records.each_with_object({}) do |record, hash|
       value = yield(record)
-      hash[record.recorded_on.to_s] = value unless reject_blank && value.blank?
+      # 平均値算出時に、非記録日にnilが入りグラフの線が切れるのでnilのレコードを排除
+      next if value.blank?
+
+      hash[record.recorded_on.to_s] = value
     end
   end
 
@@ -63,48 +106,5 @@ class ChartComponent < ViewComponent::Base
 
   def calculate_single_series_extremum(operation)
     records_for_chart.values.compact.public_send(operation).to_i
-  end
-
-  # 2週間の移動平均を計算
-  def calculate_moving_average(records)
-    if @display_body_fat
-      weight_records = records[0][:data]
-      weight_average_list = { name: 'weight (kg)', data: average_hash(weight_records) }
-
-      body_fat_records = records[1][:data]
-      body_fat_average_list = { name: 'body fat (%)', data: average_hash(body_fat_records) }
-
-      [weight_average_list, body_fat_average_list]
-    else
-      average_hash(records)
-    end
-  end
-
-  def average_hash(records)
-    sorted_records = records.sort_by { |date, _value| Date.parse(date) }
-    moving_average = {}
-
-    sorted_records.each_with_index do |record, index|
-      moving_average[record[0]] = calculate_average_for_date(sorted_records, index)
-    end
-
-    moving_average
-  end
-
-  def calculate_average_for_date(records, index)
-    sum = 0
-    count = 0
-    parsed_date = Date.parse(records[index][0])
-
-    # 14日間以内のデータを対象に移動平均を計算
-    records[0..index].reverse_each do |record|
-      past_date = Date.parse(record[0])
-      break if parsed_date - past_date >= MOVING_AVERAGE_DAYS
-
-      sum += record[1]
-      count += 1
-    end
-
-    sum / count
   end
 end
