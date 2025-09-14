@@ -15,9 +15,9 @@ RSpec.describe ChartComponent, type: :component do
     # デフォルト値
     let(:display_body_fat) { true }
     let(:records) do
-      (1..3).map do |i|
-        date = "2024-01-#{i.to_s.rjust(2, '0')}"
-        create(:record, user:, recorded_on: Date.parse(date), weight: 59 + i, body_fat: 30 + (i / 5.0))
+      start_date = Date.new(2024, 1, 1)
+      (0..2).map do |i|
+        create(:record, user:, recorded_on: start_date + i, weight: 60 + i, body_fat: 30 + ((i + 1) / 5.0))
       end
     end
 
@@ -50,9 +50,9 @@ RSpec.describe ChartComponent, type: :component do
   context '体脂肪率表示なしの場合' do
     let(:display_body_fat) { false }
     let(:records) do
-      (1..3).map do |i|
-        date = "2024-01-#{i.to_s.rjust(2, '0')}"
-        create(:record, user:, recorded_on: Date.parse(date), weight: 59 + i, body_fat: 30 + (i / 5))
+      start_date = Date.new(2024, 1, 1)
+      (0..2).map do |i|
+        create(:record, user:, recorded_on: start_date + i, weight: 60 + i, body_fat: 30 + (i / 5))
       end
     end
 
@@ -75,9 +75,7 @@ RSpec.describe ChartComponent, type: :component do
     let(:records) do
       start_date = Date.new(2024, 1, 1)
       raw_records = (0..14).map do |i|
-        # date = "2024-01-#{i.to_s.rjust(2, '0')}"
         create(:record, user:, recorded_on: start_date + i, weight: 60 + i)
-        # create(:record, user:, recorded_on: Date.parse(date), weight: 59 + i)
       end
       Record.where(id: raw_records.map(&:id))
     end
@@ -128,8 +126,6 @@ RSpec.describe ChartComponent, type: :component do
     let(:records) do
       start_date = Date.new(2024, 1, 2)
       raw_records = (0..14).map do |i|
-        # date = "2024-01-#{(i * 2).to_s.rjust(2, '0')}"
-        # create(:record, user:, recorded_on: Date.parse(date), weight: 59 + i)
         create(:record, user:, recorded_on: start_date + (i * 2), weight: 60 + i)
       end
       Record.where(id: raw_records.map(&:id))
