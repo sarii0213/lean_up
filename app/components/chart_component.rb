@@ -44,29 +44,34 @@ class ChartComponent < ViewComponent::Base
   # rubocop:disable Metrics/MethodLength
   def moving_average_sql(user_id:)
     # 体重記録は連続した日付にならないこと多々あり
-    # → 連続した日付の仮想テーブルcalenderを基準に移動平均値を計算
-    <<~SQL.squish
+    # → 連続した日付の仮想テーブルcalendarを基準に移動平均値を計算
+    sql = <<~SQL.squish
       SELECT
-        calender.recorded_on,
+        calendar.recorded_on,
         AVG(r.weight) OVER (
-          ORDER BY calender.recorded_on
-          ROWS BETWEEN #{MOVING_AVERAGE_DAYS - 1} PRECEDING AND CURRENT ROW
+          ORDER BY calendar.recorded_on
+          ROWS BETWEEN ? PRECEDING AND CURRENT ROW
         ) AS average_weight,
         AVG(r.body_fat) OVER (
-          ORDER BY calender.recorded_on
-          ROWS BETWEEN #{MOVING_AVERAGE_DAYS - 1} PRECEDING AND CURRENT ROW
+          ORDER BY calendar.recorded_on
+          ROWS BETWEEN ? PRECEDING AND CURRENT ROW
         ) AS average_body_fat
       FROM
         generate_series(
-          (SELECT MIN(recorded_on) FROM records WHERE user_id = #{user_id}),
+          (SELECT MIN(recorded_on) FROM records WHERE user_id = ?),
           CURRENT_DATE,
           '1 day'
-        ) AS calender(recorded_on)
+        ) AS calendar(recorded_on)
       LEFT JOIN
-        records r ON r.recorded_on = calender.recorded_on AND r.user_id = #{user_id}
+        records r ON r.recorded_on = calendar.recorded_on AND r.user_id = ?
       WHERE
-        calender.recorded_on >= '#{@since_when.to_date}'
+        calendar.recorded_on >= ?
     SQL
+
+    # SQLインジェクション対策
+    ActiveRecord::Base.sanitize_sql_array(
+      [sql, MOVING_AVERAGE_DAYS - 1, MOVING_AVERAGE_DAYS - 1, user_id, user_id, @since_when.to_date]
+    )
   end
   # rubocop:enable Metrics/MethodLength
 
