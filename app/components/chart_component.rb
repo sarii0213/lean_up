@@ -17,7 +17,7 @@ class ChartComponent < ViewComponent::Base
   end
 
   def average_records_for_chart
-    @average_records_for_chart ||= calculate_moving_average
+    @average_records_for_chart ||= build_average_records_for_chart
   end
 
   def minimum_record
@@ -36,13 +36,13 @@ class ChartComponent < ViewComponent::Base
     build_chart_from(@raw_records, weight_accessor: :weight, body_fat_accessor: :body_fat)
   end
 
-  def calculate_moving_average
-    average_records = Record.find_by_sql(moving_average_sql(user_id: @user_id))
+  def build_average_records_for_chart
+    average_records = Record.find_by_sql(moving_average_sql)
     build_chart_from(average_records, weight_accessor: :average_weight, body_fat_accessor: :average_body_fat)
   end
 
   # rubocop:disable Metrics/MethodLength
-  def moving_average_sql(user_id:)
+  def moving_average_sql
     # 体重記録は連続した日付にならないこと多々あり
     # → 連続した日付の仮想テーブルcalendarを基準に移動平均値を計算
     sql = <<~SQL.squish
@@ -50,28 +50,31 @@ class ChartComponent < ViewComponent::Base
         calendar.recorded_on,
         AVG(r.weight) OVER (
           ORDER BY calendar.recorded_on
-          ROWS BETWEEN ? PRECEDING AND CURRENT ROW
+          ROWS BETWEEN :window_size PRECEDING AND CURRENT ROW
         ) AS average_weight,
         AVG(r.body_fat) OVER (
           ORDER BY calendar.recorded_on
-          ROWS BETWEEN ? PRECEDING AND CURRENT ROW
+          ROWS BETWEEN :window_size PRECEDING AND CURRENT ROW
         ) AS average_body_fat
       FROM
         generate_series(
-          (SELECT MIN(recorded_on) FROM records WHERE user_id = ?),
+          (SELECT MIN(recorded_on) FROM records WHERE user_id = :user_id),
           CURRENT_DATE,
           '1 day'
         ) AS calendar(recorded_on)
       LEFT JOIN
-        records r ON r.recorded_on = calendar.recorded_on AND r.user_id = ?
+        records r ON r.recorded_on = calendar.recorded_on AND r.user_id = :user_id
       WHERE
-        calendar.recorded_on >= ?
+        calendar.recorded_on >= :since_when
     SQL
 
     # SQLインジェクション対策
-    ActiveRecord::Base.sanitize_sql_array(
-      [sql, MOVING_AVERAGE_DAYS - 1, MOVING_AVERAGE_DAYS - 1, user_id, user_id, @since_when.to_date]
-    )
+    ActiveRecord::Base.sanitize_sql_array([
+      sql,
+      window_size: MOVING_AVERAGE_DAYS - 1,
+      user_id: @user_id,
+      since_when: @since_when.to_date
+    ])
   end
   # rubocop:enable Metrics/MethodLength
 
