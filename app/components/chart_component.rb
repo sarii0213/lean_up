@@ -70,11 +70,11 @@ class ChartComponent < ViewComponent::Base
 
     # SQLインジェクション対策
     ActiveRecord::Base.sanitize_sql_array([
-      sql,
-      window_size: MOVING_AVERAGE_DAYS - 1,
-      user_id: @user_id,
-      since_when: @since_when.to_date
-    ])
+                                            sql,
+                                            { window_size: MOVING_AVERAGE_DAYS - 1,
+                                              user_id: @user_id,
+                                              since_when: @since_when.to_date }
+                                          ])
   end
   # rubocop:enable Metrics/MethodLength
 
