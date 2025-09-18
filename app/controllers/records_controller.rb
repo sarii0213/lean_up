@@ -14,6 +14,8 @@ class RecordsController < ApplicationController
   def index
     @records = current_user.records.where(recorded_on: since_when..Time.zone.now).order(:recorded_on)
     @display_body_fat = current_user.display_body_fat
+    @since_when = since_when
+    @user_id = current_user.id
   end
 
   def new
