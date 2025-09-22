@@ -10,7 +10,6 @@ services:
       - '3000:3000'
     depends_on:
       - db
-      - chrome
     stdin_open: true
     tty: true
     restart: always
@@ -30,11 +29,6 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     restart: always
-
-  chrome:
-    image: selenium/standalone-chrome-debug:latest
-    ports:
-      - '4448:4444'
   
 volumes:
   bundle:
