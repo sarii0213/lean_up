@@ -1,0 +1,40 @@
+<% content_for :title, 'lean upについて' %>
+
+<div>
+  <h2>lean upとは</h2>
+  <p>
+    lean up の目的は、ダイエットを楽しく継続するサポートをすること。<br>
+    ダイエットが続かない要因は、大きく２つ。<br>
+    ダイエット自体がストレスになるのと、多様な刺激の中で生活改善のモチベーションを保つのが難しいから。 <br>
+    この２つの問題を解決するために、lean upを作っています。<br>
+    <br>
+    \\ lean upはLINE連携で簡単に会員登録ができます！ //<br>
+  </p>
+  <div style="display: flex; gap: 20px;">
+    <%= button_to '会員登録', signup_path, { method: :get, class: 'ui teal button' } %>
+    <%= button_to 'ログイン', login_path, { method: :get, class: 'ui green button' } %>
+  </div>
+</div>
+<div style="margin-top:50px">
+  <h2>lean upの使い方</h2>
+  <h3>1. ビジョンボードでダイエットの目標を視覚化</h3>
+  <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center">
+    <%= image_tag 'vision_board_preview.png', style: 'width: 200px;' %>
+    <p>
+      自分が何を目的にダイエットをしているのか、ダイエットの目標を画像や言葉で保存していつでも一覧で確認できます。<br>
+      目標を視覚化したものは"ビジョンボード"と呼ばれ、ビジョンボードを日々目にすることは目標達成に有用であると言われています。<br>
+      ユーザー設定画面にて、LINE配信機能をONにすれば、LINEにてビジョンボードから登録した画像や文言が毎朝ひとつ配信され、その日いちにち健康的な意思決定ができるようあなたの背中を押します。<br>
+    </p>
+  </div>
+
+  <h3 style="margin-top: 40px;">2. ストレスなく体重傾向を把握</h3>
+  <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center">
+    <%= image_tag 'records_preview.png', style: 'height: 200px;' %>
+    <p>
+      体重記録を2週間の移動平均値で表示し、日々の上下の振れ幅を最小化しています。<br>
+      もし体重が増えていても、記録完了時にあなたの気持ちを落ち着かせるようなメッセージを表示します。<br>
+      生理期間における体重の大幅な増加時は、よりストレスを受けやすいので生理期間特有のメッセージも用意しています。<br>
+      （自身の最適な食事バランスと運動量が分かってさえいれば、体重把握は無理にしなくてもいいと思っています。）<br>
+    </p>
+  </div>
+</div>

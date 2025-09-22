@@ -26,8 +26,6 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  root to: "objectives#index"
-
   resources :objectives do
     member do
       patch :move_up
@@ -40,6 +38,11 @@ Rails.application.routes.draw do
     post :line_test, on:  :collection
   end
   resources :periods
+
+  root to: 'static_pages#about'
+  get '/privacy', to: 'static_pages#privacy'
+  get '/term', to: 'static_pages#term'
+
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
