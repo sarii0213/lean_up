@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class StaticPagesController < ApplicationController
-  def about;end
+  def about; end
 
-  def privacy;end
+  def privacy; end
 
-  def term;end
+  def term; end
 end
