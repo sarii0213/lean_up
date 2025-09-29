@@ -4,6 +4,8 @@ require 'rails_helper'
 require Rails.root.join('app/subscribers/slack_error_subscriber')
 
 RSpec.describe SlackErrorSubscriber, type: :feature do
+  include ActiveJob::TestHelper
+
   let(:error) { StandardError.new('error message') }
   let(:slack_client) { instance_double(Slack::Web::Client) }
 
@@ -24,7 +26,7 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
       let(:access_token) { { id_token: '11111' } }
 
       it 'エラー内容をSlackに通知する' do
-        Rails.error.report(error, context:)
+        perform_enqueued_jobs { Rails.error.report(error, context:) }
 
         expect(slack_client).to have_received(:chat_postMessage) do |args|
           expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE login') })
@@ -44,7 +46,7 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
       let(:objective) { create(:objective, user:) }
 
       it 'エラー内容をSlackに通知する' do
-        Rails.error.report(error, context:)
+        perform_enqueued_jobs { Rails.error.report(error, context:) }
 
         expect(slack_client).to have_received(:chat_postMessage) do |args|
           expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE delivery') })
@@ -62,7 +64,7 @@ RSpec.describe SlackErrorSubscriber, type: :feature do
       let(:user) { create(:user, provider: 'line', uid: '1234567') }
 
       it 'エラー内容をSlackに通知する' do
-        Rails.error.report(error, context:)
+        perform_enqueued_jobs { Rails.error.report(error, context:) }
 
         expect(slack_client).to have_received(:chat_postMessage) do |args|
           expect(args[:blocks]).to(be_any { |b| b.dig(:text, :text)&.include?('LINE delivery test') })
